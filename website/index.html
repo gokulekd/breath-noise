@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breath Noise | Premium Focus & Relax App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="dark-mode">
+    <div class="glow-cursor"></div>
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar glass-nav" id="navbar">
+        <div class="logo"><i data-lucide="waves" class="logo-icon"></i> Breath Noise</div>
+        <ul class="nav-links desktop-only">
+            <li><a href="#mission">Mission</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#demo">Demo</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#reviews">Reviews</a></li>
+            <li><a href="#about">About</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button id="theme-toggle" class="glass-btn icon-btn" aria-label="Toggle Theme">
+                <i data-lucide="sun" id="theme-icon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="hero" id="home">
+        <div class="hero-content" data-scroll>
+            <div class="badge glass">✨ Now with Light Sync</div>
+            <h1>Find Your <span class="gradient-text">Focus</span>,<br>Create Your <span class="gradient-text">Calm</span>.</h1>
+            <p>Immersive ambient noises, a powerful focus timer, and dynamic scenes synchronised with light. Your ultimate productivity and relaxation companion.</p>
+            
+            <div class="cta-buttons">
+                <a href="#" class="btn btn-primary"><i data-lucide="play-circle" class="btn-icon"></i> Google Play</a>
+                <a href="#" class="btn btn-secondary"><i data-lucide="smartphone" class="btn-icon"></i> App Store</a>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-item"><strong>50+</strong><span>Scenes</span></div><div class="stat-divider"></div>
+                <div class="stat-item"><strong>100%</strong><span>Focus</span></div><div class="stat-divider"></div>
+                <div class="stat-item"><strong>4.9★</strong><span>Rating</span></div>
+            </div>
+        </div>
+        
+        <div class="hero-visual" data-scroll>
+            <div class="phone-container">
+                <div class="phone-mockup" id="tilt-phone">
+                    <div class="phone-screen">
+                        <div class="ambient-glow"></div>
+                        <div class="mixer-ui glass">
+                            <div class="mixer-header"><i data-lucide="sliders-horizontal"></i><span>Mixer Mode</span></div>
+                            <div class="slider-group">
+                                <div class="slider-info"><i data-lucide="cloud-rain"></i><span>Rainfall</span></div>
+                                <div class="slider-track"><div class="slider-fill w-70"></div><div class="slider-thumb w-thumb-70"></div></div>
+                            </div>
+                            <div class="slider-group">
+                                <div class="slider-info"><i data-lucide="wind"></i><span>Wind</span></div>
+                                <div class="slider-track"><div class="slider-fill w-40"></div><div class="slider-thumb w-thumb-40"></div></div>
+                            </div>
+                            <div class="slider-group">
+                                <div class="slider-info"><i data-lucide="flame"></i><span>Fire Crackling</span></div>
+                                <div class="slider-track"><div class="slider-fill w-90"></div><div class="slider-thumb w-thumb-90"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="floating-bubble bubble-1 glass"><i data-lucide="headphones"></i></div>
+                <div class="floating-bubble bubble-2 glass"><i data-lucide="timer"></i></div>
+                <div class="floating-bubble bubble-3 glass"><i data-lucide="moon"></i></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mission -->
+    <section id="mission" class="section-container text-center">
+        <h2 data-scroll class="section-title">Our Goal & Passion</h2>
+        <p data-scroll class="section-subtitle">We believe in a world where technology brings you absolute peace, not constant distraction. Breath Noise was forged from a passionate mission to reclaim our focus. We combine scientifically-backed audioscapes with minimalist design to help you conquer burnout, achieve deep work, or simply drift into a peaceful slumber.</p>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="section-container">
+        <h2 data-scroll class="section-title text-center">Core Features</h2>
+        <div class="feature-grid">
+            <div class="feature-card glass interactive-card" data-scroll>
+                <div class="card-glow"></div>
+                <div class="icon-wrapper"><i data-lucide="sliders"></i></div>
+                <h3>Advanced Mixer</h3>
+                <p>Blend multiple high-quality sounds to create an ambient environment entirely unique to you.</p>
+            </div>
+            <div class="feature-card glass interactive-card" data-scroll>
+                <div class="card-glow"></div>
+                <div class="icon-wrapper"><i data-lucide="clock"></i></div>
+                <h3>Focus Timer</h3>
+                <p>Stay productive with customizable Pomodoro sessions and regular break reminders.</p>
+            </div>
+            <div class="feature-card glass interactive-card" data-scroll>
+                <div class="card-glow"></div>
+                <div class="icon-wrapper"><i data-lucide="mountain"></i></div>
+                <h3>Dynamic Scenes</h3>
+                <p>Immerse yourself in carefully crafted visual scenes from Himalayan Cabins to rainy cafes.</p>
+            </div>
+            <div class="feature-card glass interactive-card" data-scroll>
+                <div class="card-glow"></div>
+                <div class="icon-wrapper"><i data-lucide="lightbulb"></i></div>
+                <h3>Light Sync</h3>
+                <p>Synchronize your screen and physical smart lighting with your chosen soundscape.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Demo -->
+    <section id="demo" class="section-container text-center">
+        <h2 data-scroll class="section-title">Experience the Focus</h2>
+        <p data-scroll class="section-subtitle">Play with the sliders below to hear how perfectly our ambient noises blend together. (Make sure your sound is on)</p>
+        
+        <div class="web-mixer-container glass" data-scroll>
+            <div class="web-mixer-header">
+                <div class="mixer-title-wrapper">
+                    <i data-lucide="headphones"></i>
+                    <span>Live Audio Sandbox</span>
+                </div>
+                <button id="master-play-btn" class="glass-btn play-btn" aria-label="Play/Pause">
+                    <i data-lucide="play" id="master-play-icon"></i>
+                </button>
+            </div>
+            
+            <div class="web-mixer-tracks">
+                <div class="web-track">
+                    <div class="track-icon"><i data-lucide="cloud-rain"></i></div>
+                    <div class="track-slider-container">
+                        <label>Rain on Tent</label>
+                        <input type="range" min="0" max="100" value="0" class="web-slider" id="vol-rain">
+                    </div>
+                    <audio id="audio-rain" loop preload="auto">
+                        <source src="https://cdn.pixabay.com/audio/2022/10/25/audio_244a6de148.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+                
+                <div class="web-track">
+                    <div class="track-icon"><i data-lucide="flame"></i></div>
+                    <div class="track-slider-container">
+                        <label>Campfire</label>
+                        <input type="range" min="0" max="100" value="0" class="web-slider" id="vol-fire">
+                    </div>
+                    <audio id="audio-fire" loop preload="auto">
+                        <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_b287f37b98.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="section-container bg-offset text-center">
+        <h2 data-scroll class="section-title">Unlock Ultimate Calm</h2>
+        <p data-scroll class="section-subtitle">Choose the perfect plan to access premium scenes, advanced light synchronisation, and unlimited focus sessions.</p>
+        
+        <div class="pricing-toggle-wrapper" data-scroll>
+            <div class="pricing-toggle glass">
+                <span class="toggle-option active" id="btn-monthly">Monthly</span>
+                <span class="toggle-option" id="btn-lifetime">Lifetime</span>
+            </div>
+        </div>
+        
+        <div class="pricing-grid">
+            <div class="pricing-card glass" data-scroll>
+                <h3>Basic</h3>
+                <div class="price">Free</div>
+                <p class="price-desc">Perfect for starting out.</p>
+                <hr class="pricing-hr">
+                <ul class="pricing-features">
+                    <li><i data-lucide="check" class="check-icon"></i> 5 Basic Sounds</li>
+                    <li><i data-lucide="check" class="check-icon"></i> Standard Timer</li>
+                    <li><i data-lucide="check" class="check-icon"></i> 1 Static Scene</li>
+                    <li class="disabled"><i data-lucide="x" class="x-icon"></i> Light Sync</li>
+                    <li class="disabled"><i data-lucide="x" class="x-icon"></i> Cloud Sync</li>
+                </ul>
+                <a href="#" class="btn btn-secondary pricing-btn">Download Free</a>
+            </div>
+            
+            <div class="pricing-card glass pro-card" data-scroll>
+                <div class="pro-badge">Most Popular</div>
+                <h3 class="gradient-text">Premium Pro</h3>
+                <div class="price" id="pro-price">$4.99<span>/mo</span></div>
+                <p class="price-desc">Everything for deep work.</p>
+                <hr class="pricing-hr">
+                <ul class="pricing-features">
+                    <li><i data-lucide="check" class="check-icon"></i> 50+ Premium Sounds</li>
+                    <li><i data-lucide="check" class="check-icon"></i> Biometric Timer</li>
+                    <li><i data-lucide="check" class="check-icon"></i> Dynamic Scenes</li>
+                    <li><i data-lucide="check" class="check-icon"></i> Philips Hue Sync</li>
+                    <li><i data-lucide="check" class="check-icon"></i> Multi-Device Cloud Sync</li>
+                </ul>
+                <a href="#" class="btn btn-primary pricing-btn">Start 7-Day Free Trial</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="section-container text-center">
+        <h2 data-scroll class="section-title">Frequently Asked Questions</h2>
+        
+        <div class="faq-container" data-scroll>
+            <div class="faq-item glass">
+                <button class="faq-question">
+                    <span>Does Breath Noise work completely offline?</span>
+                    <i data-lucide="chevron-down" class="faq-icon"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes! Once you download your favorite scenes and sounds, they are stored securely on your device. You can enjoy perfectly mixed relaxation in airplane mode or deep in the woods.</p>
+                </div>
+            </div>
+            <div class="faq-item glass">
+                <button class="faq-question">
+                    <span>What smart lights does the Light Sync feature support?</span>
+                    <i data-lucide="chevron-down" class="faq-icon"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Currently, our Light Sync engine natively supports Philips Hue and LIFX bulbs. We are actively working on pushing a protocol for generic Tuya/SmartLife devices.</p>
+                </div>
+            </div>
+            <div class="faq-item glass">
+                <button class="faq-question">
+                    <span>Is the premium version a recurring subscription or one-time purchase?</span>
+                    <i data-lucide="chevron-down" class="faq-icon"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Both! You can opt for a low monthly subscription to access all constantly updated content, or you can purchase the Lifetime License to own the app and all future updates forever.</p>
+                </div>
+            </div>
+            <div class="faq-item glass">
+                <button class="faq-question">
+                    <span>Does running audio and light sync consume a lot of battery?</span>
+                    <i data-lucide="chevron-down" class="faq-icon"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>We've engineered the audio engine in Flutter to be extremely lightweight. The Light Sync uses efficient local network protocols. However, for 4+ hour focus sessions, we still recommend having your phone on a charger.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upcoming Features -->
+    <section id="upcoming" class="section-container bg-offset">
+        <h2 data-scroll class="section-title text-center">Upcoming Innovations</h2>
+        <div class="feature-grid">
+            <div class="feature-card glass" data-scroll>
+                <div class="icon-wrapper"><i data-lucide="brain-circuit"></i></div>
+                <h3>AI Soundscapes</h3>
+                <p>Generative audio that dynamically adapts to your biometric stress levels in real-time.</p>
+            </div>
+            <div class="feature-card glass" data-scroll>
+                <div class="icon-wrapper"><i data-lucide="watch"></i></div>
+                <h3>Smartwatch Sync</h3>
+                <p>Control elements, start timers, and read biometric data directly from your wrist.</p>
+            </div>
+            <div class="feature-card glass" data-scroll>
+                <div class="icon-wrapper"><i data-lucide="cloud"></i></div>
+                <h3>Cloud Presets</h3>
+                <p>Seamlessly sync your perfect sound mixes across your tablet, phone, and desktop.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews -->
+    <section id="reviews" class="section-container">
+        <h2 data-scroll class="section-title text-center">Loved by Users</h2>
+        <div class="review-grid">
+            <div class="review-card glass" data-scroll>
+                <div class="review-header">
+                    <div class="stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+                    <i data-lucide="play-circle" class="store-icon"></i>
+                </div>
+                <p class="review-text">"Absolutely life-changing for my study sessions. The Pomodoro timer paired with the fireplace noise is pure perfection."</p>
+                <p class="reviewer">- Google Play User</p>
+            </div>
+            <div class="review-card glass" data-scroll>
+                <div class="review-header">
+                    <div class="stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+                    <i data-lucide="apple" class="store-icon"></i>
+                </div>
+                <p class="review-text">"The Light Sync feature is mind-blowing. It transforms my entire room into a Himalayan cabin. Worth every penny."</p>
+                <p class="reviewer">- App Store User</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Developer -->
+    <section id="about" class="section-container text-center">
+        <h2 data-scroll class="section-title">Meet the Developer</h2>
+        <div class="developer-profile glass" data-scroll>
+            <div class="avatar-glow"><i data-lucide="user" class="avatar-icon"></i></div>
+            <h3>Gokul K S</h3>
+            <p class="dev-role">Mobile App Developer & Designer</p>
+            <p class="dev-bio">I built Breath Noise to solve my own struggle with digital fatigue. I'm obsessed with creating beautiful, premium, and functional Flutter applications that genuinely improve people's daily lives. Building Lumina Hearth was a journey of bridging aesthetic design with calming utility.</p>
+            <div class="social-links">
+                <a href="#" aria-label="Github"><i data-lucide="github"></i></a>
+                <a href="#" aria-label="Twitter"><i data-lucide="twitter"></i></a>
+                <a href="#" aria-label="LinkedIn"><i data-lucide="linkedin"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Footer -->
+    <footer id="contact" class="glass-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="logo"><i data-lucide="waves" class="logo-icon"></i> Breath Noise</div>
+                <p>Elevate your state of mind with immersive audioscapes.</p>
+                <div class="social-links mt-2">
+                    <a href="#"><i data-lucide="instagram"></i></a>
+                    <a href="#"><i data-lucide="youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Legal</h4>
+                <a href="privacy-policy.html">Privacy Policy</a>
+                <a href="terms.html">Terms of Service</a>
+                <a href="data-deletion.html">Data Deletion</a>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Get in Touch</h4>
+                <a href="mailto:support@example.com" class="contact-email">
+                    <i data-lucide="mail"></i> support@example.com
+                </a>
+                <a href="#" class="contact-email">
+                    <i data-lucide="message-square"></i> Send Feedback
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Breath Noise. Built by Gokul K S. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

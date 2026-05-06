@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "382290728994",
+    "project_id": "breath-noise",
+    "storage_bucket": "breath-noise.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:382290728994:android:db5601160f8681c548927b",
+        "android_client_info": {
+          "package_name": "com.breath.noise"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBvmOUzpyg7AZ3zTxTKpAsIYhpryjZiP4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
