@@ -1,26 +1,43 @@
 {
   "project_info": {
-    "project_number": "382290728994",
-    "project_id": "breath-noise",
-    "storage_bucket": "breath-noise.firebasestorage.app"
+    "project_number": "501054824114",
+    "project_id": "breath-noise-d73d1",
+    "storage_bucket": "breath-noise-d73d1.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:382290728994:android:db5601160f8681c548927b",
+        "mobilesdk_app_id": "1:501054824114:android:e34925a72ec2fa8d23f3ab",
         "android_client_info": {
           "package_name": "com.breath.noise"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "501054824114-125qlm6p0p1sjmu2t3rhhs72vc5j7le2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyCBvmOUzpyg7AZ3zTxTKpAsIYhpryjZiP4"
+          "current_key": "AIzaSyCkXZJFxmBDn-ktfB4MeG4hpScLyBZ1g24"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "501054824114-125qlm6p0p1sjmu2t3rhhs72vc5j7le2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "501054824114-jfhg5u21kor1p13hkmgirjs3n6n3faeq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.breath.noise"
+              }
+            }
+          ]
         }
       }
     }
