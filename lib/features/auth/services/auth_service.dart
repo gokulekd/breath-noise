@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -30,6 +31,7 @@ class AuthService {
 
   final FirebaseAuth _auth;
   final GoogleSignIn _googleSignIn;
+  Future<void>? _googleSignInInitialization;
 
   Future<UserCredential> signInWithEmail({
     required String email,
@@ -64,19 +66,37 @@ class AuthService {
   }
 
   Future<UserCredential> signInWithGoogle() async {
-    await _googleSignIn.initialize();
+    if (kIsWeb) {
+      final provider = GoogleAuthProvider();
+      provider.setCustomParameters({'prompt': 'select_account'});
+      return _auth.signInWithPopup(provider);
+    }
+
+    await _initializeGoogleSignIn();
 
     final account = await _googleSignIn.authenticate();
     final authentication = account.authentication;
-    final credential = GoogleAuthProvider.credential(
-      idToken: authentication.idToken,
-    );
+    final idToken = authentication.idToken;
+    if (idToken == null || idToken.isEmpty) {
+      throw FirebaseAuthException(
+        code: 'missing-google-id-token',
+        message: 'Google Sign-In did not return an ID token.',
+      );
+    }
 
+    final credential = GoogleAuthProvider.credential(idToken: idToken);
     return _auth.signInWithCredential(credential);
   }
 
   Future<void> signOut() async {
-    await _googleSignIn.signOut();
+    if (!kIsWeb) {
+      await _initializeGoogleSignIn();
+      await _googleSignIn.signOut();
+    }
     await _auth.signOut();
+  }
+
+  Future<void> _initializeGoogleSignIn() {
+    return _googleSignInInitialization ??= _googleSignIn.initialize();
   }
 }

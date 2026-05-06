@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../core/theme/app_theme.dart';
 import '../services/auth_service.dart';
@@ -82,6 +83,20 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   }
 
   String _formatAuthError(Object error) {
+    if (error is GoogleSignInException) {
+      switch (error.code) {
+        case GoogleSignInExceptionCode.canceled:
+          return 'Google sign-in was cancelled.';
+        case GoogleSignInExceptionCode.clientConfigurationError:
+        case GoogleSignInExceptionCode.providerConfigurationError:
+          return 'Google sign-in is not configured correctly for this app yet.';
+        case GoogleSignInExceptionCode.uiUnavailable:
+          return 'Google sign-in is unavailable right now. Please try again.';
+        default:
+          return error.description ?? 'Google sign-in failed.';
+      }
+    }
+
     if (error is FirebaseAuthException) {
       switch (error.code) {
         case 'email-already-in-use':
@@ -90,6 +105,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
           return 'That email address is not valid.';
         case 'weak-password':
           return 'Choose a stronger password.';
+        case 'missing-google-id-token':
+          return 'Google sign-in is missing the required app configuration.';
       }
       return error.message ?? 'Sign up failed.';
     }
@@ -142,111 +159,113 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                const SizedBox(height: 20),
-                const Text(
-                  'Create Account',
-                  style: TextStyle(
-                    color: AppTheme.warmCream,
-                    fontSize: 32,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: -0.5,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  'Join Breath Noise for a premium relaxing experience.',
-                  style: TextStyle(
-                    color: AppTheme.mutedGray,
-                    fontSize: 16,
-                  ),
-                ),
-                const SizedBox(height: 48),
-
-                // Name Field
-                _buildTextField(
-                  controller: _nameController,
-                  hintText: 'Full Name',
-                  icon: Icons.person_outline_rounded,
-                  validator: _validateName,
-                ),
-                const SizedBox(height: 16),
-
-                // Email Field
-                _buildTextField(
-                  controller: _emailController,
-                  hintText: 'Email',
-                  icon: Icons.email_outlined,
-                  keyboardType: TextInputType.emailAddress,
-                  validator: _validateEmail,
-                ),
-                const SizedBox(height: 16),
-
-                // Password Field
-                _buildTextField(
-                  controller: _passwordController,
-                  hintText: 'Password',
-                  icon: Icons.lock_outline_rounded,
-                  obscureText: !_isPasswordVisible,
-                  validator: _validatePassword,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _isPasswordVisible
-                          ? Icons.visibility_outlined
-                          : Icons.visibility_off_outlined,
-                      color: AppTheme.mutedGray,
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Create Account',
+                    style: TextStyle(
+                      color: AppTheme.warmCream,
+                      fontSize: 32,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: -0.5,
                     ),
-                    onPressed: () {
-                      setState(() {
-                        _isPasswordVisible = !_isPasswordVisible;
-                      });
-                    },
                   ),
-                ),
-                const SizedBox(height: 32),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Join Breath Noise for a premium relaxing experience.',
+                    style: TextStyle(
+                      color: AppTheme.mutedGray,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const SizedBox(height: 48),
 
-                // Sign Up Button
-                _buildPrimaryButton(
-                  label: 'Sign Up',
-                  onPressed: _isLoading ? null : _signUpWithEmail,
-                  isLoading: _isLoading,
-                ),
-                const SizedBox(height: 32),
+                  // Name Field
+                  _buildTextField(
+                    controller: _nameController,
+                    hintText: 'Full Name',
+                    icon: Icons.person_outline_rounded,
+                    validator: _validateName,
+                  ),
+                  const SizedBox(height: 16),
 
-                // Or Divider
-                Row(
-                  children: [
-                    Expanded(child: Divider(color: Colors.white.withAlpha(30))),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        'OR SIGN UP WITH',
-                        style: TextStyle(
-                          color: AppTheme.mutedGray,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12,
+                  // Email Field
+                  _buildTextField(
+                    controller: _emailController,
+                    hintText: 'Email',
+                    icon: Icons.email_outlined,
+                    keyboardType: TextInputType.emailAddress,
+                    validator: _validateEmail,
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Password Field
+                  _buildTextField(
+                    controller: _passwordController,
+                    hintText: 'Password',
+                    icon: Icons.lock_outline_rounded,
+                    obscureText: !_isPasswordVisible,
+                    validator: _validatePassword,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isPasswordVisible
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
+                        color: AppTheme.mutedGray,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+
+                  // Sign Up Button
+                  _buildPrimaryButton(
+                    label: 'Sign Up',
+                    onPressed: _isLoading ? null : _signUpWithEmail,
+                    isLoading: _isLoading,
+                  ),
+                  const SizedBox(height: 32),
+
+                  // Or Divider
+                  Row(
+                    children: [
+                      Expanded(
+                          child: Divider(color: Colors.white.withAlpha(30))),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Text(
+                          'OR SIGN UP WITH',
+                          style: TextStyle(
+                            color: AppTheme.mutedGray,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                          ),
                         ),
                       ),
-                    ),
-                    Expanded(child: Divider(color: Colors.white.withAlpha(30))),
-                  ],
-                ),
-                const SizedBox(height: 32),
+                      Expanded(
+                          child: Divider(color: Colors.white.withAlpha(30))),
+                    ],
+                  ),
+                  const SizedBox(height: 32),
 
-                // Social Logins
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _buildSocialButton(
-                      icon: Icons.g_mobiledata_rounded,
-                      label: 'Google',
-                      onPressed: _isLoading ? null : _signInWithGoogle,
-                      iconSize: 32,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 48),
+                  // Social Logins
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildSocialButton(
+                        icon: Icons.g_mobiledata_rounded,
+                        label: 'Google',
+                        onPressed: _isLoading ? null : _signInWithGoogle,
+                        iconSize: 32,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 48),
 
-                const SizedBox(height: 24),
+                  const SizedBox(height: 24),
                 ],
               ),
             ),

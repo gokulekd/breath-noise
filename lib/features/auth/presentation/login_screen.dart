@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../core/constants/app_assets.dart';
 import '../../../core/theme/app_theme.dart';
@@ -98,6 +99,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   String _formatAuthError(Object error) {
+    if (error is GoogleSignInException) {
+      switch (error.code) {
+        case GoogleSignInExceptionCode.canceled:
+          return 'Google sign-in was cancelled.';
+        case GoogleSignInExceptionCode.clientConfigurationError:
+        case GoogleSignInExceptionCode.providerConfigurationError:
+          return 'Google sign-in is not configured correctly for this app yet.';
+        case GoogleSignInExceptionCode.uiUnavailable:
+          return 'Google sign-in is unavailable right now. Please try again.';
+        default:
+          return error.description ?? 'Google sign-in failed.';
+      }
+    }
+
     if (error is FirebaseAuthException) {
       switch (error.code) {
         case 'invalid-email':
@@ -110,6 +125,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           return 'This account has been disabled.';
         case 'too-many-requests':
           return 'Too many attempts. Please try again shortly.';
+        case 'missing-google-id-token':
+          return 'Google sign-in is missing the required app configuration.';
       }
       return error.message ?? 'Sign in failed.';
     }
@@ -153,147 +170,149 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                const SizedBox(height: 60),
-                // Logo
-                Center(
-                  child: Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppTheme.emberOrange.withAlpha(40),
-                          blurRadius: 40,
-                          spreadRadius: 5,
+                  const SizedBox(height: 60),
+                  // Logo
+                  Center(
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppTheme.emberOrange.withAlpha(40),
+                            blurRadius: 40,
+                            spreadRadius: 5,
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                        child: Image.asset(
+                          AppAssets.appLogo,
+                          fit: BoxFit.cover,
                         ),
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: Image.asset(
-                        AppAssets.appLogo,
-                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 32),
+                  const SizedBox(height: 32),
 
-                // Welcome Text
-                const Text(
-                  'Welcome Back',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: AppTheme.warmCream,
-                    fontSize: 28,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: -0.5,
+                  // Welcome Text
+                  const Text(
+                    'Welcome Back',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: AppTheme.warmCream,
+                      fontSize: 28,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: -0.5,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  'Sign in to continue your peaceful journey.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: AppTheme.mutedGray,
-                    fontSize: 16,
-                  ),
-                ),
-                const SizedBox(height: 48),
-
-                // Email Field
-                _buildTextField(
-                  controller: _emailController,
-                  hintText: 'Email',
-                  icon: Icons.email_outlined,
-                  keyboardType: TextInputType.emailAddress,
-                  validator: _validateEmail,
-                ),
-                const SizedBox(height: 16),
-
-                // Password Field
-                _buildTextField(
-                  controller: _passwordController,
-                  hintText: 'Password',
-                  icon: Icons.lock_outline_rounded,
-                  obscureText: !_isPasswordVisible,
-                  validator: _validatePassword,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _isPasswordVisible
-                          ? Icons.visibility_outlined
-                          : Icons.visibility_off_outlined,
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Sign in to continue your peaceful journey.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
                       color: AppTheme.mutedGray,
+                      fontSize: 16,
                     ),
-                    onPressed: () {
-                      setState(() {
-                        _isPasswordVisible = !_isPasswordVisible;
-                      });
-                    },
                   ),
-                ),
-                const SizedBox(height: 12),
+                  const SizedBox(height: 48),
 
-                // Forgot Password
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: _isLoading ? null : _sendPasswordReset,
-                    child: const Text(
-                      'Forgot Password?',
-                      style: TextStyle(
-                        color: AppTheme.amberGold,
-                        fontWeight: FontWeight.w600,
+                  // Email Field
+                  _buildTextField(
+                    controller: _emailController,
+                    hintText: 'Email',
+                    icon: Icons.email_outlined,
+                    keyboardType: TextInputType.emailAddress,
+                    validator: _validateEmail,
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Password Field
+                  _buildTextField(
+                    controller: _passwordController,
+                    hintText: 'Password',
+                    icon: Icons.lock_outline_rounded,
+                    obscureText: !_isPasswordVisible,
+                    validator: _validatePassword,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isPasswordVisible
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
+                        color: AppTheme.mutedGray,
                       ),
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
                     ),
                   ),
-                ),
-                const SizedBox(height: 24),
+                  const SizedBox(height: 12),
 
-                // Login Button
-                _buildPrimaryButton(
-                  label: 'Sign In',
-                  onPressed: _isLoading ? null : _signInWithEmail,
-                  isLoading: _isLoading,
-                ),
-                const SizedBox(height: 32),
-
-                // Or Divider
-                Row(
-                  children: [
-                    Expanded(child: Divider(color: Colors.white.withAlpha(30))),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        'OR',
+                  // Forgot Password
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: _isLoading ? null : _sendPasswordReset,
+                      child: const Text(
+                        'Forgot Password?',
                         style: TextStyle(
-                          color: AppTheme.mutedGray,
+                          color: AppTheme.amberGold,
                           fontWeight: FontWeight.w600,
-                          fontSize: 12,
                         ),
                       ),
                     ),
-                    Expanded(child: Divider(color: Colors.white.withAlpha(30))),
-                  ],
-                ),
-                const SizedBox(height: 32),
+                  ),
+                  const SizedBox(height: 24),
 
-                // Social Logins
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _buildSocialButton(
-                      icon: Icons.g_mobiledata_rounded,
-                      label: 'Google',
-                      onPressed: _isLoading ? null : _signInWithGoogle,
-                      iconSize: 32,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 48),
+                  // Login Button
+                  _buildPrimaryButton(
+                    label: 'Sign In',
+                    onPressed: _isLoading ? null : _signInWithEmail,
+                    isLoading: _isLoading,
+                  ),
+                  const SizedBox(height: 32),
 
-                const SizedBox(height: 24),
+                  // Or Divider
+                  Row(
+                    children: [
+                      Expanded(
+                          child: Divider(color: Colors.white.withAlpha(30))),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Text(
+                          'OR',
+                          style: TextStyle(
+                            color: AppTheme.mutedGray,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                          child: Divider(color: Colors.white.withAlpha(30))),
+                    ],
+                  ),
+                  const SizedBox(height: 32),
+
+                  // Social Logins
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildSocialButton(
+                        icon: Icons.g_mobiledata_rounded,
+                        label: 'Google',
+                        onPressed: _isLoading ? null : _signInWithGoogle,
+                        iconSize: 32,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 48),
+
+                  const SizedBox(height: 24),
                 ],
               ),
             ),
@@ -358,7 +377,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           ),
         ],
       ),
-        child: ElevatedButton(
+      child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,
