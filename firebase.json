@@ -1,1 +1,61 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"breath-noise-d73d1","appId":"1:501054824114:android:e34925a72ec2fa8d23f3ab","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"breath-noise-d73d1","appId":"1:501054824114:ios:878fc622fa9acdf323f3ab","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"breath-noise-d73d1","configurations":{"android":"1:501054824114:android:e34925a72ec2fa8d23f3ab","ios":"1:501054824114:ios:878fc622fa9acdf323f3ab","web":"1:501054824114:web:9d3bf0eb49d4c55b23f3ab"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "breath-noise-d73d1",
+          "appId": "1:501054824114:android:e34925a72ec2fa8d23f3ab",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "breath-noise-d73d1",
+          "appId": "1:501054824114:ios:878fc622fa9acdf323f3ab",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "breath-noise-d73d1",
+          "configurations": {
+            "android": "1:501054824114:android:e34925a72ec2fa8d23f3ab",
+            "ios": "1:501054824114:ios:878fc622fa9acdf323f3ab",
+            "web": "1:501054824114:web:9d3bf0eb49d4c55b23f3ab"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "website",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "cleanUrls": true,
+    "trailingSlash": false,
+    "headers": [
+      {
+        "source": "**/*.@(js|css)",
+        "headers": [
+          { "key": "Cache-Control", "value": "max-age=604800" }
+        ]
+      },
+      {
+        "source": "**/*.html",
+        "headers": [
+          { "key": "Cache-Control", "value": "no-cache" }
+        ]
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/404.html"
+      }
+    ]
+  }
+}

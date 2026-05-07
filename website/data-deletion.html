@@ -3,35 +3,235 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Deletion - Breath Noise</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Data Deletion Request - Breath Noise</title>
+    <meta name="description" content="Request deletion of your Breath Noise account and all associated data.">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        .legal-content { max-width: 800px; margin: 120px auto 50px; padding: 0 5%; }
-        h1 { font-size: 2.5rem; margin-bottom: 1rem; }
-        p, li { color: var(--text-muted); margin-bottom: 1rem; }
-        .form-group { margin-bottom: 1.5rem; }
-        label { display: block; margin-bottom: 0.5rem; color: white; }
-        input[type="email"] { width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.05); color: white; }
+        .subpage-hero { min-height: 35vh; display: flex; align-items: center; justify-content: center; padding: 140px 5% 60px; text-align: center; }
+        .subpage-hero h1 { font-size: 3rem; margin-bottom: 1rem; }
+        .subpage-hero p { font-size: 1.1rem; color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+
+        .deletion-section { padding: 2rem 5% 6rem; position: relative; z-index: 2; }
+        .deletion-wrapper { max-width: 820px; margin: 0 auto; }
+
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+        .info-card { padding: 2rem; border-radius: 22px; text-align: center; }
+        .info-card-icon { width: 55px; height: 55px; border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem; }
+        .info-card h3 { font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem; }
+        .info-card p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
+        .icon-orange { background: linear-gradient(135deg, var(--accent-primary), var(--accent-gradient-2)); box-shadow: 0 8px 20px rgba(255,107,53,0.3); color: white; }
+
+        .deletion-form-card { padding: 3rem; border-radius: 30px; }
+        .form-group { margin-bottom: 1.8rem; }
+        .form-group label { display: block; margin-bottom: 0.6rem; font-size: 0.9rem; font-weight: 500; color: var(--text-secondary); }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 1rem 1.2rem;
+            border-radius: 14px;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            backdrop-filter: blur(10px);
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
+        }
+        .form-group textarea { min-height: 100px; resize: vertical; }
+        .warning-box { background: rgba(255, 69, 0, 0.08); border: 1px solid rgba(255, 69, 0, 0.25); border-radius: 16px; padding: 1.5rem; margin: 1.5rem 0 2rem; display: flex; gap: 1rem; align-items: flex-start; }
+        .warning-box i { color: #FF4500; flex-shrink: 0; margin-top: 2px; }
+        .warning-box p { margin: 0; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; }
+        .checkbox-group { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 2rem; }
+        .checkbox-group input[type="checkbox"] { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--accent-primary); cursor: pointer; flex-shrink: 0; }
+        .checkbox-group label { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; cursor: pointer; }
+        .submit-btn { width: 100%; padding: 1.1rem; border: none; cursor: pointer; font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 600; background: linear-gradient(135deg, #FF4500, #FF6B35); }
+        .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+        .form-success { display: none; text-align: center; padding: 2rem; }
+        .form-success .success-icon { width: 70px; height: 70px; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; box-shadow: 0 10px 25px rgba(255,107,53,0.3); }
+        .form-success h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .form-success p { color: var(--text-muted); }
+
+        @media (max-width: 768px) { .subpage-hero h1 { font-size: 2.2rem; } .deletion-form-card { padding: 1.5rem; } }
     </style>
 </head>
-<body>
-    <nav class="navbar">
-        <div class="logo"><a href="index.html" style="color:white; text-decoration:none;">Breath Noise</a></div>
+<body class="dark-mode">
+    <div class="glow-cursor" id="glow-cursor"></div>
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+
+    <nav class="navbar glass-nav" id="navbar">
+        <a href="index.html" class="logo" style="text-decoration:none;">
+            <img src="assets/logo/background-removed.png" class="logo-img" alt="Breath Noise"> Breath Noise
+        </a>
+        <ul class="nav-links desktop-only">
+            <li><a href="index.html#features">Features</a></li>
+            <li><a href="privacy-policy.html">Privacy</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button id="theme-toggle" class="glass-btn icon-btn" aria-label="Toggle Theme">
+                <i data-lucide="sun" id="theme-icon"></i>
+            </button>
+        </div>
     </nav>
-    <div class="legal-content glass">
-        <h1>Data Deletion Request</h1>
-        <p>If you would like to request the deletion of your account and all associated data from Breath Noise, please enter the email address associated with your account below.</p>
-        
-        <form onsubmit="alert('Data deletion request submitted. We will process this within 7 days.'); return false;" style="margin-top: 2rem;">
-            <div class="form-group">
-                <label for="email">Account Email Address:</label>
-                <input type="email" id="email" required placeholder="you@example.com">
-            </div>
-            <button type="submit" class="btn btn-primary" style="border:none; cursor:pointer;">Request Deletion</button>
-        </form>
-        
-        <p style="margin-top: 2rem; font-size: 0.9rem;"><em>Note: Deleting your data is permanent and cannot be undone. All your custom presets and usage history will be erased.</em></p>
+
+    <div class="subpage-hero">
+        <div data-scroll>
+            <div class="badge glass">🗑️ Your right to be forgotten</div>
+            <h1>Data <span class="gradient-text">Deletion</span> Request</h1>
+            <p>You have the right to request the deletion of your account and all associated personal data. We will process your request within 7 business days.</p>
+        </div>
     </div>
+
+    <section class="deletion-section">
+        <div class="deletion-wrapper">
+
+            <div class="info-grid" data-scroll>
+                <div class="info-card glass">
+                    <div class="info-card-icon icon-orange"><i data-lucide="clock" style="width:24px;height:24px;"></i></div>
+                    <h3>Processing Time</h3>
+                    <p>We process all deletion requests within 7 business days of receipt.</p>
+                </div>
+                <div class="info-card glass">
+                    <div class="info-card-icon icon-orange"><i data-lucide="database" style="width:24px;height:24px;"></i></div>
+                    <h3>What Gets Deleted</h3>
+                    <p>Your account, sound presets, usage history, and all associated data are permanently removed.</p>
+                </div>
+                <div class="info-card glass">
+                    <div class="info-card-icon icon-orange"><i data-lucide="mail-check" style="width:24px;height:24px;"></i></div>
+                    <h3>Confirmation Email</h3>
+                    <p>You'll receive a confirmation email once your data deletion has been completed.</p>
+                </div>
+            </div>
+
+            <div class="deletion-form-card glass" data-scroll>
+                <h2 style="font-size:1.8rem; margin-bottom:0.5rem;">Submit Deletion Request</h2>
+                <p style="color: var(--text-muted); margin-bottom: 2rem;">Please provide the email address associated with your Breath Noise account.</p>
+
+                <form id="deletion-form" onsubmit="handleDeletion(event)">
+                    <div class="form-group">
+                        <label for="del-email">Account Email Address *</label>
+                        <input type="email" id="del-email" placeholder="you@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="del-reason">Reason for Deletion (optional)</label>
+                        <textarea id="del-reason" placeholder="Help us understand why you're leaving (optional)..."></textarea>
+                    </div>
+
+                    <div class="warning-box">
+                        <i data-lucide="alert-triangle" style="width:20px;height:20px;"></i>
+                        <p><strong>This action is permanent and cannot be undone.</strong> All your custom sound presets, usage history, and account information will be erased. If you have an active Premium subscription, please cancel it separately through the Google Play Store to avoid future charges.</p>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="confirm-check" onchange="toggleSubmit()">
+                        <label for="confirm-check">I understand that this action is permanent and irreversible. I confirm I want to delete my Breath Noise account and all associated data.</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary submit-btn" id="submit-del-btn" disabled>
+                        <i data-lucide="trash-2" style="width:18px;height:18px;"></i>
+                        Submit Deletion Request
+                    </button>
+                </form>
+
+                <div class="form-success" id="del-success">
+                    <div class="success-icon"><i data-lucide="check" style="width:32px;height:32px;color:white;"></i></div>
+                    <h3>Request Received</h3>
+                    <p>We've received your data deletion request. You'll receive a confirmation email within 24 hours, and your data will be fully deleted within 7 business days.</p>
+                    <p style="margin-top: 1rem;"><a href="index.html" class="btn btn-secondary" style="display:inline-flex;">← Back to Home</a></p>
+                </div>
+            </div>
+
+            <p style="text-align:center; color: var(--text-muted); font-size:0.9rem; margin-top: 2rem; position: relative; z-index: 2;">
+                Questions? Email us at <a href="mailto:privacy@breathnoise.life" style="color: var(--accent-primary);">privacy@breathnoise.life</a>
+            </p>
+        </div>
+    </section>
+
+    <footer class="glass-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="logo"><i data-lucide="waves" class="logo-icon"></i> Breath Noise</div>
+                <p>Elevate your state of mind with immersive audioscapes.</p>
+            </div>
+            <div class="footer-column">
+                <h4>Legal</h4>
+                <a href="privacy-policy.html"><i data-lucide="shield" style="width:16px;height:16px;"></i> Privacy Policy</a>
+                <a href="terms.html"><i data-lucide="file-text" style="width:16px;height:16px;"></i> Terms of Service</a>
+                <a href="data-deletion.html" style="color: var(--accent-primary);"><i data-lucide="trash-2" style="width:16px;height:16px;"></i> Data Deletion</a>
+            </div>
+            <div class="footer-column">
+                <h4>Get in Touch</h4>
+                <a href="mailto:support@breathnoise.life"><i data-lucide="mail" style="width:16px;height:16px;"></i> support@breathnoise.life</a>
+                <a href="index.html"><i data-lucide="home" style="width:16px;height:16px;"></i> Back to Home</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Breath Noise. Built by Gokul K S. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        function toggleSubmit() {
+            const checkbox = document.getElementById('confirm-check');
+            const btn = document.getElementById('submit-del-btn');
+            btn.disabled = !checkbox.checked;
+        }
+        function handleDeletion(e) {
+            e.preventDefault();
+            const email = document.getElementById('del-email').value;
+            const reason = document.getElementById('del-reason').value;
+            const subject = encodeURIComponent('Data Deletion Request - Breath Noise');
+            const body = encodeURIComponent(`Data Deletion Request\n\nAccount Email: ${email}\n\nReason: ${reason || 'Not provided'}\n\nThis user has confirmed they understand this action is permanent and irreversible.`);
+            window.location.href = `mailto:privacy@breathnoise.life?subject=${subject}&body=${body}`;
+            document.getElementById('deletion-form').style.display = 'none';
+            document.getElementById('del-success').style.display = 'block';
+            lucide.createIcons();
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeBtn = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            if (localStorage.getItem('lumina-theme') === 'light') {
+                document.body.classList.add('light-mode');
+                document.body.classList.remove('dark-mode');
+                themeIcon.dataset.lucide = 'moon';
+            }
+            lucide.createIcons();
+            themeBtn.addEventListener('click', () => {
+                document.body.classList.toggle('light-mode');
+                document.body.classList.toggle('dark-mode');
+                const isLight = document.body.classList.contains('light-mode');
+                themeIcon.dataset.lucide = isLight ? 'moon' : 'sun';
+                lucide.createIcons();
+                localStorage.setItem('lumina-theme', isLight ? 'light' : 'dark');
+            });
+            const glow = document.getElementById('glow-cursor');
+            let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+            document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+            const animateGlow = () => {
+                const cx = parseFloat(glow.style.left) || window.innerWidth / 2;
+                const cy = parseFloat(glow.style.top) || window.innerHeight / 2;
+                glow.style.left = `${cx + (mouseX - cx) * 0.1}px`;
+                glow.style.top = `${cy + (mouseY - cy) * 0.1}px`;
+                requestAnimationFrame(animateGlow);
+            };
+            animateGlow();
+            document.querySelectorAll('[data-scroll]').forEach(el => el.classList.add('hidden'));
+            const obs = new IntersectionObserver((entries) => {
+                entries.forEach(e => { if (e.isIntersecting) { e.target.classList.remove('hidden'); e.target.classList.add('visible'); } });
+            }, { threshold: 0.05 });
+            document.querySelectorAll('[data-scroll]').forEach(el => obs.observe(el));
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => { navbar.style.padding = window.scrollY > 50 ? '1rem 5%' : '1.5rem 5%'; });
+        });
+    </script>
 </body>
 </html>

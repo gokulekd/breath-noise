@@ -5,26 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Breath Noise | Premium Focus & Relax App</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/logo/background-removed.png">
+    <link rel="apple-touch-icon" href="assets/logo/background-removed.png">
     <link rel="stylesheet" href="styles.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body class="dark-mode">
-    <div class="glow-cursor"></div>
+    <div class="glow-cursor" id="glow-cursor"></div>
     <div class="bg-orb orb-1"></div>
     <div class="bg-orb orb-2"></div>
     <div class="bg-orb orb-3"></div>
 
     <!-- Navbar -->
     <nav class="navbar glass-nav" id="navbar">
-        <div class="logo"><i data-lucide="waves" class="logo-icon"></i> Breath Noise</div>
+        <div class="logo"><img src="assets/logo/background-removed.png" class="logo-img" alt="Breath Noise"> Breath Noise</div>
         <ul class="nav-links desktop-only">
             <li><a href="#mission">Mission</a></li>
             <li><a href="#features">Features</a></li>
+            <li><a href="#free-sounds">Try Free</a></li>
             <li><a href="#demo">Demo</a></li>
             <li><a href="#pricing">Pricing</a></li>
             <li><a href="#faq">FAQ</a></li>
-            <li><a href="#reviews">Reviews</a></li>
             <li><a href="#about">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
         </ul>
         <div class="nav-actions">
             <button id="theme-toggle" class="glass-btn icon-btn" aria-label="Toggle Theme">
@@ -56,27 +59,173 @@
             <div class="phone-container">
                 <div class="phone-mockup" id="tilt-phone">
                     <div class="phone-screen">
-                        <div class="ambient-glow"></div>
-                        <div class="mixer-ui glass">
-                            <div class="mixer-header"><i data-lucide="sliders-horizontal"></i><span>Mixer Mode</span></div>
-                            <div class="slider-group">
-                                <div class="slider-info"><i data-lucide="cloud-rain"></i><span>Rainfall</span></div>
-                                <div class="slider-track"><div class="slider-fill w-70"></div><div class="slider-thumb w-thumb-70"></div></div>
+                        <!-- Full-bleed scene background -->
+                        <div class="app-scene-bg">
+                            <img src="assets/images/himalayan.jpeg" alt="Himalayan Cabin" class="app-scene-img">
+                            <div class="app-scene-overlay"></div>
+                        </div>
+
+                        <!-- Dynamic Island -->
+                        <div class="app-dynamic-island"></div>
+
+                        <!-- Status Bar -->
+                        <div class="app-status-bar">
+                            <span class="app-time">9:41</span>
+                            <div class="app-status-right">
+                                <svg width="13" height="10" viewBox="0 0 13 10" fill="white"><rect x="0" y="6" width="2" height="4" rx="0.5"/><rect x="3.5" y="4" width="2" height="6" rx="0.5"/><rect x="7" y="2" width="2" height="8" rx="0.5"/><rect x="10.5" y="0" width="2" height="10" rx="0.5"/></svg>
+                                <svg width="15" height="10" viewBox="0 0 15 11" fill="none" stroke="white" stroke-linecap="round"><circle cx="7.5" cy="9.5" r="1" fill="white" stroke="none"/><path d="M4 6.5a4.9 4.9 0 0 1 7 0" stroke-width="1.3"/><path d="M1 3.5A9.5 9.5 0 0 1 14 3.5" stroke-width="1.3"/></svg>
+                                <svg width="22" height="10" viewBox="0 0 22 11" fill="none"><rect x="0.5" y="0.5" width="18" height="10" rx="2.5" stroke="white" stroke-width="1"/><rect x="19" y="3" width="2.5" height="5" rx="1" fill="white" opacity="0.6"/><rect x="2" y="2.5" width="13" height="6" rx="1.5" fill="white"/></svg>
                             </div>
-                            <div class="slider-group">
-                                <div class="slider-info"><i data-lucide="wind"></i><span>Wind</span></div>
-                                <div class="slider-track"><div class="slider-fill w-40"></div><div class="slider-thumb w-thumb-40"></div></div>
+                        </div>
+
+                        <!-- Top scene controls -->
+                        <div class="app-top-controls">
+                            <div class="app-scene-tag-pill"><span>🏔️</span><span>Nature</span></div>
+                            <button class="app-icon-btn">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)" stroke="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                            </button>
+                        </div>
+
+                        <!-- Scene selector dots -->
+                        <div class="app-scene-dots">
+                            <span class="scene-dot"></span>
+                            <span class="scene-dot scene-dot-active"></span>
+                            <span class="scene-dot"></span>
+                            <span class="scene-dot"></span>
+                        </div>
+
+                        <!-- Center play area with pulse rings -->
+                        <div class="app-play-area">
+                            <div class="app-pulse-ring app-ring-3"></div>
+                            <div class="app-pulse-ring app-ring-2"></div>
+                            <div class="app-pulse-ring app-ring-1"></div>
+                            <button class="app-center-play">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="white" stroke="none" style="transform:translateX(2px)"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                            </button>
+                        </div>
+
+                        <!-- Waveform + Scene Info -->
+                        <div class="app-scene-info">
+                            <div class="app-waveform">
+                                <span></span><span></span><span></span><span></span><span></span>
+                                <span></span><span></span><span></span><span></span><span></span>
+                                <span></span><span></span><span></span>
                             </div>
-                            <div class="slider-group">
-                                <div class="slider-info"><i data-lucide="flame"></i><span>Fire Crackling</span></div>
-                                <div class="slider-track"><div class="slider-fill w-90"></div><div class="slider-thumb w-thumb-90"></div></div>
+                            <h3 class="app-scene-title">Himalayan Cabin</h3>
+                            <p class="app-scene-subtitle">Mountain winds &amp; fire crackling</p>
+                        </div>
+
+                        <!-- Timer badge -->
+                        <div class="app-timer-row">
+                            <div class="app-timer-badge">
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                <span>Focus · 24:35</span>
+                            </div>
+                        </div>
+
+                        <!-- Playback controls -->
+                        <div class="app-playback-controls">
+                            <button class="app-ctrl-btn">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
+                            </button>
+                            <button class="app-ctrl-btn app-ctrl-main">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="none" style="transform:translateX(2px)"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                            </button>
+                            <button class="app-ctrl-btn">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+                            </button>
+                        </div>
+
+                        <!-- Bottom navigation -->
+                        <div class="app-bottom-nav">
+                            <div class="app-nav-item app-nav-active">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="white" stroke="none"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                                <span>Home</span>
+                            </div>
+                            <div class="app-nav-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                                <span>Sounds</span>
+                            </div>
+                            <div class="app-nav-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                <span>Timer</span>
+                            </div>
+                            <div class="app-nav-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>
+                                <span>Profile</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="floating-bubble bubble-1 glass"><i data-lucide="headphones"></i></div>
-                <div class="floating-bubble bubble-2 glass"><i data-lucide="timer"></i></div>
-                <div class="floating-bubble bubble-3 glass"><i data-lucide="moon"></i></div>
+                <!-- Scene image cards floating around the phone -->
+                <div class="scene-float-card scene-card-1">
+                    <div class="scene-float-bg" style="background-image:url('assets/images/fireplace.png');"></div>
+                    <div class="scene-float-content">
+                        <span class="scene-float-emoji">🔥</span>
+                        <div class="scene-float-info">
+                            <div class="scene-float-name">Classic Hearth</div>
+                            <div class="scene-float-status">
+                                <span class="playing-dot"></span>
+                                <span>Now Playing</span>
+                                <div class="scene-float-bars"><b></b><b></b><b></b><b></b></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scene-float-card scene-card-2">
+                    <div class="scene-float-bg" style="background-image:url('assets/images/himalayan.jpeg');"></div>
+                    <div class="scene-float-content">
+                        <span class="scene-float-emoji">🏔️</span>
+                        <div class="scene-float-info">
+                            <div class="scene-float-name">Himalayan Cabin</div>
+                            <div class="scene-float-status">
+                                <span class="playing-dot"></span>
+                                <span>Now Playing</span>
+                                <div class="scene-float-bars"><b></b><b></b><b></b><b></b></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scene-float-card scene-card-3">
+                    <div class="scene-float-bg" style="background-image:url('assets/images/costal-breeze.png');"></div>
+                    <div class="scene-float-content">
+                        <span class="scene-float-emoji">🌊</span>
+                        <div class="scene-float-info">
+                            <div class="scene-float-name">Coastal Breeze</div>
+                            <div class="scene-float-status">
+                                <span class="playing-dot"></span>
+                                <span>Now Playing</span>
+                                <div class="scene-float-bars"><b></b><b></b><b></b><b></b></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mixer Float Card (outside the phone) -->
+                <div class="mixer-float-card">
+                    <div class="mixer-float-header">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="2.5" stroke-linecap="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+                        <span>Mixer</span>
+                        <div class="mixer-float-live">Live</div>
+                    </div>
+                    <div class="mixer-float-track-row">
+                        <span class="mixer-float-emoji">🌧️</span>
+                        <div class="mixer-float-bar-wrap"><div class="mixer-float-bar" style="width:70%"></div></div>
+                        <span class="mixer-float-pct">70%</span>
+                    </div>
+                    <div class="mixer-float-track-row">
+                        <span class="mixer-float-emoji">💨</span>
+                        <div class="mixer-float-bar-wrap"><div class="mixer-float-bar" style="width:40%"></div></div>
+                        <span class="mixer-float-pct">40%</span>
+                    </div>
+                    <div class="mixer-float-track-row">
+                        <span class="mixer-float-emoji">🔥</span>
+                        <div class="mixer-float-bar-wrap"><div class="mixer-float-bar" style="width:90%"></div></div>
+                        <span class="mixer-float-pct">90%</span>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -133,7 +282,21 @@
                     <i data-lucide="play" id="master-play-icon"></i>
                 </button>
             </div>
-            
+
+            <!-- Master volume + speaker selector -->
+            <div class="mixer-vol-row">
+                <button class="mixer-vol-btn" id="mixer-vol-btn" title="Mute / Unmute"></button>
+                <input type="range" class="mixer-master-slider" id="mixer-master-vol" min="0" max="100" value="85">
+                <span class="mixer-vol-label">Master Vol</span>
+                <div class="speaker-dropdown-wrap">
+                    <button class="glass-btn speaker-device-btn" id="speaker-device-btn" title="Select audio output device"></button>
+                    <div class="speaker-dropdown glass" id="speaker-dropdown">
+                        <div class="speaker-dropdown-title">🔊 Audio Output Device</div>
+                        <div id="speaker-devices-list"></div>
+                    </div>
+                </div>
+            </div>
+
             <div class="web-mixer-tracks">
                 <div class="web-track">
                     <div class="track-icon"><i data-lucide="cloud-rain"></i></div>
@@ -157,6 +320,187 @@
                     </audio>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Free Sounds Preview -->
+    <section id="free-sounds" class="section-container sound-preview-section text-center">
+        <div class="badge glass" data-scroll style="margin-bottom:1.5rem; display:inline-block;">🎵 Try before you download</div>
+        <h2 data-scroll class="section-title">3 Free Soundscapes, <span class="gradient-text">Right Now</span></h2>
+        <p data-scroll class="section-subtitle">No app needed. Hit play and feel the calm. Each preview plays for 30 seconds — just a taste of what's inside.</p>
+
+        <div class="sound-preview-grid" data-scroll>
+
+            <!-- Card 1: Classic Hearth -->
+            <div class="sound-card glass" id="sc-0">
+                <div class="sound-card-bg" style="background: linear-gradient(145deg, #2B0A0A, #6B1A1A, #A03030);"></div>
+                <span class="sound-free-badge">✦ Free</span>
+                <span class="sound-emoji">🔥</span>
+                <h3>Classic Hearth</h3>
+                <p class="sound-tagline">Crackling oak wood, timeless warmth</p>
+                <div class="sound-visualizer">
+                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                </div>
+                <div class="sound-controls">
+                    <button class="sound-play-btn" aria-label="Play Classic Hearth">
+                        <i data-lucide="play"></i>
+                    </button>
+                    <div class="sound-progress-wrap">
+                        <div class="sound-progress-bar"><div class="sound-progress-fill"></div></div>
+                        <span class="sound-timer">0:00 / 0:30</span>
+                    </div>
+                </div>
+                <div class="sound-volume-row">
+                    <button class="sound-vol-btn" title="Mute / Unmute"></button>
+                    <input type="range" class="sound-vol-slider" min="0" max="100" value="85">
+                </div>
+                <audio loop preload="none">
+                    <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_b287f37b98.mp3" type="audio/mpeg">
+                </audio>
+                <div class="sound-expired-overlay">
+                    <span style="font-size:2rem;">🔥</span>
+                    <p>Preview ended</p>
+                    <a href="#" class="btn btn-primary btn-sm">Get Full App →</a>
+                </div>
+            </div>
+
+            <!-- Card 2: Rainy Café -->
+            <div class="sound-card glass" id="sc-1">
+                <div class="sound-card-bg" style="background: linear-gradient(145deg, #1E100A, #3D1F10, #6B3A22);"></div>
+                <span class="sound-free-badge">✦ Free</span>
+                <span class="sound-emoji">☕</span>
+                <h3>Rainy Café</h3>
+                <p class="sound-tagline">Muffled chatter, rain on glass</p>
+                <div class="sound-visualizer">
+                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                </div>
+                <div class="sound-controls">
+                    <button class="sound-play-btn" aria-label="Play Rainy Café">
+                        <i data-lucide="play"></i>
+                    </button>
+                    <div class="sound-progress-wrap">
+                        <div class="sound-progress-bar"><div class="sound-progress-fill"></div></div>
+                        <span class="sound-timer">0:00 / 0:30</span>
+                    </div>
+                </div>
+                <div class="sound-volume-row">
+                    <button class="sound-vol-btn" title="Mute / Unmute"></button>
+                    <input type="range" class="sound-vol-slider" min="0" max="100" value="85">
+                </div>
+                <audio loop preload="none">
+                    <source src="https://cdn.pixabay.com/audio/2022/10/25/audio_244a6de148.mp3" type="audio/mpeg">
+                </audio>
+                <div class="sound-expired-overlay">
+                    <span style="font-size:2rem;">☕</span>
+                    <p>Preview ended</p>
+                    <a href="#" class="btn btn-primary btn-sm">Get Full App →</a>
+                </div>
+            </div>
+
+            <!-- Card 3: Cherry Blossom -->
+            <div class="sound-card glass" id="sc-2">
+                <div class="sound-card-bg" style="background: linear-gradient(145deg, #42041D, #8A1050, #C2185B);"></div>
+                <span class="sound-free-badge">✦ Free</span>
+                <span class="sound-emoji">🌸</span>
+                <h3>Cherry Blossom</h3>
+                <p class="sound-tagline">Falling petals, soft spring breeze</p>
+                <div class="sound-visualizer">
+                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                </div>
+                <div class="sound-controls">
+                    <button class="sound-play-btn" aria-label="Play Cherry Blossom">
+                        <i data-lucide="play"></i>
+                    </button>
+                    <div class="sound-progress-wrap">
+                        <div class="sound-progress-bar"><div class="sound-progress-fill"></div></div>
+                        <span class="sound-timer">0:00 / 0:30</span>
+                    </div>
+                </div>
+                <div class="sound-volume-row">
+                    <button class="sound-vol-btn" title="Mute / Unmute"></button>
+                    <input type="range" class="sound-vol-slider" min="0" max="100" value="85">
+                </div>
+                <audio loop preload="none">
+                    <source src="https://cdn.pixabay.com/audio/2022/10/30/audio_22cc04d70f.mp3" type="audio/mpeg">
+                </audio>
+                <div class="sound-expired-overlay">
+                    <span style="font-size:2rem;">🌸</span>
+                    <p>Preview ended</p>
+                    <a href="#" class="btn btn-primary btn-sm">Get Full App →</a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Locked Premium Scenes Row -->
+        <p data-scroll style="color: var(--text-muted); font-size:0.9rem; margin-bottom:1.5rem; font-weight:500;">Want more? Here's a glimpse of what's waiting inside the app:</p>
+        <div class="more-scenes-row" data-scroll>
+            <div class="locked-scene-chip glass">
+                <i data-lucide="lock" class="chip-lock"></i>
+                <span class="chip-emoji">🌲</span>
+                <span class="chip-name">Midnight Forest</span>
+            </div>
+            <div class="locked-scene-chip glass">
+                <i data-lucide="lock" class="chip-lock"></i>
+                <span class="chip-emoji">🏔️</span>
+                <span class="chip-name">Himalayan Cabin</span>
+            </div>
+            <div class="locked-scene-chip glass">
+                <i data-lucide="lock" class="chip-lock"></i>
+                <span class="chip-emoji">🌊</span>
+                <span class="chip-name">Coastal Breeze</span>
+            </div>
+            <div class="locked-scene-chip glass">
+                <i data-lucide="lock" class="chip-lock"></i>
+                <span class="chip-emoji">🍃</span>
+                <span class="chip-name">Zen Garden</span>
+            </div>
+            <div class="locked-scene-chip glass">
+                <i data-lucide="lock" class="chip-lock"></i>
+                <span class="chip-emoji">🌌</span>
+                <span class="chip-name">Deep Space</span>
+            </div>
+            <div class="locked-scene-chip glass">
+                <i data-lucide="lock" class="chip-lock"></i>
+                <span class="chip-emoji">🍁</span>
+                <span class="chip-name">Autumn Breeze</span>
+            </div>
+            <div class="locked-scene-chip glass">
+                <i data-lucide="lock" class="chip-lock"></i>
+                <span class="chip-emoji">💎</span>
+                <span class="chip-name">Crystal Cave</span>
+            </div>
+            <div class="locked-scene-chip glass">
+                <i data-lucide="lock" class="chip-lock"></i>
+                <span class="chip-emoji">🐠</span>
+                <span class="chip-name">Underwater Reef</span>
+            </div>
+            <div class="locked-scene-chip glass">
+                <i data-lucide="lock" class="chip-lock"></i>
+                <span class="chip-emoji">🏜️</span>
+                <span class="chip-name">Desert Night</span>
+            </div>
+            <div class="more-count-chip glass">
+                <strong>+38</strong>
+                <span>more scenes</span>
+            </div>
+        </div>
+
+        <!-- Download CTA -->
+        <div class="sounds-download-cta glass" data-scroll>
+            <img src="assets/logo/background-removed.png" class="sounds-cta-logo" alt="Breath Noise">
+            <div class="sounds-cta-text">
+                <h3>50+ Soundscapes. Free to Start.</h3>
+                <p>Download Breath Noise and get instant access to 12 free scenes. Upgrade to Premium for the full library — forest rain, Himalayan blizzards, deep space ambience and more.</p>
+                <div class="sounds-cta-stats">
+                    <span>✦ 50+ Total Scenes</span>
+                    <span>✦ 12 Free Scenes</span>
+                    <span>✦ 4.9★ Rating</span>
+                </div>
+            </div>
+            <a href="#" class="btn btn-primary" style="flex-shrink:0; white-space:nowrap;">
+                <i data-lucide="play-circle" class="btn-icon"></i> Download Free
+            </a>
         </div>
     </section>
 
@@ -315,7 +659,10 @@
     <footer id="contact" class="glass-footer">
         <div class="footer-grid">
             <div class="footer-brand">
-                <div class="logo"><i data-lucide="waves" class="logo-icon"></i> Breath Noise</div>
+                <div class="footer-brand-header">
+                    <img src="assets/logo/background-removed.png" class="footer-logo-img" alt="Breath Noise Logo">
+                    <span>Breath Noise</span>
+                </div>
                 <p>Elevate your state of mind with immersive audioscapes.</p>
                 <div class="social-links mt-2">
                     <a href="#"><i data-lucide="instagram"></i></a>
@@ -332,10 +679,10 @@
             
             <div class="footer-column">
                 <h4>Get in Touch</h4>
-                <a href="mailto:support@example.com" class="contact-email">
-                    <i data-lucide="mail"></i> support@example.com
+                <a href="mailto:support@breathnoise.life" class="contact-email">
+                    <i data-lucide="mail"></i> support@breathnoise.life
                 </a>
-                <a href="#" class="contact-email">
+                <a href="contact.html" class="contact-email">
                     <i data-lucide="message-square"></i> Send Feedback
                 </a>
             </div>

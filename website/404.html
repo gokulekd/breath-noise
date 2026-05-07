@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | Breath Noise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .not-found { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem 5%; position: relative; z-index: 2; }
+        .error-code { font-size: 10rem; font-weight: 800; line-height: 1; margin-bottom: 1rem; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), var(--accent-gradient-2)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .not-found h2 { font-size: 2rem; margin-bottom: 1rem; color: var(--text-primary); }
+        .not-found p { font-size: 1.1rem; color: var(--text-muted); max-width: 480px; margin-bottom: 3rem; }
+        .not-found-actions { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+        @media (max-width: 480px) { .error-code { font-size: 6rem; } .not-found h2 { font-size: 1.5rem; } }
+    </style>
+</head>
+<body class="dark-mode">
+    <div class="glow-cursor" id="glow-cursor"></div>
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+
+    <nav class="navbar glass-nav" id="navbar">
+        <a href="index.html" class="logo" style="text-decoration:none;">
+            <img src="assets/logo/background-removed.png" class="logo-img" alt="Breath Noise"> Breath Noise
+        </a>
+        <div class="nav-actions">
+            <button id="theme-toggle" class="glass-btn icon-btn" aria-label="Toggle Theme">
+                <i data-lucide="sun" id="theme-icon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="not-found">
+        <div class="error-code">404</div>
+        <h2>This page drifted away...</h2>
+        <p>The page you're looking for doesn't exist. Maybe it's taking a focus break. Let's get you back to calm.</p>
+        <div class="not-found-actions">
+            <a href="index.html" class="btn btn-primary">
+                <i data-lucide="home" class="btn-icon"></i> Back to Home
+            </a>
+            <a href="contact.html" class="btn btn-secondary">
+                <i data-lucide="mail" class="btn-icon"></i> Contact Support
+            </a>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        document.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('lumina-theme') === 'light') {
+                document.body.classList.add('light-mode');
+                document.body.classList.remove('dark-mode');
+            }
+            const themeBtn = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            themeBtn.addEventListener('click', () => {
+                document.body.classList.toggle('light-mode');
+                document.body.classList.toggle('dark-mode');
+                const isLight = document.body.classList.contains('light-mode');
+                themeIcon.dataset.lucide = isLight ? 'moon' : 'sun';
+                lucide.createIcons();
+                localStorage.setItem('lumina-theme', isLight ? 'light' : 'dark');
+            });
+            const glow = document.getElementById('glow-cursor');
+            let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+            document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+            const animateGlow = () => {
+                const cx = parseFloat(glow.style.left) || window.innerWidth / 2;
+                const cy = parseFloat(glow.style.top) || window.innerHeight / 2;
+                glow.style.left = `${cx + (mouseX - cx) * 0.1}px`;
+                glow.style.top = `${cy + (mouseY - cy) * 0.1}px`;
+                requestAnimationFrame(animateGlow);
+            };
+            animateGlow();
+        });
+    </script>
+</body>
+</html>

@@ -3,36 +3,287 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms & Conditions - Breath Noise</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Terms of Service - Breath Noise</title>
+    <meta name="description" content="Breath Noise Terms of Service — the rules and guidelines for using our app and website.">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        .legal-content { max-width: 800px; margin: 120px auto 50px; padding: 0 5%; }
-        h1 { font-size: 2.5rem; margin-bottom: 1rem; }
-        h2 { margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-purple); font-size: 1.5rem; }
-        p, li { color: var(--text-muted); margin-bottom: 1rem; }
-        ul { margin-left: 1.5rem; margin-bottom: 1rem; color: var(--text-muted); }
+        .subpage-hero { min-height: 35vh; display: flex; align-items: center; justify-content: center; padding: 140px 5% 60px; text-align: center; }
+        .subpage-hero h1 { font-size: 3rem; margin-bottom: 1rem; }
+        .subpage-hero p { font-size: 1.1rem; color: var(--text-muted); max-width: 550px; margin: 0 auto; }
+
+        .legal-section { padding: 2rem 5% 6rem; position: relative; z-index: 2; }
+        .legal-wrapper { max-width: 860px; margin: 0 auto; }
+
+        .legal-toc { padding: 2rem; border-radius: 24px; margin-bottom: 3rem; }
+        .legal-toc h3 { font-size: 1rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.2rem; }
+        .legal-toc ol { list-style: none; display: flex; flex-wrap: wrap; gap: 0.8rem; padding: 0; }
+        .legal-toc ol li a { color: var(--accent-primary); text-decoration: none; font-size: 0.9rem; font-weight: 500; background: rgba(255, 107, 53, 0.1); padding: 0.4rem 1rem; border-radius: 20px; border: 1px solid rgba(255,107,53,0.2); transition: all 0.2s; display: block; }
+        .legal-toc ol li a:hover { background: var(--accent-primary); color: white; }
+
+        .legal-block { padding: 2.5rem; border-radius: 24px; margin-bottom: 2rem; }
+        .legal-block-header { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 1.5rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--glass-border); }
+        .legal-block-num { width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, var(--accent-primary), var(--accent-gradient-2)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.95rem; color: white; flex-shrink: 0; box-shadow: 0 5px 15px rgba(255,107,53,0.3); }
+        .legal-block h2 { font-size: 1.3rem; font-weight: 600; color: var(--text-primary); margin: 0; }
+        .legal-block p { color: var(--text-secondary); line-height: 1.8; margin-bottom: 1rem; font-size: 0.97rem; }
+        .legal-block p:last-child { margin-bottom: 0; }
+        .legal-block ul { list-style: none; padding: 0; }
+        .legal-block ul li { color: var(--text-secondary); padding: 0.5rem 0 0.5rem 1.8rem; position: relative; font-size: 0.97rem; line-height: 1.7; border-bottom: 1px solid var(--glass-border); }
+        .legal-block ul li:last-child { border-bottom: none; }
+        .legal-block ul li::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 8px; height: 8px; border-radius: 50%; background: var(--accent-primary); }
+        .legal-block a { color: var(--accent-primary); text-decoration: none; }
+        .legal-block a:hover { text-decoration: underline; }
+
+        .highlight-box { background: rgba(255, 107, 53, 0.08); border: 1px solid rgba(255, 107, 53, 0.2); border-radius: 16px; padding: 1.5rem; margin: 1.5rem 0; display: flex; gap: 1rem; align-items: flex-start; }
+        .highlight-box i { color: var(--accent-primary); flex-shrink: 0; margin-top: 2px; }
+        .highlight-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
+
+        @media (max-width: 768px) { .subpage-hero h1 { font-size: 2.2rem; } .legal-block { padding: 1.5rem; } }
     </style>
 </head>
-<body>
-    <nav class="navbar">
-        <div class="logo"><a href="index.html" style="color:white; text-decoration:none;">Breath Noise</a></div>
+<body class="dark-mode">
+    <div class="glow-cursor" id="glow-cursor"></div>
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+
+    <nav class="navbar glass-nav" id="navbar">
+        <a href="index.html" class="logo" style="text-decoration:none;">
+            <img src="assets/logo/background-removed.png" class="logo-img" alt="Breath Noise"> Breath Noise
+        </a>
+        <ul class="nav-links desktop-only">
+            <li><a href="index.html#features">Features</a></li>
+            <li><a href="index.html#pricing">Pricing</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button id="theme-toggle" class="glass-btn icon-btn" aria-label="Toggle Theme">
+                <i data-lucide="sun" id="theme-icon"></i>
+            </button>
+        </div>
     </nav>
-    <div class="legal-content glass">
-        <h1>Terms and Conditions</h1>
-        <p><strong>Last Updated:</strong> March 2026</p>
-        
-        <h2>1. Acceptance of Terms</h2>
-        <p>By downloading or using the app, these terms will automatically apply to you. You should make sure therefore that you read them carefully before using the app.</p>
-        
-        <h2>2. Use of the App</h2>
-        <p>You are not allowed to copy, or modify the app, any part of the app, or our trademarks in any way. You are not allowed to attempt to extract the source code of the app, and you also shouldn't try to translate the app into other languages, or make derivative versions.</p>
-        
-        <h2>3. Services Updates</h2>
-        <p>The app is subject to change at any time. We reserve the right to modify or withdraw the service, or charge for some of its features, at any point and without notice.</p>
-        
-        <h2>4. Contact Us</h2>
-        <p>If you have any questions or suggestions about our Terms and Conditions, do not hesitate to contact us at <a href="mailto:support@example.com" style="color:var(--accent-blue)">support@example.com</a>.</p>
+
+    <div class="subpage-hero">
+        <div data-scroll>
+            <div class="badge glass">📋 Clear & fair terms</div>
+            <h1>Terms of <span class="gradient-text">Service</span></h1>
+            <p>Plain-language terms that protect both you and us. By using Breath Noise, you agree to these guidelines.</p>
+            <p style="margin-top:0.8rem; font-size:0.9rem; color: var(--text-muted);">Last Updated: May 2026</p>
+        </div>
     </div>
+
+    <section class="legal-section">
+        <div class="legal-wrapper">
+
+            <div class="legal-toc glass" data-scroll>
+                <h3>Contents</h3>
+                <ol>
+                    <li><a href="#t1">Acceptance of Terms</a></li>
+                    <li><a href="#t2">Use of the App</a></li>
+                    <li><a href="#t3">User Accounts</a></li>
+                    <li><a href="#t4">Subscriptions & Payments</a></li>
+                    <li><a href="#t5">Intellectual Property</a></li>
+                    <li><a href="#t6">Prohibited Conduct</a></li>
+                    <li><a href="#t7">Disclaimers</a></li>
+                    <li><a href="#t8">Limitation of Liability</a></li>
+                    <li><a href="#t9">Service Changes & Termination</a></li>
+                    <li><a href="#t10">Governing Law</a></li>
+                    <li><a href="#t11">Contact Us</a></li>
+                </ol>
+            </div>
+
+            <div id="t1" class="legal-block glass" data-scroll>
+                <div class="legal-block-header">
+                    <div class="legal-block-num">1</div>
+                    <h2>Acceptance of Terms</h2>
+                </div>
+                <p>By downloading, installing, or using the Breath Noise mobile application ("App") or visiting our website at <strong>breathnoise.life</strong> ("Site"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, please do not use the App or Site.</p>
+                <p>These Terms apply to all users of the App, including visitors, free users, and premium subscribers. We may update these Terms at any time, and continued use of the App constitutes your acceptance of the revised Terms.</p>
+            </div>
+
+            <div id="t2" class="legal-block glass" data-scroll>
+                <div class="legal-block-header">
+                    <div class="legal-block-num">2</div>
+                    <h2>Use of the App</h2>
+                </div>
+                <p>Breath Noise grants you a personal, non-exclusive, non-transferable, limited license to use the App for your personal, non-commercial purposes in accordance with these Terms.</p>
+                <div class="highlight-box">
+                    <i data-lucide="alert-circle" style="width:20px;height:20px;"></i>
+                    <p>The App is intended for personal wellness use. It is not a medical device and should not be used as a substitute for professional medical advice, diagnosis, or treatment.</p>
+                </div>
+                <p>You agree to use the App only for lawful purposes and in a manner consistent with all applicable local, national, and international laws and regulations.</p>
+            </div>
+
+            <div id="t3" class="legal-block glass" data-scroll>
+                <div class="legal-block-header">
+                    <div class="legal-block-num">3</div>
+                    <h2>User Accounts</h2>
+                </div>
+                <p>You may use Breath Noise without creating an account. If you choose to sign in (via Google Sign-In), you are responsible for:</p>
+                <ul>
+                    <li>Maintaining the confidentiality of your account credentials.</li>
+                    <li>All activities that occur under your account.</li>
+                    <li>Notifying us immediately of any unauthorized use of your account.</li>
+                </ul>
+                <p>We reserve the right to terminate or suspend accounts that violate these Terms or engage in any prohibited conduct described in Section 6.</p>
+            </div>
+
+            <div id="t4" class="legal-block glass" data-scroll>
+                <div class="legal-block-header">
+                    <div class="legal-block-num">4</div>
+                    <h2>Subscriptions & Payments</h2>
+                </div>
+                <p>Breath Noise offers both a free tier and a paid Premium subscription. All premium purchases are processed through the Google Play Store and are subject to their payment terms and refund policies.</p>
+                <ul>
+                    <li><strong>Monthly Subscription:</strong> Billed monthly, auto-renews unless cancelled at least 24 hours before the renewal date.</li>
+                    <li><strong>Lifetime License:</strong> A one-time purchase providing permanent access to all premium features available at the time of purchase and future updates.</li>
+                    <li><strong>Free Trial:</strong> Where offered, a free trial will automatically convert to a paid subscription unless cancelled before the trial ends.</li>
+                </ul>
+                <p>Refunds are handled in accordance with the Google Play Store refund policy. We are unable to process refunds directly — please contact Google Play support for refund requests.</p>
+            </div>
+
+            <div id="t5" class="legal-block glass" data-scroll>
+                <div class="legal-block-header">
+                    <div class="legal-block-num">5</div>
+                    <h2>Intellectual Property</h2>
+                </div>
+                <p>All content within Breath Noise — including but not limited to the App design, audio recordings, visual scenes, brand name, logo, and source code — is the exclusive intellectual property of Gokul K S and is protected by copyright, trademark, and other applicable laws.</p>
+                <p>You may not:</p>
+                <ul>
+                    <li>Copy, reproduce, or distribute any part of the App or its content without written permission.</li>
+                    <li>Attempt to reverse-engineer, decompile, or extract the source code of the App.</li>
+                    <li>Create derivative works based on the App or any of its content.</li>
+                    <li>Use the Breath Noise name, logo, or branding in any manner without prior written consent.</li>
+                </ul>
+            </div>
+
+            <div id="t6" class="legal-block glass" data-scroll>
+                <div class="legal-block-header">
+                    <div class="legal-block-num">6</div>
+                    <h2>Prohibited Conduct</h2>
+                </div>
+                <p>When using Breath Noise, you agree not to:</p>
+                <ul>
+                    <li>Attempt to gain unauthorized access to any part of the App or its backend systems.</li>
+                    <li>Use the App in any way that could damage, disable, or impair the App or its servers.</li>
+                    <li>Use automated means (bots, scrapers) to access or interact with the App.</li>
+                    <li>Circumvent any digital rights management or subscription verification systems.</li>
+                    <li>Use the App for any commercial purpose without our express written consent.</li>
+                </ul>
+            </div>
+
+            <div id="t7" class="legal-block glass" data-scroll>
+                <div class="legal-block-header">
+                    <div class="legal-block-num">7</div>
+                    <h2>Disclaimers</h2>
+                </div>
+                <p>Breath Noise is provided "as is" and "as available" without any warranty of any kind, either express or implied. We do not warrant that the App will be uninterrupted, error-free, or free of viruses or other harmful components.</p>
+                <p>We make no representations or warranties that the App will meet your specific requirements or that the results obtained from using the App will be accurate or reliable.</p>
+            </div>
+
+            <div id="t8" class="legal-block glass" data-scroll>
+                <div class="legal-block-header">
+                    <div class="legal-block-num">8</div>
+                    <h2>Limitation of Liability</h2>
+                </div>
+                <p>To the maximum extent permitted by applicable law, Gokul K S shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of profits, data, or goodwill, arising out of or in connection with your use of the App.</p>
+                <p>Our total liability for any claim arising from the use of the App shall not exceed the amount you paid for the App in the twelve (12) months preceding the claim.</p>
+            </div>
+
+            <div id="t9" class="legal-block glass" data-scroll>
+                <div class="legal-block-header">
+                    <div class="legal-block-num">9</div>
+                    <h2>Service Changes & Termination</h2>
+                </div>
+                <p>We reserve the right to modify, suspend, or discontinue the App (or any part thereof) at any time, with or without notice. We may also add, change, or remove features as we continue to develop the product.</p>
+                <p>We may terminate or suspend your access to the App immediately if you violate these Terms. Upon termination, your right to use the App will immediately cease.</p>
+            </div>
+
+            <div id="t10" class="legal-block glass" data-scroll>
+                <div class="legal-block-header">
+                    <div class="legal-block-num">10</div>
+                    <h2>Governing Law</h2>
+                </div>
+                <p>These Terms shall be governed by and construed in accordance with the laws of India, without regard to its conflict of law provisions. Any disputes arising from these Terms shall be subject to the exclusive jurisdiction of the courts located in India.</p>
+            </div>
+
+            <div id="t11" class="legal-block glass" data-scroll>
+                <div class="legal-block-header">
+                    <div class="legal-block-num">11</div>
+                    <h2>Contact Us</h2>
+                </div>
+                <p>If you have any questions about these Terms of Service, please contact us:</p>
+                <ul>
+                    <li><strong>Email:</strong> <a href="mailto:support@breathnoise.life">support@breathnoise.life</a></li>
+                    <li><strong>Contact Form:</strong> <a href="contact.html">Visit our Contact page</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="glass-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="logo"><i data-lucide="waves" class="logo-icon"></i> Breath Noise</div>
+                <p>Elevate your state of mind with immersive audioscapes.</p>
+            </div>
+            <div class="footer-column">
+                <h4>Legal</h4>
+                <a href="privacy-policy.html"><i data-lucide="shield" style="width:16px;height:16px;"></i> Privacy Policy</a>
+                <a href="terms.html" style="color: var(--accent-primary);"><i data-lucide="file-text" style="width:16px;height:16px;"></i> Terms of Service</a>
+                <a href="data-deletion.html"><i data-lucide="trash-2" style="width:16px;height:16px;"></i> Data Deletion</a>
+            </div>
+            <div class="footer-column">
+                <h4>Get in Touch</h4>
+                <a href="mailto:support@breathnoise.life"><i data-lucide="mail" style="width:16px;height:16px;"></i> support@breathnoise.life</a>
+                <a href="index.html"><i data-lucide="home" style="width:16px;height:16px;"></i> Back to Home</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Breath Noise. Built by Gokul K S. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeBtn = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            if (localStorage.getItem('lumina-theme') === 'light') {
+                document.body.classList.add('light-mode');
+                document.body.classList.remove('dark-mode');
+                themeIcon.dataset.lucide = 'moon';
+            }
+            lucide.createIcons();
+            themeBtn.addEventListener('click', () => {
+                document.body.classList.toggle('light-mode');
+                document.body.classList.toggle('dark-mode');
+                const isLight = document.body.classList.contains('light-mode');
+                themeIcon.dataset.lucide = isLight ? 'moon' : 'sun';
+                lucide.createIcons();
+                localStorage.setItem('lumina-theme', isLight ? 'light' : 'dark');
+            });
+            const glow = document.getElementById('glow-cursor');
+            let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+            document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+            const animateGlow = () => {
+                const cx = parseFloat(glow.style.left) || window.innerWidth / 2;
+                const cy = parseFloat(glow.style.top) || window.innerHeight / 2;
+                glow.style.left = `${cx + (mouseX - cx) * 0.1}px`;
+                glow.style.top = `${cy + (mouseY - cy) * 0.1}px`;
+                requestAnimationFrame(animateGlow);
+            };
+            animateGlow();
+            document.querySelectorAll('[data-scroll]').forEach(el => el.classList.add('hidden'));
+            const obs = new IntersectionObserver((entries) => {
+                entries.forEach(e => { if (e.isIntersecting) { e.target.classList.remove('hidden'); e.target.classList.add('visible'); } });
+            }, { threshold: 0.05 });
+            document.querySelectorAll('[data-scroll]').forEach(el => obs.observe(el));
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => { navbar.style.padding = window.scrollY > 50 ? '1rem 5%' : '1.5rem 5%'; });
+        });
+    </script>
 </body>
 </html>
