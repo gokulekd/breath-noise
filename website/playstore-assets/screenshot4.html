@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080">
+<title>Breath Noise - Screenshot 4</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1080px;
+    height: 1920px;
+    background: #0A0A0F;
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .bg-glow-top {
+    position: absolute; top: 100px; left: 50%; transform: translateX(-50%);
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(123,104,238,0.12) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .bg-glow-bot {
+    position: absolute; bottom: 100px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 500px;
+    background: radial-gradient(circle, rgba(255,107,53,0.08) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .status-bar {
+    height: 60px; display: flex; align-items: center;
+    justify-content: space-between; padding: 0 48px;
+    color: #EAE4D8; font-size: 28px; font-weight: 600;
+  }
+  .status-right { display: flex; gap: 16px; align-items: center; font-size: 24px; }
+
+  .header-area { padding: 20px 40px; }
+  .promo-sub { color: #7B68EE; font-size: 22px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  .promo-main { color: #FFF8E7; font-size: 52px; font-weight: 900; letter-spacing: -1.5px; line-height: 1.05; }
+  .promo-main em { font-style: normal; background: linear-gradient(135deg, #7B68EE, #A896FF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+  /* Scene now playing card */
+  .now-playing-card {
+    margin: 24px 40px;
+    border-radius: 40px;
+    overflow: hidden;
+    position: relative;
+    height: 420px;
+    background: linear-gradient(135deg, #001525, #002040, #003366);
+    box-shadow: 0 20px 60px rgba(0,51,102,0.5);
+  }
+  .np-image-layer {
+    position: absolute; inset: 0;
+    background: url('../images/himalayan.jpeg') center/cover no-repeat;
+    opacity: 0.3;
+  }
+  .np-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,20,40,0.9) 0%, rgba(0,20,40,0.3) 60%, transparent 100%);
+  }
+  .np-content {
+    position: absolute; inset: 0; padding: 40px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+  }
+  .np-tag {
+    position: absolute; top: 36px; left: 40px;
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(255,255,255,0.12); backdrop-filter: blur(8px);
+    border-radius: 30px; padding: 8px 20px;
+  }
+  .np-dot { width: 10px; height: 10px; border-radius: 50%; background: #7B68EE; box-shadow: 0 0 8px #7B68EE; }
+  .np-tag-txt { color: white; font-size: 20px; font-weight: 600; letter-spacing: 0.3px; }
+  .np-scene-name { color: white; font-size: 52px; font-weight: 900; letter-spacing: -1px; text-shadow: 0 2px 16px rgba(0,0,0,0.6); }
+  .np-tagline { color: rgba(255,255,255,0.75); font-size: 24px; font-weight: 500; margin-top: 6px; }
+
+  /* Controls row */
+  .controls-row {
+    display: flex; align-items: center; justify-content: center; gap: 40px;
+    margin: 28px 40px;
+  }
+  .ctrl-btn {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px; color: rgba(255,255,255,0.7);
+  }
+  .ctrl-btn-main {
+    width: 110px; height: 110px; border-radius: 50%;
+    background: linear-gradient(135deg, #FF6B35, #FFA500);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 48px; color: white;
+    box-shadow: 0 8px 32px rgba(255,107,53,0.5);
+  }
+
+  /* Sleep Timer card */
+  .timer-section { padding: 0 40px; }
+  .timer-card {
+    background: #1A1A26;
+    border-radius: 32px;
+    padding: 36px;
+    border: 1px solid rgba(123,104,238,0.2);
+    display: flex; flex-direction: column; gap: 24px;
+  }
+  .timer-header {
+    display: flex; align-items: center; gap: 16px;
+  }
+  .timer-icon {
+    width: 64px; height: 64px; border-radius: 18px;
+    background: rgba(123,104,238,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+  }
+  .timer-info { flex: 1; }
+  .timer-title { color: #FFF8E7; font-size: 28px; font-weight: 700; }
+  .timer-subtitle { color: #6B6880; font-size: 20px; font-weight: 500; margin-top: 2px; }
+  .timer-badge {
+    background: rgba(123,104,238,0.2);
+    border: 1px solid rgba(123,104,238,0.4);
+    border-radius: 20px; padding: 6px 18px;
+    color: #A896FF; font-size: 20px; font-weight: 700;
+  }
+
+  /* Timer ring */
+  .timer-ring-container {
+    display: flex; align-items: center; justify-content: center;
+  }
+  .timer-ring {
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: conic-gradient(from -90deg, #7B68EE 0deg, #A896FF 162deg, rgba(45,43,61,0.8) 162deg, rgba(45,43,61,0.8) 360deg);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .timer-ring::before {
+    content: '';
+    position: absolute; inset: 16px;
+    background: #1A1A26;
+    border-radius: 50%;
+  }
+  .timer-display {
+    position: relative; z-index: 1; text-align: center;
+  }
+  .timer-mins { color: #FFF8E7; font-size: 48px; font-weight: 900; line-height: 1; }
+  .timer-label { color: #6B6880; font-size: 18px; font-weight: 500; margin-top: 4px; }
+
+  .timer-options {
+    display: flex; gap: 16px;
+  }
+  .timer-opt {
+    flex: 1; padding: 16px; border-radius: 16px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    text-align: center;
+    color: rgba(255,255,255,0.6); font-size: 22px; font-weight: 600;
+  }
+  .timer-opt.active {
+    background: rgba(123,104,238,0.15);
+    border-color: rgba(123,104,238,0.4);
+    color: #A896FF;
+  }
+  .timer-desc {
+    color: rgba(255,255,255,0.45); font-size: 20px; text-align: center;
+    font-weight: 500;
+  }
+
+  /* Bottom promo */
+  .bottom-promo {
+    margin-top: 36px;
+    display: flex; flex-direction: column; align-items: center; gap: 16px;
+    padding-bottom: 48px;
+  }
+  .promo-pill {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: linear-gradient(135deg, rgba(123,104,238,0.2), rgba(168,150,255,0.2));
+    border: 1px solid rgba(123,104,238,0.3);
+    border-radius: 50px; padding: 14px 32px;
+  }
+  .pp-text { font-size: 26px; font-weight: 700; color: #FFF8E7; }
+</style>
+</head>
+<body>
+  <div class="bg-glow-top"></div>
+  <div class="bg-glow-bot"></div>
+
+  <div class="status-bar">
+    <span>9:41</span>
+    <div class="status-right"><span>📶</span><span>🔋</span></div>
+  </div>
+
+  <div class="header-area">
+    <div class="promo-sub">Sleep Soundly</div>
+    <div class="promo-main">Drift Off <em>Effortlessly</em><br>Every Night</div>
+  </div>
+
+  <!-- Now Playing -->
+  <div class="now-playing-card">
+    <div class="np-image-layer"></div>
+    <div class="np-overlay"></div>
+    <div class="np-tag">
+      <div class="np-dot"></div>
+      <span class="np-tag-txt">Now Playing</span>
+    </div>
+    <div class="np-content">
+      <div class="np-scene-name">Himalayan Cabin</div>
+      <div class="np-tagline">Snowfall outside, warm glow within</div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls-row">
+    <div class="ctrl-btn">⏮</div>
+    <div class="ctrl-btn-main">⏸</div>
+    <div class="ctrl-btn">⏭</div>
+  </div>
+
+  <!-- Sleep Timer -->
+  <div class="timer-section">
+    <div class="timer-card">
+      <div class="timer-header">
+        <div class="timer-icon">⏰</div>
+        <div class="timer-info">
+          <div class="timer-title">Sleep Timer</div>
+          <div class="timer-subtitle">Fades out gently at set time</div>
+        </div>
+        <div class="timer-badge">27:00</div>
+      </div>
+
+      <div class="timer-ring-container">
+        <div class="timer-ring">
+          <div class="timer-display">
+            <div class="timer-mins">27:00</div>
+            <div class="timer-label">remaining</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timer-options">
+        <div class="timer-opt">15 min</div>
+        <div class="timer-opt active">30 min</div>
+        <div class="timer-opt">1 hr</div>
+        <div class="timer-opt">2 hr</div>
+      </div>
+
+      <div class="timer-desc">🌙 Audio will fade out gently at timer end</div>
+    </div>
+  </div>
+
+  <div class="bottom-promo">
+    <div class="promo-pill">
+      <span class="pp-text">⏰ Set it. Forget it. Sleep.</span>
+    </div>
+  </div>
+</body>
+</html>

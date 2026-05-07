@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080">
+<title>Breath Noise - Screenshot 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1080px;
+    height: 1920px;
+    background: #0A0A0F;
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Ambient background glow */
+  .bg-glow {
+    position: absolute;
+    top: -200px;
+    right: -100px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255,107,53,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .bg-glow2 {
+    position: absolute;
+    bottom: 300px;
+    left: -150px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255,165,0,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Status bar */
+  .status-bar {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    color: #EAE4D8;
+    font-size: 28px;
+    font-weight: 600;
+  }
+  .status-icons { display: flex; gap: 12px; align-items: center; }
+  .signal-bars { display: flex; gap: 4px; align-items: flex-end; }
+  .bar { width: 6px; background: #EAE4D8; border-radius: 2px; }
+  .b1 { height: 10px; } .b2 { height: 16px; } .b3 { height: 22px; } .b4 { height: 28px; }
+  .wifi-icon { font-size: 26px; }
+  .battery {
+    width: 50px; height: 24px; border: 2px solid #EAE4D8; border-radius: 4px; position: relative;
+    display: flex; align-items: center; padding: 3px;
+  }
+  .battery::after { content: ''; position: absolute; right: -7px; top: 50%; transform: translateY(-50%); width: 5px; height: 12px; background: #EAE4D8; border-radius: 0 2px 2px 0; }
+  .battery-fill { width: 80%; height: 100%; background: #EAE4D8; border-radius: 2px; }
+
+  /* App bar */
+  .app-bar {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+  }
+  .logo-row { display: flex; align-items: center; gap: 16px; }
+  .logo-box {
+    width: 72px; height: 72px;
+    background: linear-gradient(135deg, #FF6B35, #FFA500);
+    border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+    box-shadow: 0 4px 20px rgba(255,107,53,0.4);
+  }
+  .app-name {
+    font-size: 36px; font-weight: 800; color: #FFF8E7; letter-spacing: -0.5px;
+  }
+  .profile-btn {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+  }
+
+  /* Greeting */
+  .greeting-section { padding: 20px 40px 8px; }
+  .greeting-sub { color: #FFA500; font-size: 24px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+  .greeting-main { color: #FFF8E7; font-size: 58px; font-weight: 900; letter-spacing: -1.5px; line-height: 1.05; margin-top: 8px; }
+
+  /* Hero card */
+  .hero-card {
+    margin: 20px 40px 0;
+    height: 340px;
+    border-radius: 40px;
+    background: linear-gradient(135deg, #2B0A0A, #5E1717, #902424);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 16px 60px rgba(211,47,47,0.35);
+  }
+  .hero-bg-img {
+    position: absolute; inset: 0;
+    background: url('../images/fireplace.png') center/cover no-repeat;
+    opacity: 0.35;
+  }
+  .hero-glow {
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 70% 30%, rgba(255,107,53,0.25) 0%, transparent 60%);
+  }
+  .hero-content {
+    position: absolute; inset: 0;
+    padding: 36px 40px;
+    display: flex; flex-direction: column;
+  }
+  .playing-badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    padding: 8px 18px;
+    border-radius: 30px;
+    width: fit-content;
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: #FFA500; }
+  .badge-text { color: white; font-size: 20px; font-weight: 600; letter-spacing: 0.5px; }
+  .hero-spacer { flex: 1; }
+  .hero-scene-name { color: white; font-size: 52px; font-weight: 900; letter-spacing: -1px; text-shadow: 0 2px 12px rgba(0,0,0,0.5); }
+  .hero-tagline { color: rgba(255,255,255,0.85); font-size: 24px; font-weight: 500; margin-top: 4px; text-shadow: 0 1px 6px rgba(0,0,0,0.4); }
+
+  .play-btn {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    border: 3px solid rgba(255,255,255,0.4);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 44px; color: white;
+  }
+
+  /* Section title */
+  .section-title {
+    padding: 36px 40px 20px;
+    font-size: 34px; font-weight: 700; color: #FFF8E7; letter-spacing: -0.5px;
+  }
+
+  /* Scene grid */
+  .scene-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 0 40px;
+  }
+  .scene-card {
+    height: 220px;
+    border-radius: 28px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  .sc1 { background: linear-gradient(135deg, #2B0A0A, #5E1717, #902424); }
+  .sc2 { background: linear-gradient(135deg, #001A0D, #003D1F, #006633); }
+  .sc3 { background: linear-gradient(135deg, #001525, #002040, #003366); }
+  .sc4 { background: linear-gradient(135deg, #001A26, #003347, #005570); }
+  .scene-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%);
+  }
+  .scene-content {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 20px 24px;
+  }
+  .scene-emoji { font-size: 42px; margin-bottom: 4px; }
+  .scene-name { color: white; font-size: 24px; font-weight: 700; letter-spacing: -0.3px; }
+  .scene-tagline { color: rgba(255,255,255,0.7); font-size: 18px; font-weight: 500; margin-top: 2px; }
+
+  .active-badge {
+    position: absolute; top: 16px; right: 16px;
+    background: rgba(255,165,0,0.25);
+    border: 1px solid rgba(255,165,0,0.5);
+    border-radius: 20px;
+    padding: 4px 14px;
+    color: #FFA500; font-size: 17px; font-weight: 600;
+  }
+
+  /* Promo tag at bottom */
+  .promo-footer {
+    margin-top: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 36px;
+  }
+  .promo-text {
+    text-align: center;
+  }
+  .promo-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, #FF6B35, #FFA500);
+    color: white;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    padding: 10px 28px;
+    border-radius: 30px;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+  <div class="bg-glow"></div>
+  <div class="bg-glow2"></div>
+
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span>9:41</span>
+    <div class="status-icons">
+      <div class="signal-bars">
+        <div class="bar b1"></div>
+        <div class="bar b2"></div>
+        <div class="bar b3"></div>
+        <div class="bar b4"></div>
+      </div>
+      <span class="wifi-icon">📶</span>
+      <div class="battery"><div class="battery-fill"></div></div>
+    </div>
+  </div>
+
+  <!-- App Bar -->
+  <div class="app-bar">
+    <div class="logo-row">
+      <div class="logo-box">🌬️</div>
+      <span class="app-name">Breath Noise</span>
+    </div>
+    <div class="profile-btn">👤</div>
+  </div>
+
+  <!-- Greeting -->
+  <div class="greeting-section">
+    <div class="greeting-sub">Good Evening 🌙</div>
+    <div class="greeting-main">Ready to<br>relax?</div>
+  </div>
+
+  <!-- Hero Card -->
+  <div class="hero-card">
+    <div class="hero-bg-img"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+      <div class="playing-badge">
+        <div class="dot"></div>
+        <span class="badge-text">Playing Now</span>
+      </div>
+      <div class="hero-spacer"></div>
+      <div class="hero-scene-name">Classic Hearth</div>
+      <div class="hero-tagline">Crackling oak wood, timeless warmth</div>
+    </div>
+    <div class="play-btn">▶</div>
+  </div>
+
+  <!-- Atmospheres Section -->
+  <div class="section-title">Atmospheres</div>
+
+  <div class="scene-grid">
+    <div class="scene-card sc1">
+      <div class="scene-overlay"></div>
+      <div class="scene-content">
+        <div class="scene-emoji">🔥</div>
+        <div class="scene-name">Classic Hearth</div>
+        <div class="scene-tagline">Crackling warmth</div>
+      </div>
+      <div class="active-badge">▶ Live</div>
+    </div>
+    <div class="scene-card sc2">
+      <div class="scene-overlay"></div>
+      <div class="scene-content">
+        <div class="scene-emoji">🌲</div>
+        <div class="scene-name">Midnight Forest</div>
+        <div class="scene-tagline">Soft rain on leaves</div>
+      </div>
+    </div>
+    <div class="scene-card sc3">
+      <div class="scene-overlay"></div>
+      <div class="scene-content">
+        <div class="scene-emoji">🏔️</div>
+        <div class="scene-name">Himalayan Cabin</div>
+        <div class="scene-tagline">Snowfall outside</div>
+      </div>
+    </div>
+    <div class="scene-card sc4">
+      <div class="scene-overlay"></div>
+      <div class="scene-content">
+        <div class="scene-emoji">🌊</div>
+        <div class="scene-name">Coastal Breeze</div>
+        <div class="scene-tagline">Salty serenity</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Promo Footer -->
+  <div class="promo-footer">
+    <div class="promo-text">
+      <div class="promo-tag">Your Personal Sanctuary</div>
+    </div>
+  </div>
+
+</body>
+</html>

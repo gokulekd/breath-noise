@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080">
+<title>Breath Noise - Screenshot 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1080px;
+    height: 1920px;
+    background: #0A0A0F;
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+    position: relative;
+  }
+  .bg-glow {
+    position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+    width: 700px; height: 500px;
+    background: radial-gradient(circle, rgba(255,107,53,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Status bar */
+  .status-bar {
+    height: 60px; display: flex; align-items: center;
+    justify-content: space-between; padding: 0 48px;
+    color: #EAE4D8; font-size: 28px; font-weight: 600;
+  }
+  .status-right { display: flex; gap: 16px; align-items: center; font-size: 24px; }
+
+  /* Header */
+  .header {
+    padding: 24px 40px 16px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .back-btn {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; color: #EAE4D8;
+  }
+  .header-title { font-size: 38px; font-weight: 800; color: #FFF8E7; letter-spacing: -0.5px; }
+
+  /* Promo headline */
+  .promo-headline {
+    padding: 16px 40px 32px;
+  }
+  .promo-sub { color: #FFA500; font-size: 22px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  .promo-main { color: #FFF8E7; font-size: 52px; font-weight: 900; letter-spacing: -1.5px; line-height: 1.05; }
+  .promo-main span {
+    background: linear-gradient(135deg, #FF6B35, #FFA500);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  /* Scene grid - 3 columns */
+  .scene-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    padding: 0 40px;
+  }
+  .scene-card {
+    height: 200px;
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .s1  { background: linear-gradient(135deg, #2B0A0A, #902424); }
+  .s2  { background: linear-gradient(135deg, #001A0D, #006633); }
+  .s3  { background: linear-gradient(135deg, #001525, #003366); }
+  .s4  { background: linear-gradient(135deg, #001A26, #005570); }
+  .s5  { background: linear-gradient(135deg, #0A1A10, #2E4D34); }
+  .s6  { background: linear-gradient(135deg, #05001A, #330080); }
+  .s7  { background: linear-gradient(135deg, #1E100A, #5C3317); }
+  .s8  { background: linear-gradient(135deg, #3E1303, #C44D12); }
+  .s9  { background: linear-gradient(135deg, #001F24, #00838F); }
+  .s10 { background: linear-gradient(135deg, #42041D, #C2185B); }
+  .s11 { background: linear-gradient(135deg, #001B2E, #0261A1); }
+  .s12 { background: linear-gradient(135deg, #261200, #9E4800); }
+
+  .scene-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%);
+  }
+  .scene-inner {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 14px 18px;
+  }
+  .s-emoji { font-size: 32px; margin-bottom: 2px; }
+  .s-name { color: white; font-size: 20px; font-weight: 700; letter-spacing: -0.2px; line-height: 1.2; }
+  .premium-dot {
+    position: absolute; top: 12px; right: 12px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: #FFA500;
+    box-shadow: 0 0 8px rgba(255,165,0,0.8);
+  }
+
+  /* Bottom promo */
+  .bottom-promo {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 0 40px 48px;
+    background: linear-gradient(to top, #0A0A0F 70%, transparent);
+    display: flex; flex-direction: column; align-items: center; gap: 16px;
+    padding-top: 60px;
+  }
+  .count-badge {
+    display: flex; align-items: center; gap: 12px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,165,0,0.2);
+    border-radius: 50px;
+    padding: 12px 28px;
+  }
+  .count-num { font-size: 32px; font-weight: 900; color: #FFA500; }
+  .count-label { font-size: 22px; font-weight: 600; color: #EAE4D8; }
+  .tagline-text { font-size: 26px; color: rgba(255,255,255,0.55); text-align: center; font-weight: 500; }
+</style>
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <div class="status-bar">
+    <span>9:41</span>
+    <div class="status-right"><span>📶</span><span>🔋</span></div>
+  </div>
+
+  <div class="header">
+    <div class="back-btn">←</div>
+    <span class="header-title">All Atmospheres</span>
+  </div>
+
+  <div class="promo-headline">
+    <div class="promo-sub">Explore Every Mood</div>
+    <div class="promo-main"><span>12 Immersive</span><br>Worlds Await</div>
+  </div>
+
+  <div class="scene-grid">
+    <div class="scene-card s1">
+      <div class="scene-overlay"></div>
+      <div class="scene-inner">
+        <div class="s-emoji">🔥</div>
+        <div class="s-name">Classic Hearth</div>
+      </div>
+    </div>
+    <div class="scene-card s2">
+      <div class="scene-overlay"></div>
+      <div class="scene-inner">
+        <div class="s-emoji">🌲</div>
+        <div class="s-name">Midnight Forest</div>
+      </div>
+      <div class="premium-dot"></div>
+    </div>
+    <div class="scene-card s3">
+      <div class="scene-overlay"></div>
+      <div class="scene-inner">
+        <div class="s-emoji">🏔️</div>
+        <div class="s-name">Himalayan Cabin</div>
+      </div>
+      <div class="premium-dot"></div>
+    </div>
+    <div class="scene-card s4">
+      <div class="scene-overlay"></div>
+      <div class="scene-inner">
+        <div class="s-emoji">🌊</div>
+        <div class="s-name">Coastal Breeze</div>
+      </div>
+      <div class="premium-dot"></div>
+    </div>
+    <div class="scene-card s5">
+      <div class="scene-overlay"></div>
+      <div class="scene-inner">
+        <div class="s-emoji">🍃</div>
+        <div class="s-name">Zen Garden</div>
+      </div>
+      <div class="premium-dot"></div>
+    </div>
+    <div class="scene-card s6">
+      <div class="scene-overlay"></div>
+      <div class="scene-inner">
+        <div class="s-emoji">🌌</div>
+        <div class="s-name">Deep Space</div>
+      </div>
+      <div class="premium-dot"></div>
+    </div>
+    <div class="scene-card s7">
+      <div class="scene-overlay"></div>
+      <div class="scene-inner">
+        <div class="s-emoji">☕</div>
+        <div class="s-name">Rainy Cafe</div>
+      </div>
+    </div>
+    <div class="scene-card s8">
+      <div class="scene-overlay"></div>
+      <div class="scene-inner">
+        <div class="s-emoji">🍁</div>
+        <div class="s-name">Autumn Breeze</div>
+      </div>
+      <div class="premium-dot"></div>
+    </div>
+    <div class="scene-card s9">
+      <div class="scene-overlay"></div>
+      <div class="scene-inner">
+        <div class="s-emoji">💎</div>
+        <div class="s-name">Crystal Cave</div>
+      </div>
+      <div class="premium-dot"></div>
+    </div>
+    <div class="scene-card s10">
+      <div class="scene-overlay"></div>
+      <div class="scene-inner">
+        <div class="s-emoji">🌸</div>
+        <div class="s-name">Cherry Blossom</div>
+      </div>
+    </div>
+    <div class="scene-card s11">
+      <div class="scene-overlay"></div>
+      <div class="scene-inner">
+        <div class="s-emoji">🐠</div>
+        <div class="s-name">Underwater Reef</div>
+      </div>
+      <div class="premium-dot"></div>
+    </div>
+    <div class="scene-card s12">
+      <div class="scene-overlay"></div>
+      <div class="scene-inner">
+        <div class="s-emoji">🏜️</div>
+        <div class="s-name">Desert Night</div>
+      </div>
+      <div class="premium-dot"></div>
+    </div>
+  </div>
+
+  <div class="bottom-promo">
+    <div class="count-badge">
+      <span class="count-num">12</span>
+      <span class="count-label">Handcrafted Atmospheres</span>
+    </div>
+    <div class="tagline-text">🟠 Premium scenes • Free scenes included</div>
+  </div>
+</body>
+</html>

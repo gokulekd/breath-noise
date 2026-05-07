@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080">
+<title>Breath Noise - Screenshot 3</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1080px;
+    height: 1920px;
+    background: #0A0A0F;
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .bg-glow {
+    position: absolute; bottom: 200px; left: 50%; transform: translateX(-50%);
+    width: 800px; height: 600px;
+    background: radial-gradient(circle, rgba(255,107,53,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .status-bar {
+    height: 60px; display: flex; align-items: center;
+    justify-content: space-between; padding: 0 48px;
+    color: #EAE4D8; font-size: 28px; font-weight: 600;
+  }
+  .status-right { display: flex; gap: 16px; align-items: center; font-size: 24px; }
+
+  .header {
+    padding: 24px 40px 0;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .back-btn {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; color: #EAE4D8;
+  }
+  .header-title { font-size: 38px; font-weight: 800; color: #FFF8E7; }
+
+  .promo-section { padding: 20px 40px 28px; }
+  .promo-sub { color: #FFA500; font-size: 22px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  .promo-main { color: #FFF8E7; font-size: 50px; font-weight: 900; letter-spacing: -1.5px; line-height: 1.05; }
+  .promo-main em { font-style: normal; background: linear-gradient(135deg, #FF6B35, #FFA500); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+  /* Active scene card */
+  .active-scene {
+    margin: 0 40px 28px;
+    height: 160px;
+    border-radius: 28px;
+    background: linear-gradient(135deg, #2B0A0A, #5E1717, #902424);
+    display: flex; align-items: center; padding: 0 32px; gap: 24px;
+    box-shadow: 0 8px 40px rgba(211,47,47,0.3);
+    position: relative; overflow: hidden;
+  }
+  .scene-glow {
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 80% 50%, rgba(255,107,53,0.2) 0%, transparent 60%);
+  }
+  .scene-icon-big { font-size: 56px; position: relative; z-index: 1; }
+  .scene-info { flex: 1; position: relative; z-index: 1; }
+  .scene-info-name { color: white; font-size: 30px; font-weight: 800; }
+  .scene-info-tag { color: rgba(255,255,255,0.7); font-size: 20px; font-weight: 500; margin-top: 2px; }
+  .wave-bars {
+    display: flex; gap: 6px; align-items: flex-end;
+    position: relative; z-index: 1;
+  }
+  .wave-bar {
+    width: 8px; border-radius: 4px;
+    background: linear-gradient(to top, #FF6B35, #FFA500);
+  }
+  .wb1 { height: 20px; } .wb2 { height: 36px; } .wb3 { height: 28px; } .wb4 { height: 44px; }
+
+  /* Sound tracks */
+  .tracks-container { padding: 0 40px; display: flex; flex-direction: column; gap: 20px; }
+  .track-card {
+    background: #1A1A26;
+    border-radius: 24px;
+    padding: 28px 32px;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .track-header {
+    display: flex; align-items: center; gap: 16px; margin-bottom: 20px;
+  }
+  .track-emoji-box {
+    width: 60px; height: 60px; border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 30px;
+  }
+  .te-fire { background: rgba(255,107,53,0.15); }
+  .te-wind { background: rgba(100,181,246,0.12); }
+  .te-rain { background: rgba(38,166,154,0.12); }
+  .te-night { background: rgba(123,97,255,0.12); }
+
+  .track-info { flex: 1; }
+  .track-name { color: #FFF8E7; font-size: 24px; font-weight: 700; }
+  .track-status { font-size: 18px; font-weight: 500; margin-top: 2px; }
+  .ts-active { color: #FF6B35; }
+  .ts-idle { color: #6B6880; }
+
+  .volume-row { display: flex; align-items: center; gap: 20px; }
+  .vol-icon { font-size: 22px; color: #6B6880; }
+  .slider-track {
+    flex: 1; height: 8px; background: #2D2B3D; border-radius: 4px; position: relative;
+  }
+  .slider-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #FF6B35, #FFA500); }
+  .slider-thumb {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 28px; height: 28px; background: #FFA500; border-radius: 50%;
+    box-shadow: 0 2px 12px rgba(255,165,0,0.5);
+    border: 3px solid #0A0A0F;
+  }
+  .vol-num { color: #FFA500; font-size: 20px; font-weight: 700; min-width: 52px; text-align: right; }
+
+  /* Add sound button */
+  .add-sound-btn {
+    margin: 20px 40px 0;
+    height: 100px;
+    border-radius: 24px;
+    border: 2px dashed rgba(255,107,53,0.3);
+    background: rgba(255,107,53,0.04);
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+    color: rgba(255,107,53,0.7); font-size: 24px; font-weight: 600;
+  }
+  .plus-circle {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: rgba(255,107,53,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+  }
+
+  /* Features section */
+  .features-row {
+    display: flex; gap: 20px; padding: 24px 40px 0;
+  }
+  .feat-card {
+    flex: 1; background: #1A1A26; border-radius: 24px; padding: 28px 24px;
+    border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; gap: 12px;
+  }
+  .feat-icon { font-size: 34px; }
+  .feat-title { color: #FFF8E7; font-size: 22px; font-weight: 700; }
+  .feat-desc { color: #6B6880; font-size: 18px; font-weight: 500; line-height: 1.3; }
+
+  /* Bottom promo */
+  .bottom-promo {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 60px 40px 56px;
+    background: linear-gradient(to top, #0A0A0F 70%, transparent);
+    display: flex; flex-direction: column; align-items: center; gap: 16px;
+  }
+  .promo-pill {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: linear-gradient(135deg, rgba(255,107,53,0.2), rgba(255,165,0,0.2));
+    border: 1px solid rgba(255,107,53,0.3);
+    border-radius: 50px; padding: 14px 32px;
+  }
+  .pp-icon { font-size: 28px; }
+  .pp-text { font-size: 26px; font-weight: 700; color: #FFF8E7; }
+</style>
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <div class="status-bar">
+    <span>9:41</span>
+    <div class="status-right"><span>📶</span><span>🔋</span></div>
+  </div>
+
+  <div class="header">
+    <div class="back-btn">←</div>
+    <span class="header-title">Sound Mixer</span>
+  </div>
+
+  <div class="promo-section">
+    <div class="promo-sub">Craft Your Sound</div>
+    <div class="promo-main">Layer Up to <em>4 Sounds</em><br>Perfectly Blended</div>
+  </div>
+
+  <!-- Active Scene -->
+  <div class="active-scene">
+    <div class="scene-glow"></div>
+    <div class="scene-icon-big">🔥</div>
+    <div class="scene-info">
+      <div class="scene-info-name">Classic Hearth</div>
+      <div class="scene-info-tag">3 tracks active · Playing</div>
+    </div>
+    <div class="wave-bars">
+      <div class="wave-bar wb1"></div>
+      <div class="wave-bar wb2"></div>
+      <div class="wave-bar wb3"></div>
+      <div class="wave-bar wb4"></div>
+    </div>
+  </div>
+
+  <!-- Tracks -->
+  <div class="tracks-container">
+    <div class="track-card">
+      <div class="track-header">
+        <div class="track-emoji-box te-fire">🔥</div>
+        <div class="track-info">
+          <div class="track-name">Crackling Fire</div>
+          <div class="track-status ts-active">● Active — 80%</div>
+        </div>
+      </div>
+      <div class="volume-row">
+        <span class="vol-icon">🔈</span>
+        <div class="slider-track">
+          <div class="slider-fill" style="width:80%"></div>
+          <div class="slider-thumb" style="left: calc(80% - 14px)"></div>
+        </div>
+        <span class="vol-num">80%</span>
+      </div>
+    </div>
+
+    <div class="track-card">
+      <div class="track-header">
+        <div class="track-emoji-box te-wind">🌬️</div>
+        <div class="track-info">
+          <div class="track-name">Gentle Wind</div>
+          <div class="track-status ts-active">● Active — 45%</div>
+        </div>
+      </div>
+      <div class="volume-row">
+        <span class="vol-icon">🔈</span>
+        <div class="slider-track">
+          <div class="slider-fill" style="width:45%"></div>
+          <div class="slider-thumb" style="left: calc(45% - 14px)"></div>
+        </div>
+        <span class="vol-num">45%</span>
+      </div>
+    </div>
+
+    <div class="track-card">
+      <div class="track-header">
+        <div class="track-emoji-box te-rain">🌧️</div>
+        <div class="track-info">
+          <div class="track-name">Light Rain</div>
+          <div class="track-status ts-active">● Active — 60%</div>
+        </div>
+      </div>
+      <div class="volume-row">
+        <span class="vol-icon">🔈</span>
+        <div class="slider-track">
+          <div class="slider-fill" style="width:60%"></div>
+          <div class="slider-thumb" style="left: calc(60% - 14px)"></div>
+        </div>
+        <span class="vol-num">60%</span>
+      </div>
+    </div>
+
+    <div class="track-card" style="opacity:0.5;">
+      <div class="track-header">
+        <div class="track-emoji-box te-night" style="opacity:0.6;">🦗</div>
+        <div class="track-info">
+          <div class="track-name">Night Crickets</div>
+          <div class="track-status ts-idle">○ Silent</div>
+        </div>
+      </div>
+      <div class="volume-row">
+        <span class="vol-icon">🔇</span>
+        <div class="slider-track">
+          <div class="slider-fill" style="width:0%"></div>
+          <div class="slider-thumb" style="left: calc(0% - 0px)"></div>
+        </div>
+        <span class="vol-num" style="color:#6B6880">0%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="add-sound-btn">
+    <div class="plus-circle">+</div>
+    <span>Add Sound Layer</span>
+  </div>
+
+  <div class="features-row">
+    <div class="feat-card">
+      <div class="feat-icon">⏰</div>
+      <div class="feat-title">Sleep Timer</div>
+      <div class="feat-desc">Fades out gently</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">💡</div>
+      <div class="feat-title">Light Sync</div>
+      <div class="feat-desc">LIFX & Hue</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🎬</div>
+      <div class="feat-title">12 Scenes</div>
+      <div class="feat-desc">HD atmospheres</div>
+    </div>
+  </div>
+
+  <div class="bottom-promo">
+    <div class="promo-pill">
+      <span class="pp-icon">🎚️</span>
+      <span class="pp-text">Your Perfect Soundscape</span>
+    </div>
+  </div>
+</body>
+</html>
