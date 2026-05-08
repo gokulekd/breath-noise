@@ -5,6 +5,7 @@ import '../../../core/constants/app_assets.dart';
 import '../../../core/constants/scene_data.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/theme/theme_extension.dart';
+import '../../../features/auth/services/auth_service.dart';
 import '../../../features/home/presentation/all_scenes_screen.dart';
 import '../../../features/mixer/presentation/mixer_screen.dart';
 import '../../../features/player/presentation/player_screen.dart';
@@ -85,26 +86,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                     },
                     child: Row(
                       children: [
-                        Container(
+                        Image.asset(
+                          AppAssets.appLogo,
                           width: 56,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: AppTheme.emberOrange.withAlpha(40),
-                                blurRadius: 8,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.asset(
-                              AppAssets.appLogo,
-                              fit: BoxFit.fill,
-                            ),
-                          ),
+                          height: 56,
                         ),
                         const SizedBox(width: 10),
                         Text(
@@ -1097,9 +1082,29 @@ class __MiniWaveIndicatorState extends State<_MiniWaveIndicator>
   }
 }
 
-class _ProfileSheet extends StatelessWidget {
+class _ProfileSheet extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userAsync = ref.watch(authStateChangesProvider);
+    final user = userAsync.valueOrNull;
+
+    final displayName = (user?.displayName?.isNotEmpty == true)
+        ? user!.displayName!
+        : (user?.email?.split('@').first ?? 'User');
+    final email = user?.email ?? '';
+    final photoUrl = user?.photoURL;
+
+    // Derive initials from displayName for the fallback avatar
+    final parts = displayName.trim().split(RegExp(r'\s+'));
+    final initials = parts.length >= 2
+        ? '${parts.first[0]}${parts.last[0]}'.toUpperCase()
+        : displayName.substring(0, displayName.length.clamp(1, 2)).toUpperCase();
+
+    Future<void> signOut() async {
+      Navigator.of(context).pop();
+      await ref.read(authServiceProvider).signOut();
+    }
+
     return Container(
       decoration: const BoxDecoration(
         color: AppTheme.backgroundMid,
@@ -1114,6 +1119,7 @@ class _ProfileSheet extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          // Drag handle
           Container(
             width: 40,
             height: 4,
@@ -1124,17 +1130,19 @@ class _ProfileSheet extends StatelessWidget {
             ),
           ),
 
-          // Avatar
+          // Avatar — network photo for Google, initials for email
           Container(
             width: 72,
             height: 72,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              gradient: const LinearGradient(
-                colors: [AppTheme.emberOrange, AppTheme.amberGold],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+              gradient: photoUrl == null
+                  ? const LinearGradient(
+                      colors: [AppTheme.emberOrange, AppTheme.amberGold],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    )
+                  : null,
               boxShadow: [
                 BoxShadow(
                   color: AppTheme.emberOrange.withAlpha(80),
@@ -1142,24 +1150,48 @@ class _ProfileSheet extends StatelessWidget {
                 ),
               ],
             ),
-            child: const Center(
-              child: Text('🔥', style: TextStyle(fontSize: 32)),
-            ),
+            child: photoUrl != null
+                ? ClipOval(
+                    child: Image.network(
+                      photoUrl,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => Center(
+                        child: Text(
+                          initials,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 26,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                : Center(
+                    child: Text(
+                      initials,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 26,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
           ),
           const SizedBox(height: 12),
 
-          const Text(
-            'Breath Noise User',
-            style: TextStyle(
+          Text(
+            displayName,
+            style: const TextStyle(
               color: AppTheme.warmCream,
               fontSize: 18,
               fontWeight: FontWeight.w700,
             ),
           ),
           const SizedBox(height: 4),
-          const Text(
-            'Free Plan',
-            style: TextStyle(color: AppTheme.mutedGray, fontSize: 13),
+          Text(
+            email,
+            style: const TextStyle(color: AppTheme.mutedGray, fontSize: 13),
           ),
 
           const SizedBox(height: 28),
@@ -1179,10 +1211,7 @@ class _ProfileSheet extends StatelessWidget {
               '₹249 one-time · No subscription',
               style: TextStyle(color: AppTheme.mutedGray, fontSize: 12),
             ),
-            trailing: const Icon(
-              Icons.chevron_right,
-              color: AppTheme.mutedGray,
-            ),
+            trailing: const Icon(Icons.chevron_right, color: AppTheme.mutedGray),
             onTap: () {},
           ),
           ListTile(
@@ -1197,11 +1226,22 @@ class _ProfileSheet extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            trailing: const Icon(
-              Icons.chevron_right,
+            trailing: const Icon(Icons.chevron_right, color: AppTheme.mutedGray),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.logout_rounded,
               color: AppTheme.mutedGray,
             ),
-            onTap: () {},
+            title: const Text(
+              'Sign Out',
+              style: TextStyle(
+                color: AppTheme.mutedGray,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            onTap: signOut,
           ),
         ],
       ),

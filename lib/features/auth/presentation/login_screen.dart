@@ -173,25 +173,48 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   const SizedBox(height: 60),
                   // Logo
                   Center(
-                    child: Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppTheme.emberOrange.withAlpha(40),
-                            blurRadius: 40,
-                            spreadRadius: 5,
+                    child: SizedBox(
+                      width: 140,
+                      height: 140,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          // Outer diffuse halo
+                          Container(
+                            width: 140,
+                            height: 140,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: RadialGradient(
+                                colors: [
+                                  const Color(0xFFFFAA40).withAlpha(50),
+                                  const Color(0xFFFF6B35).withAlpha(15),
+                                  Colors.transparent,
+                                ],
+                                stops: const [0.0, 0.55, 1.0],
+                              ),
+                            ),
+                          ),
+                          // Inner bright halo
+                          Container(
+                            width: 95,
+                            height: 95,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: RadialGradient(
+                                colors: [
+                                  const Color(0xFFFFE0A0).withAlpha(60),
+                                  Colors.transparent,
+                                ],
+                              ),
+                            ),
+                          ),
+                          Image.asset(
+                            AppAssets.appLogo,
+                            width: 110,
+                            height: 110,
                           ),
                         ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(50),
-                        child: Image.asset(
-                          AppAssets.appLogo,
-                          fit: BoxFit.cover,
-                        ),
                       ),
                     ),
                   ),

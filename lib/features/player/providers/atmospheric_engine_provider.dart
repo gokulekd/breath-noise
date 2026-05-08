@@ -99,10 +99,12 @@ class AtmosphericEngineNotifier extends StateNotifier<SceneState> {
         super(
           SceneState(
             scene: SceneData.all.first,
+            isPlaying: false,
             audioTracks: _tracksForScene(SceneData.all.first.id, remoteConfig),
           ),
         ) {
-    // Load initial scene
+    // Load the initial scene into the audio handler but do NOT auto-play.
+    // Playback only starts when the user explicitly taps a scene.
     _initializeScene(state.scene, state.audioTracks);
   }
 

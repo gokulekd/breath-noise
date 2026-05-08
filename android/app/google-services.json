@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "501054824114-t8bm0cp4u9ucmeb5t0pcdn92c8rjqgm4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.breath.noise",
+            "certificate_hash": "62e6277ca4a8935c1cf0a1c844fdbdba6b82574e"
+          }
+        },
+        {
           "client_id": "501054824114-125qlm6p0p1sjmu2t3rhhs72vc5j7le2.apps.googleusercontent.com",
           "client_type": 3
         }

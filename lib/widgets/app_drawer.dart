@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../features/auth/services/auth_service.dart';
 import '../core/constants/app_assets.dart';
 import '../core/theme/app_theme.dart';
 import '../core/theme/theme_provider.dart';
+import '../features/auth/services/auth_service.dart';
 
 class AppDrawer extends ConsumerWidget {
   const AppDrawer({super.key});
@@ -12,6 +12,20 @@ class AppDrawer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDark = ref.watch(themeProvider) == ThemeMode.dark;
+    final userAsync = ref.watch(authStateChangesProvider);
+    final user = userAsync.valueOrNull;
+
+    final displayName = (user?.displayName?.isNotEmpty == true)
+        ? user!.displayName!
+        : (user?.email?.split('@').first ?? 'User');
+    final email = user?.email ?? '';
+    final photoUrl = user?.photoURL;
+
+    final parts = displayName.trim().split(RegExp(r'\s+'));
+    final initials = parts.length >= 2
+        ? '${parts.first[0]}${parts.last[0]}'.toUpperCase()
+        : displayName.substring(0, displayName.length.clamp(1, 2)).toUpperCase();
+
     return Drawer(
       backgroundColor: Colors.transparent, // We want to control the background
       child: Container(
@@ -31,49 +45,124 @@ class AppDrawer extends ConsumerWidget {
               // Header
               Padding(
                 padding: const EdgeInsets.fromLTRB(24, 32, 24, 16),
-                child: Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppTheme.emberOrange.withAlpha(40),
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Image.asset(
-                          AppAssets.appLogo,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    // App branding row
+                    Row(
                       children: [
-                         Text(
-                          'BREATH NOISE',
-                          style: TextStyle(
-                            color: isDark ? AppTheme.warmCream : AppTheme.deepSlate,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 2.0,
-                          ),
+                        Image.asset(
+                          AppAssets.appLogo,
+                          width: 50,
+                          height: 50,
                         ),
-                        Text(
-                          'HEARTH',
-                          style: TextStyle(
-                            color: isDark ? AppTheme.emberOrange.withAlpha(200) : AppTheme.emberOrange,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 2.0,
+                        const SizedBox(width: 16),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'BREATH NOISE',
+                              style: TextStyle(
+                                color: isDark ? AppTheme.warmCream : AppTheme.deepSlate,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: 2.0,
+                              ),
+                            ),
+                            Text(
+                              'HEARTH',
+                              style: TextStyle(
+                                color: isDark
+                                    ? AppTheme.emberOrange.withAlpha(200)
+                                    : AppTheme.emberOrange,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 2.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // User info row
+                    Row(
+                      children: [
+                        // Avatar
+                        Container(
+                          width: 44,
+                          height: 44,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: photoUrl == null
+                                ? const LinearGradient(
+                                    colors: [
+                                      AppTheme.emberOrange,
+                                      AppTheme.amberGold,
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  )
+                                : null,
+                          ),
+                          child: photoUrl != null
+                              ? ClipOval(
+                                  child: Image.network(
+                                    photoUrl,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (_, __, ___) => Center(
+                                      child: Text(
+                                        initials,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Center(
+                                  child: Text(
+                                    initials,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                displayName,
+                                style: TextStyle(
+                                  color: isDark
+                                      ? AppTheme.warmCream
+                                      : AppTheme.deepSlate,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              if (email.isNotEmpty)
+                                Text(
+                                  email,
+                                  style: const TextStyle(
+                                    color: AppTheme.mutedGray,
+                                    fontSize: 12,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                            ],
                           ),
                         ),
                       ],
