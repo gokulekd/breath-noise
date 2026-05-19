@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   // Color Palette — inspired by fire, wood, and midnight ambience
@@ -37,7 +36,7 @@ class AppTheme {
     return ThemeData(
       brightness: Brightness.dark,
       scaffoldBackgroundColor: backgroundDark,
-      textTheme: GoogleFonts.poppinsTextTheme().copyWith(
+      textTheme: const TextTheme().copyWith(
         displayLarge: const TextStyle(
           color: warmCream,
           fontSize: 48,
@@ -88,7 +87,7 @@ class AppTheme {
           fontWeight: FontWeight.w400,
           letterSpacing: 0.5,
         ),
-      ).apply(bodyColor: softWhite, displayColor: warmCream),
+      ).apply(bodyColor: softWhite, displayColor: warmCream, fontFamily: 'Poppins'),
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -113,7 +112,7 @@ class AppTheme {
     return ThemeData(
       brightness: Brightness.light,
       scaffoldBackgroundColor: warmCream,
-      textTheme: GoogleFonts.poppinsTextTheme().copyWith(
+      textTheme: const TextTheme().copyWith(
         displayLarge: const TextStyle(
           color: deepSlate,
           fontSize: 48,
@@ -164,7 +163,7 @@ class AppTheme {
           fontWeight: FontWeight.w400,
           letterSpacing: 0.5,
         ),
-      ).apply(bodyColor: backgroundCard, displayColor: deepSlate),
+      ).apply(bodyColor: backgroundCard, displayColor: deepSlate, fontFamily: 'Poppins'),
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,

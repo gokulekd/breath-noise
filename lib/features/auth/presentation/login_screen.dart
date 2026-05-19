@@ -326,10 +326,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       _buildSocialButton(
-                        icon: Icons.g_mobiledata_rounded,
-                        label: 'Google',
+                        icon: Image.asset(
+                          AppAssets.googleLogo,
+                          width: 22,
+                          height: 22,
+                        ),
+                        label: 'Continue with Google',
                         onPressed: _isLoading ? null : _signInWithGoogle,
-                        iconSize: 32,
                       ),
                     ],
                   ),
@@ -433,25 +436,25 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   Widget _buildSocialButton({
-    required IconData icon,
+    required Widget icon,
     required String label,
     required VoidCallback? onPressed,
-    double iconSize = 24,
   }) {
     return InkWell(
       onTap: onPressed,
       borderRadius: BorderRadius.circular(16),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
         decoration: BoxDecoration(
           color: Colors.white.withAlpha(10),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: Colors.white.withAlpha(20)),
         ),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, color: AppTheme.softWhite, size: iconSize),
-            const SizedBox(width: 8),
+            icon,
+            const SizedBox(width: 10),
             Text(
               label,
               style: const TextStyle(

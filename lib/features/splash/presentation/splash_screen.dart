@@ -1,9 +1,9 @@
 import 'dart:math' as math;
 
+import 'package:breath_noise/core/theme/theme_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 
-import '../../../core/constants/app_assets.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../auth/presentation/auth_gate.dart';
 
@@ -98,7 +98,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     _entryController.forward();
 
-    Future.delayed(const Duration(milliseconds: 3800), () {
+    Future.delayed(const Duration(milliseconds: 5800), () {
       if (mounted) {
         Navigator.of(context).pushReplacement(
           PageRouteBuilder(
@@ -130,8 +130,6 @@ class _SplashScreenState extends State<SplashScreen>
         fit: StackFit.expand,
         children: [
           // ── Ambient Background Glow ───────────────────────────────
-          // Soft warm-gold bloom centered behind the logo (top half),
-          // separate from the orange logo dots so they don't wash out.
           AnimatedBuilder(
             animation: _glowPulse,
             builder: (_, __) => Positioned.fill(
@@ -221,11 +219,12 @@ class _SplashScreenState extends State<SplashScreen>
                                 ),
                               ),
                             ),
-                            // Logo — no clip, transparent bg dots pop on the halo
-                            Image.asset(
-                              AppAssets.appLogo,
+                            Lottie.asset(
+                              'assets/lottie/loader.json',
                               width: 190,
                               height: 190,
+                              fit: BoxFit.contain,
+                              repeat: true,
                             ),
                           ],
                         ),
@@ -244,68 +243,15 @@ class _SplashScreenState extends State<SplashScreen>
                   position: _textSlide,
                   child: FadeTransition(
                     opacity: _textFade,
-                    child: Column(
+                    child: const Column(
                       children: [
-                        // BREATH NOISE
                         Text(
-                          'BREATH NOISE',
-                          style: GoogleFonts.poppins(
+                          'Breath Noise',
+                          style: TextStyle(
                             color: AppTheme.warmCream,
                             fontSize: 34,
                             fontWeight: FontWeight.w800,
-                            letterSpacing: 5.0,
-                          ),
-                        ),
-
-                        const SizedBox(height: 6),
-
-                        // SOUNDS — gradient text
-                        ShaderMask(
-                          shaderCallback: (bounds) =>
-                              AppTheme.fireGradient.createShader(
-                            Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                          ),
-                          child: Text(
-                            'SOUNDS',
-                            style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontSize: 28,
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 8.0,
-                            ),
-                          ),
-                        ),
-
-                        const SizedBox(height: 20),
-
-                        // Divider line
-                        FadeTransition(
-                          opacity: _taglineFade,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                width: 40,
-                                height: 1,
-                                color: AppTheme.mutedGray.withAlpha(80),
-                              ),
-                              const SizedBox(width: 12),
-                              Text(
-                                'ATMOSPHERIC SOUNDSCAPES',
-                                style: GoogleFonts.poppins(
-                                  color: AppTheme.mutedGray,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 3.0,
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Container(
-                                width: 40,
-                                height: 1,
-                                color: AppTheme.mutedGray.withAlpha(80),
-                              ),
-                            ],
+                            letterSpacing: -0.5,
                           ),
                         ),
                       ],
@@ -314,77 +260,53 @@ class _SplashScreenState extends State<SplashScreen>
                 ),
               ),
 
-              const Spacer(flex: 3),
+              const SizedBox(height: 36),
 
-              // Loading indicator
+              // Slogan
               AnimatedBuilder(
                 animation: _entryController,
                 builder: (_, __) => FadeTransition(
                   opacity: _dotsFade,
                   child: Padding(
-                    padding: const EdgeInsets.only(bottom: 60),
-                    child: _PulsingDots(),
+                    padding: const EdgeInsets.symmetric(horizontal: 28),
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: const TextSpan(
+                        style: TextStyle(
+                          letterSpacing: -0.1,
+                          fontFamily: 'Poppins',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                          height: 1.25,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: 'Find Your ',
+                            style: TextStyle(color: AppTheme.warmCream),
+                          ),
+                          TextSpan(
+                            text: 'Focus',
+                            style: TextStyle(color: AppTheme.emberOrange),
+                          ),
+                          TextSpan(
+                            text: ',Create Your ',
+                            style: TextStyle(color: AppTheme.warmCream),
+                          ),
+                          TextSpan(
+                            text: 'Calm.',
+                            style: TextStyle(color: AppTheme.emberOrange),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
+
+              const Spacer(flex: 2),
             ],
           ),
         ],
-      ),
-    );
-  }
-}
-
-// ── Pulsing dots loading indicator ───────────────────────────────────────────
-
-class _PulsingDots extends StatefulWidget {
-  @override
-  State<_PulsingDots> createState() => _PulsingDotsState();
-}
-
-class _PulsingDotsState extends State<_PulsingDots>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _ctrl;
-
-  @override
-  void initState() {
-    super.initState();
-    _ctrl = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1200),
-    )..repeat();
-  }
-
-  @override
-  void dispose() {
-    _ctrl.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _ctrl,
-      builder: (_, __) => Row(
-        mainAxisSize: MainAxisSize.min,
-        children: List.generate(3, (i) {
-          final delay = i / 3;
-          final t = ((_ctrl.value - delay) % 1.0 + 1.0) % 1.0;
-          final scale = 0.6 + 0.4 * math.sin(t * math.pi);
-          final alpha = (80 + 120 * math.sin(t * math.pi)).round().clamp(0, 255);
-          return Transform.scale(
-            scale: scale,
-            child: Container(
-              width: 6,
-              height: 6,
-              margin: const EdgeInsets.symmetric(horizontal: 4),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppTheme.amberGold.withAlpha(alpha),
-              ),
-            ),
-          );
-        }),
       ),
     );
   }

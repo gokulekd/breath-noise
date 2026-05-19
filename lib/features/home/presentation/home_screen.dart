@@ -784,10 +784,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
             ),
           ],
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
             Container(
               width: 48,
               height: 6,
@@ -891,7 +892,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
-                  onPressed: () => Navigator.pop(ctx),
+                  onPressed: () {
+                    Navigator.pop(ctx);
+                    _showComingSoonSheet(context);
+                  },
                   child: const Text(
                     'Get Pro · ₹249',
                     style: TextStyle(
@@ -917,6 +921,120 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
               ),
             ),
             SizedBox(height: MediaQuery.of(context).padding.bottom + 16),
+          ],
+        ),
+        ),
+      ),
+    );
+  }
+
+  void _showComingSoonSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (sheetCtx) => Container(
+        padding: EdgeInsets.fromLTRB(
+            24, 28, 24, MediaQuery.of(context).padding.bottom + 28),
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(32),
+            topRight: Radius.circular(32),
+          ),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black54,
+              blurRadius: 40,
+              spreadRadius: 10,
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 48,
+              height: 6,
+              decoration: BoxDecoration(
+                color: AppTheme.mutedGray.withAlpha(80),
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            const SizedBox(height: 32),
+            Container(
+              padding: const EdgeInsets.all(22),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF7B68EE), Color(0xFF9B8FFF)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF7B68EE).withAlpha(100),
+                    blurRadius: 30,
+                    spreadRadius: 4,
+                  ),
+                ],
+              ),
+              child: const Icon(
+                Icons.rocket_launch_rounded,
+                size: 44,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 24),
+            const Text(
+              'Coming Soon',
+              style: TextStyle(
+                color: AppTheme.warmCream,
+                fontSize: 28,
+                fontWeight: FontWeight.w900,
+                letterSpacing: -0.5,
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'We\'re putting the finishing touches on\nBreath Noise Pro. Stay tuned!',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: AppTheme.mutedGray,
+                fontSize: 15,
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 36),
+            SizedBox(
+              width: double.infinity,
+              height: 56,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: AppTheme.mutedGray.withAlpha(25),
+                  borderRadius: BorderRadius.circular(18),
+                  border: Border.all(
+                    color: AppTheme.mutedGray.withAlpha(50),
+                  ),
+                ),
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                  ),
+                  onPressed: () => Navigator.pop(sheetCtx),
+                  child: const Text(
+                    'Got it',
+                    style: TextStyle(
+                      color: AppTheme.warmCream,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
