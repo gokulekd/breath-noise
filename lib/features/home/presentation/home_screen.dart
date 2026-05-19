@@ -146,12 +146,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                     ),
                   ),
                 ),
-              IconButton(
-                icon: Icon(
-                  Icons.person_outline_rounded,
-                  color: context.iconColor,
-                ),
-                onPressed: () => _showProfileSheet(context),
+              _UserAvatarButton(
+                onTap: () => _showProfileSheet(context),
               ),
             ],
           ),
@@ -1087,6 +1083,83 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     final m = d.inMinutes.remainder(60).toString().padLeft(2, '0');
     final s = d.inSeconds.remainder(60).toString().padLeft(2, '0');
     return '$m:$s';
+  }
+}
+
+// ── User Avatar Button ────────────────────────────────────────────────────────
+
+class _UserAvatarButton extends ConsumerWidget {
+  final VoidCallback onTap;
+
+  const _UserAvatarButton({required this.onTap});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userAsync = ref.watch(authStateChangesProvider);
+    final user = userAsync.valueOrNull;
+
+    final displayName = (user?.displayName?.isNotEmpty == true)
+        ? user!.displayName!
+        : (user?.email?.split('@').first ?? 'User');
+    final photoUrl = user?.photoURL;
+
+    final parts = displayName.trim().split(RegExp(r'\s+'));
+    final initials = parts.length >= 2
+        ? '${parts.first[0]}${parts.last[0]}'.toUpperCase()
+        : displayName.substring(0, displayName.length.clamp(1, 2)).toUpperCase();
+
+    return Padding(
+      padding: const EdgeInsets.only(right: 8),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          width: 38,
+          height: 38,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: AppTheme.emberOrange.withAlpha(80),
+              width: 1.5,
+            ),
+          ),
+          child: ClipOval(
+            child: photoUrl != null
+                ? Image.network(
+                    photoUrl,
+                    width: 38,
+                    height: 38,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => _initialsAvatar(initials),
+                  )
+                : _initialsAvatar(initials),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _initialsAvatar(String initials) {
+    return Container(
+      width: 38,
+      height: 38,
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [AppTheme.emberOrange, AppTheme.amberGold],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: Center(
+        child: Text(
+          initials,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 13,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
+    );
   }
 }
 

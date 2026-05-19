@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 
-import 'package:breath_noise/core/theme/theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -238,7 +237,7 @@ class _SplashScreenState extends State<SplashScreen>
                     ),
                   ),
 
-                  const SizedBox(height: 36),
+                  const SizedBox(height: 50),
 
                   // App name
                   AnimatedBuilder(
@@ -261,7 +260,7 @@ class _SplashScreenState extends State<SplashScreen>
                     ),
                   ),
 
-                  const SizedBox(height: 14),
+                  const SizedBox(height: 30),
 
                   // Slogan
                   AnimatedBuilder(
@@ -301,7 +300,7 @@ class _SplashScreenState extends State<SplashScreen>
                     ),
                   ),
 
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 48),
 
                   // Version
                   AnimatedBuilder(
@@ -321,7 +320,7 @@ class _SplashScreenState extends State<SplashScreen>
                     ),
                   ),
 
-                  const Spacer(flex: 3),
+                  const Spacer(flex: 5),
                 ],
               ),
             ),

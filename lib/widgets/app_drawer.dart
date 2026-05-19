@@ -12,19 +12,6 @@ class AppDrawer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDark = ref.watch(themeProvider) == ThemeMode.dark;
-    final userAsync = ref.watch(authStateChangesProvider);
-    final user = userAsync.valueOrNull;
-
-    final displayName = (user?.displayName?.isNotEmpty == true)
-        ? user!.displayName!
-        : (user?.email?.split('@').first ?? 'User');
-    final email = user?.email ?? '';
-    final photoUrl = user?.photoURL;
-
-    final parts = displayName.trim().split(RegExp(r'\s+'));
-    final initials = parts.length >= 2
-        ? '${parts.first[0]}${parts.last[0]}'.toUpperCase()
-        : displayName.substring(0, displayName.length.clamp(1, 2)).toUpperCase();
 
     return Drawer(
       backgroundColor: Colors.transparent, // We want to control the background
@@ -85,88 +72,6 @@ class AppDrawer extends ConsumerWidget {
                       ],
                     ),
 
-                    const SizedBox(height: 20),
-
-                    // User info row
-                    Row(
-                      children: [
-                        // Avatar
-                        Container(
-                          width: 44,
-                          height: 44,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: photoUrl == null
-                                ? const LinearGradient(
-                                    colors: [
-                                      AppTheme.emberOrange,
-                                      AppTheme.amberGold,
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  )
-                                : null,
-                          ),
-                          child: photoUrl != null
-                              ? ClipOval(
-                                  child: Image.network(
-                                    photoUrl,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (_, __, ___) => Center(
-                                      child: Text(
-                                        initials,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              : Center(
-                                  child: Text(
-                                    initials,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                displayName,
-                                style: TextStyle(
-                                  color: isDark
-                                      ? AppTheme.warmCream
-                                      : AppTheme.deepSlate,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              if (email.isNotEmpty)
-                                Text(
-                                  email,
-                                  style: const TextStyle(
-                                    color: AppTheme.mutedGray,
-                                    fontSize: 12,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
                   ],
                 ),
               ),
