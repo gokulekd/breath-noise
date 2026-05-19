@@ -163,90 +163,93 @@ class _SplashScreenState extends State<SplashScreen>
           ),
 
           // ── Main Content ──────────────────────────────────────────
-          Column(
-            children: [
-              const Spacer(flex: 3),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Spacer(flex: 3),
 
-              // Logo
-              AnimatedBuilder(
-                animation: _entryController,
-                builder: (_, __) => FadeTransition(
-                  opacity: _logoFade,
-                  child: Transform.scale(
-                    scale: _logoScale.value,
-                    child: AnimatedBuilder(
-                      animation: _glowPulse,
-                      builder: (_, __) => SizedBox(
-                        width: 240,
-                        height: 240,
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            // Outer diffuse halo
-                            Container(
-                              width: 240,
-                              height: 240,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                gradient: RadialGradient(
-                                  colors: [
-                                    const Color(0xFFFFAA40).withAlpha(
-                                      (_glowPulse.value * 55).round(),
+                  // Lottie animation
+                  AnimatedBuilder(
+                    animation: _entryController,
+                    builder: (_, __) => FadeTransition(
+                      opacity: _logoFade,
+                      child: Transform.scale(
+                        scale: _logoScale.value,
+                        child: AnimatedBuilder(
+                          animation: _glowPulse,
+                          builder: (_, __) => SizedBox(
+                            width: 280,
+                            height: 280,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                // Outer diffuse halo
+                                Container(
+                                  width: 280,
+                                  height: 280,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: RadialGradient(
+                                      colors: [
+                                        const Color(0xFFFFAA40).withAlpha(
+                                          (_glowPulse.value * 55).round(),
+                                        ),
+                                        const Color(0xFFFF6B35).withAlpha(
+                                          (_glowPulse.value * 20).round(),
+                                        ),
+                                        Colors.transparent,
+                                      ],
+                                      stops: const [0.0, 0.55, 1.0],
                                     ),
-                                    const Color(0xFFFF6B35).withAlpha(
-                                      (_glowPulse.value * 20).round(),
-                                    ),
-                                    Colors.transparent,
-                                  ],
-                                  stops: const [0.0, 0.55, 1.0],
+                                  ),
                                 ),
-                              ),
-                            ),
-                            // Inner bright halo
-                            Container(
-                              width: 165,
-                              height: 165,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                gradient: RadialGradient(
-                                  colors: [
-                                    const Color(0xFFFFE0A0).withAlpha(
-                                      (_glowPulse.value * 70).round(),
+                                // Inner bright halo
+                                Container(
+                                  width: 195,
+                                  height: 195,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: RadialGradient(
+                                      colors: [
+                                        const Color(0xFFFFE0A0).withAlpha(
+                                          (_glowPulse.value * 70).round(),
+                                        ),
+                                        Colors.transparent,
+                                      ],
+                                      stops: const [0.0, 1.0],
                                     ),
-                                    Colors.transparent,
-                                  ],
-                                  stops: const [0.0, 1.0],
+                                  ),
                                 ),
-                              ),
+                                Lottie.asset(
+                                  'assets/lottie/loader.json',
+                                  width: 230,
+                                  height: 230,
+                                  fit: BoxFit.contain,
+                                  repeat: true,
+                                ),
+                              ],
                             ),
-                            Lottie.asset(
-                              'assets/lottie/loader.json',
-                              width: 190,
-                              height: 190,
-                              fit: BoxFit.contain,
-                              repeat: true,
-                            ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ),
 
-              const SizedBox(height: 44),
+                  const SizedBox(height: 36),
 
-              // App name + tagline
-              AnimatedBuilder(
-                animation: _entryController,
-                builder: (_, __) => SlideTransition(
-                  position: _textSlide,
-                  child: FadeTransition(
-                    opacity: _textFade,
-                    child: const Column(
-                      children: [
-                        Text(
+                  // App name
+                  AnimatedBuilder(
+                    animation: _entryController,
+                    builder: (_, __) => SlideTransition(
+                      position: _textSlide,
+                      child: FadeTransition(
+                        opacity: _textFade,
+                        child: const Text(
                           'Breath Noise',
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             color: AppTheme.warmCream,
                             fontSize: 34,
@@ -254,57 +257,74 @@ class _SplashScreenState extends State<SplashScreen>
                             letterSpacing: -0.5,
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 36),
-
-              // Slogan
-              AnimatedBuilder(
-                animation: _entryController,
-                builder: (_, __) => FadeTransition(
-                  opacity: _dotsFade,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 28),
-                    child: RichText(
-                      textAlign: TextAlign.center,
-                      text: const TextSpan(
-                        style: TextStyle(
-                          letterSpacing: -0.1,
-                          fontFamily: 'Poppins',
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
-                          height: 1.25,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: 'Find Your ',
-                            style: TextStyle(color: AppTheme.warmCream),
-                          ),
-                          TextSpan(
-                            text: 'Focus',
-                            style: TextStyle(color: AppTheme.emberOrange),
-                          ),
-                          TextSpan(
-                            text: ',Create Your ',
-                            style: TextStyle(color: AppTheme.warmCream),
-                          ),
-                          TextSpan(
-                            text: 'Calm.',
-                            style: TextStyle(color: AppTheme.emberOrange),
-                          ),
-                        ],
                       ),
                     ),
                   ),
-                ),
-              ),
 
-              const Spacer(flex: 2),
-            ],
+                  const SizedBox(height: 14),
+
+                  // Slogan
+                  AnimatedBuilder(
+                    animation: _entryController,
+                    builder: (_, __) => FadeTransition(
+                      opacity: _dotsFade,
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: const TextSpan(
+                          style: TextStyle(
+                            letterSpacing: -0.1,
+                            fontFamily: 'Poppins',
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                            height: 1.35,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: 'Find Your ',
+                              style: TextStyle(color: AppTheme.warmCream),
+                            ),
+                            TextSpan(
+                              text: 'Focus',
+                              style: TextStyle(color: AppTheme.emberOrange),
+                            ),
+                            TextSpan(
+                              text: ', Create Your ',
+                              style: TextStyle(color: AppTheme.warmCream),
+                            ),
+                            TextSpan(
+                              text: 'Calm.',
+                              style: TextStyle(color: AppTheme.emberOrange),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // Version
+                  AnimatedBuilder(
+                    animation: _entryController,
+                    builder: (_, __) => FadeTransition(
+                      opacity: _dotsFade,
+                      child: const Text(
+                        'v1.0.0',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: AppTheme.warmCream,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  const Spacer(flex: 3),
+                ],
+              ),
+            ),
           ),
         ],
       ),
