@@ -319,17 +319,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     Size size,
   ) {
     return GestureDetector(
-      onTap: engineState.isPlaying
-          ? () => Navigator.push(
-                context,
-                PageRouteBuilder(
-                  pageBuilder: (_, a1, a2) =>
-                      PlayerScreen(scene: engineState.scene),
-                  transitionsBuilder: (_, anim, __, child) =>
-                      FadeTransition(opacity: anim, child: child),
-                ),
-              )
-          : null,
+      onTap: () {
+        if (!engineState.isPlaying) {
+          ref
+              .read(atmosphericEngineProvider.notifier)
+              .selectScene(engineState.scene);
+        }
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (_, a1, a2) =>
+                PlayerScreen(scene: engineState.scene),
+            transitionsBuilder: (_, anim, __, child) =>
+                FadeTransition(opacity: anim, child: child),
+          ),
+        );
+      },
       child: Container(
         margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
         height: 240,

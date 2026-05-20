@@ -29,6 +29,7 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
   bool _showControls = true;
   bool _showMixer = false;
   bool _showFocusTimer = false;
+  bool _showVolume = false;
 
   @override
   void initState() {
@@ -135,6 +136,19 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
                           child: _AudioMixerPanel(
                             tracks: engineState.audioTracks,
                             onClose: () => setState(() => _showMixer = false),
+                          ),
+                        ),
+
+                      // Vertical Volume Panel
+                      if (_showVolume)
+                        Positioned(
+                          right: 20,
+                          bottom: MediaQuery.of(context).padding.bottom + 100,
+                          child: _VerticalVolumePanel(
+                            volume: engineState.masterVolume,
+                            onChanged: (val) => ref
+                                .read(atmosphericEngineProvider.notifier)
+                                .setMasterVolume(val),
                           ),
                         ),
                     ],
@@ -263,7 +277,7 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
         bottom: MediaQuery.of(context).padding.bottom + 24,
         left: 20,
         right: 20,
-        top: 40,
+        top: 32,
       ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -272,105 +286,97 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
           end: Alignment.bottomCenter,
         ),
       ),
-      child: Column(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Master volume
-          Row(
-            children: [
-              const Icon(
-                Icons.volume_mute_rounded,
-                color: AppTheme.mutedGray,
-                size: 18,
-              ),
-              Expanded(
-                child: Slider(
-                  value: engineState.masterVolume,
-                  onChanged: (val) => ref
-                      .read(atmosphericEngineProvider.notifier)
-                      .setMasterVolume(val),
-                ),
-              ),
-              const Icon(
-                Icons.volume_up_rounded,
-                color: AppTheme.mutedGray,
-                size: 18,
-              ),
-            ],
+          // Focus Timer
+          _ControlButton(
+            icon: Icons.timer_outlined,
+            label: 'Focus',
+            isActive: _showFocusTimer,
+            onTap: () => setState(() => _showFocusTimer = !_showFocusTimer),
+          ),
+          const SizedBox(width: 14),
+
+          // Sleep Timer
+          _ControlButton(
+            icon: isTimerRunning
+                ? Icons.bedtime_rounded
+                : Icons.bedtime_outlined,
+            label: isTimerRunning
+                ? _formatDuration(timerState.remaining)
+                : 'Timer',
+            isActive: isTimerRunning,
+            onTap: () => _showSleepTimerSheet(context),
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(width: 14),
 
-          // Control buttons row
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Focus Timer
-              _ControlButton(
-                icon: Icons.timer_outlined,
-                label: 'Focus',
-                isActive: _showFocusTimer,
-                onTap: () => setState(() => _showFocusTimer = !_showFocusTimer),
-              ),
-              const SizedBox(width: 14),
-
-              // Sleep Timer
-              _ControlButton(
-                icon: isTimerRunning
-                    ? Icons.bedtime_rounded
-                    : Icons.bedtime_outlined,
-                label: isTimerRunning
-                    ? _formatDuration(timerState.remaining)
-                    : 'Timer',
-                isActive: isTimerRunning,
-                onTap: () => _showSleepTimerSheet(context),
-              ),
-
-              const SizedBox(width: 14),
-
-              // Play / Pause (large center button)
-              GestureDetector(
-                onTap: () => ref
-                    .read(atmosphericEngineProvider.notifier)
-                    .togglePlayPause(),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  width: 72,
-                  height: 72,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: const LinearGradient(
-                      colors: [AppTheme.emberOrange, AppTheme.amberGold],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppTheme.emberOrange.withAlpha(100),
-                        blurRadius: 24,
-                        spreadRadius: 2,
-                      ),
-                    ],
-                  ),
-                  child: Icon(
-                    engineState.isPlaying
-                        ? Icons.pause_rounded
-                        : Icons.play_arrow_rounded,
-                    color: Colors.white,
-                    size: 34,
-                  ),
+          // Play / Pause (large center button)
+          GestureDetector(
+            onTap: () => ref
+                .read(atmosphericEngineProvider.notifier)
+                .togglePlayPause(),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              width: 72,
+              height: 72,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: const LinearGradient(
+                  colors: [AppTheme.emberOrange, AppTheme.amberGold],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppTheme.emberOrange.withAlpha(100),
+                    blurRadius: 24,
+                    spreadRadius: 2,
+                  ),
+                ],
               ),
-
-              const SizedBox(width: 14),
-
-              // Mixer
-              _ControlButton(
-                icon: Icons.equalizer_rounded,
-                label: 'Mixer',
-                isActive: _showMixer,
-                onTap: () => setState(() => _showMixer = !_showMixer),
+              child: Icon(
+                engineState.isPlaying
+                    ? Icons.pause_rounded
+                    : Icons.play_arrow_rounded,
+                color: Colors.white,
+                size: 34,
               ),
-            ],
+            ),
+          ),
+
+          const SizedBox(width: 14),
+
+          // Mixer (Pro only)
+          _ControlButton(
+            icon: Icons.equalizer_rounded,
+            label: 'Mixer',
+            isActive: _showMixer,
+            isLocked: !widget.scene.isPremium,
+            onTap: widget.scene.isPremium
+                ? () => setState(() {
+                      _showMixer = !_showMixer;
+                      _showVolume = false;
+                    })
+                : () => _showMixerProSheet(context),
+          ),
+
+          const SizedBox(width: 14),
+
+          // Speaker / Volume
+          _ControlButton(
+            icon: engineState.masterVolume == 0
+                ? Icons.volume_off_rounded
+                : engineState.masterVolume < 0.5
+                    ? Icons.volume_down_rounded
+                    : Icons.volume_up_rounded,
+            label: 'Volume',
+            isActive: _showVolume,
+            onTap: () => setState(() {
+              _showVolume = !_showVolume;
+              _showMixer = false;
+            }),
           ),
         ],
       ),
@@ -422,6 +428,131 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  void _showMixerProSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (ctx) => Container(
+        padding: EdgeInsets.fromLTRB(
+            24, 28, 24, MediaQuery.of(context).padding.bottom + 28),
+        decoration: BoxDecoration(
+          color: AppTheme.backgroundMid,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(32),
+            topRight: Radius.circular(32),
+          ),
+          boxShadow: const [
+            BoxShadow(color: Colors.black54, blurRadius: 40, spreadRadius: 10),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 48,
+              height: 6,
+              decoration: BoxDecoration(
+                color: AppTheme.mutedGray.withAlpha(80),
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            const SizedBox(height: 28),
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: const LinearGradient(
+                  colors: [AppTheme.emberOrange, AppTheme.amberGold],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppTheme.amberGold.withAlpha(80),
+                    blurRadius: 30,
+                    spreadRadius: 4,
+                  ),
+                ],
+              ),
+              child: const Icon(Icons.equalizer_rounded,
+                  size: 40, color: Colors.white),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Sound Mixer is Pro',
+              style: TextStyle(
+                color: AppTheme.warmCream,
+                fontSize: 24,
+                fontWeight: FontWeight.w900,
+                letterSpacing: -0.5,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Layer and blend multiple sounds to craft\nyour perfect atmosphere.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: AppTheme.mutedGray,
+                fontSize: 14,
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 28),
+            SizedBox(
+              width: double.infinity,
+              height: 56,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [AppTheme.emberOrange, AppTheme.amberGold],
+                  ),
+                  borderRadius: BorderRadius.circular(18),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppTheme.emberOrange.withAlpha(100),
+                      blurRadius: 20,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18)),
+                  ),
+                  onPressed: () => Navigator.pop(ctx),
+                  child: const Text(
+                    'Upgrade to Pro · ₹249',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text(
+                'Maybe later',
+                style: TextStyle(
+                  color: AppTheme.mutedGray,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -562,12 +693,14 @@ class _ControlButton extends StatelessWidget {
   final IconData icon;
   final String label;
   final bool isActive;
+  final bool isLocked;
   final VoidCallback onTap;
 
   const _ControlButton({
     required this.icon,
     required this.label,
     required this.isActive,
+    this.isLocked = false,
     required this.onTap,
   });
 
@@ -578,33 +711,74 @@ class _ControlButton extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              color: isActive
-                  ? AppTheme.emberOrange.withAlpha(40)
-                  : Colors.white.withAlpha(15),
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: isActive
-                    ? AppTheme.emberOrange.withAlpha(200)
-                    : Colors.white.withAlpha(30),
-                width: 1.5,
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: isActive
+                      ? AppTheme.emberOrange.withAlpha(40)
+                      : Colors.white.withAlpha(15),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: isActive
+                        ? AppTheme.emberOrange.withAlpha(200)
+                        : Colors.white.withAlpha(30),
+                    width: 1.5,
+                  ),
+                ),
+                child: Icon(
+                  icon,
+                  color: isLocked
+                      ? AppTheme.mutedGray.withAlpha(160)
+                      : isActive
+                          ? AppTheme.emberOrange
+                          : AppTheme.softWhite,
+                  size: 22,
+                ),
               ),
-            ),
-            child: Icon(
-              icon,
-              color: isActive ? AppTheme.emberOrange : AppTheme.softWhite,
-              size: 22,
-            ),
+              if (isLocked)
+                Positioned(
+                  top: -4,
+                  right: -4,
+                  child: Container(
+                    width: 18,
+                    height: 18,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: const LinearGradient(
+                        colors: [AppTheme.emberOrange, AppTheme.amberGold],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppTheme.emberOrange.withAlpha(120),
+                          blurRadius: 6,
+                        ),
+                      ],
+                    ),
+                    child: const Icon(
+                      Icons.lock_rounded,
+                      size: 10,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+            ],
           ),
           const SizedBox(height: 5),
           Text(
             label,
             style: TextStyle(
-              color: isActive ? AppTheme.amberGold : AppTheme.mutedGray,
+              color: isLocked
+                  ? AppTheme.mutedGray.withAlpha(160)
+                  : isActive
+                      ? AppTheme.amberGold
+                      : AppTheme.mutedGray,
               fontSize: 10,
               fontWeight: FontWeight.w600,
               letterSpacing: 0.5,
@@ -704,6 +878,87 @@ class _AlarmBadge extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _VerticalVolumePanel extends StatelessWidget {
+  final double volume;
+  final ValueChanged<double> onChanged;
+
+  const _VerticalVolumePanel({
+    required this.volume,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      // Absorb taps so they don't toggle controls
+      onTap: () {},
+      child: Container(
+        width: 56,
+        height: 260,
+        decoration: BoxDecoration(
+          color: AppTheme.backgroundMid.withAlpha(230),
+          borderRadius: BorderRadius.circular(28),
+          border: Border.all(color: Colors.white.withAlpha(20), width: 1),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withAlpha(120),
+              blurRadius: 24,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(height: 12),
+            Icon(
+              volume < 0.5
+                  ? Icons.volume_down_rounded
+                  : Icons.volume_up_rounded,
+              color: AppTheme.amberGold,
+              size: 20,
+            ),
+            const SizedBox(height: 4),
+            Expanded(
+              child: RotatedBox(
+                quarterTurns: 3,
+                child: SliderTheme(
+                  data: SliderTheme.of(context).copyWith(
+                    trackHeight: 4,
+                    thumbShape:
+                        const RoundSliderThumbShape(enabledThumbRadius: 8),
+                    overlayShape:
+                        const RoundSliderOverlayShape(overlayRadius: 16),
+                    activeTrackColor: AppTheme.amberGold,
+                    inactiveTrackColor: Colors.white.withAlpha(40),
+                    thumbColor: Colors.white,
+                    overlayColor: AppTheme.amberGold.withAlpha(40),
+                  ),
+                  child: Slider(
+                    value: volume,
+                    onChanged: onChanged,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 4),
+            Icon(
+              volume == 0
+                  ? Icons.volume_off_rounded
+                  : Icons.volume_mute_rounded,
+              color: volume == 0
+                  ? AppTheme.emberOrange
+                  : AppTheme.mutedGray,
+              size: 20,
+            ),
+            const SizedBox(height: 12),
+          ],
+        ),
       ),
     );
   }
