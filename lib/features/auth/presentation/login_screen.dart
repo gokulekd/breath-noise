@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../core/constants/app_assets.dart';
 import '../../../core/theme/app_theme.dart';
@@ -99,21 +99,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   String _formatAuthError(Object error) {
-    if (error is GoogleSignInException) {
-      switch (error.code) {
-        case GoogleSignInExceptionCode.canceled:
-          return 'Google sign-in was cancelled.';
-        case GoogleSignInExceptionCode.clientConfigurationError:
-        case GoogleSignInExceptionCode.providerConfigurationError:
-          return 'Google sign-in is not configured correctly for this app yet.';
-        case GoogleSignInExceptionCode.uiUnavailable:
-          return 'Google sign-in is unavailable right now. Please try again.';
-        default:
-          return error.description ?? 'Google sign-in failed.';
-      }
-    }
-
     if (error is FirebaseAuthException) {
+      if (error.code == 'sign-in-cancelled') {
+        return 'Google sign-in was cancelled.';
+      }
       switch (error.code) {
         case 'invalid-email':
           return 'That email address is not valid.';
@@ -129,6 +118,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           return 'Google sign-in is missing the required app configuration.';
       }
       return error.message ?? 'Sign in failed.';
+    }
+    if (error is PlatformException) {
+      if (error.code == 'network_error') {
+        return 'No internet connection. Please try again.';
+      }
+      return 'Google sign-in failed. Please try again.';
     }
     return 'Something went wrong. Please try again.';
   }
@@ -240,7 +235,46 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       fontSize: 16,
                     ),
                   ),
-                  const SizedBox(height: 48),
+                  const SizedBox(height: 32),
+
+                  // Social Logins
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildSocialButton(
+                        icon: Image.asset(
+                          AppAssets.googleLogo,
+                          width: 22,
+                          height: 22,
+                        ),
+                        label: 'Continue with Google',
+                        onPressed: _isLoading ? null : _signInWithGoogle,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 32),
+
+                  // Or Divider
+                  Row(
+                    children: [
+                      Expanded(
+                          child: Divider(color: Colors.white.withAlpha(30))),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Text(
+                          'OR',
+                          style: TextStyle(
+                            color: AppTheme.mutedGray,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                          child: Divider(color: Colors.white.withAlpha(30))),
+                    ],
+                  ),
+                  const SizedBox(height: 32),
 
                   // Email Field
                   _buildTextField(
@@ -296,45 +330,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     label: 'Sign In',
                     onPressed: _isLoading ? null : _signInWithEmail,
                     isLoading: _isLoading,
-                  ),
-                  const SizedBox(height: 32),
-
-                  // Or Divider
-                  Row(
-                    children: [
-                      Expanded(
-                          child: Divider(color: Colors.white.withAlpha(30))),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text(
-                          'OR',
-                          style: TextStyle(
-                            color: AppTheme.mutedGray,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                          child: Divider(color: Colors.white.withAlpha(30))),
-                    ],
-                  ),
-                  const SizedBox(height: 32),
-
-                  // Social Logins
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _buildSocialButton(
-                        icon: Image.asset(
-                          AppAssets.googleLogo,
-                          width: 22,
-                          height: 22,
-                        ),
-                        label: 'Continue with Google',
-                        onPressed: _isLoading ? null : _signInWithGoogle,
-                      ),
-                    ],
                   ),
                   const SizedBox(height: 48),
 

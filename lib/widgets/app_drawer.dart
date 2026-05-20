@@ -189,14 +189,108 @@ class AppDrawer extends ConsumerWidget {
                       title: 'Log Out',
                       onTap: () async {
                         Navigator.pop(context);
-                        await ref.read(authServiceProvider).signOut();
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                             SnackBar(
-                              content: const Text("Logged Out"),
-                              backgroundColor: isDark ? AppTheme.deepSlate : AppTheme.mutedGray,
+                        final confirmed = await showDialog<bool>(
+                          context: context,
+                          builder: (ctx) => AlertDialog(
+                            backgroundColor: isDark ? AppTheme.backgroundDark : AppTheme.warmCream,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                          );
+                            icon: Container(
+                              padding: const EdgeInsets.all(14),
+                              decoration: BoxDecoration(
+                                color: AppTheme.emberOrange.withAlpha(20),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.logout_rounded,
+                                color: AppTheme.emberOrange,
+                                size: 28,
+                              ),
+                            ),
+                            title: Text(
+                              'Log Out?',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: isDark ? AppTheme.warmCream : AppTheme.deepSlate,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                            content: Text(
+                              'Are you sure you want to log out of Breath Noise?',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: isDark ? AppTheme.mutedGray : AppTheme.deepSlate.withAlpha(160),
+                                fontSize: 14,
+                                height: 1.5,
+                              ),
+                            ),
+                            actionsAlignment: MainAxisAlignment.center,
+                            actionsPadding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                            actions: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(vertical: 14),
+                                        side: BorderSide(
+                                          color: isDark ? Colors.white24 : Colors.black12,
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                      ),
+                                      onPressed: () => Navigator.pop(ctx, false),
+                                      child: Text(
+                                        'Cancel',
+                                        style: TextStyle(
+                                          color: isDark ? AppTheme.softWhite : AppTheme.deepSlate,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: AppTheme.emberOrange,
+                                        padding: const EdgeInsets.symmetric(vertical: 14),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                        elevation: 0,
+                                      ),
+                                      onPressed: () => Navigator.pop(ctx, true),
+                                      child: const Text(
+                                        'Log Out',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                        if (confirmed == true) {
+                          await ref.read(authServiceProvider).signOut();
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'You have been logged out.',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                backgroundColor: AppTheme.deepSlate,
+                              ),
+                            );
+                          }
                         }
                       },
                     ),

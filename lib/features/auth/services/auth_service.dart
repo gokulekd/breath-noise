@@ -7,8 +7,11 @@ final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
   return FirebaseAuth.instance;
 });
 
+const _webClientId =
+    '501054824114-125qlm6p0p1sjmu2t3rhhs72vc5j7le2.apps.googleusercontent.com';
+
 final googleSignInProvider = Provider<GoogleSignIn>((ref) {
-  return GoogleSignIn.instance;
+  return GoogleSignIn(serverClientId: _webClientId);
 });
 
 final authServiceProvider = Provider<AuthService>((ref) {
@@ -31,7 +34,6 @@ class AuthService {
 
   final FirebaseAuth _auth;
   final GoogleSignIn _googleSignIn;
-  Future<void>? _googleSignInInitialization;
 
   Future<UserCredential> signInWithEmail({
     required String email,
@@ -72,10 +74,15 @@ class AuthService {
       return _auth.signInWithPopup(provider);
     }
 
-    await _initializeGoogleSignIn();
+    final account = await _googleSignIn.signIn();
+    if (account == null) {
+      throw FirebaseAuthException(
+        code: 'sign-in-cancelled',
+        message: 'Google sign-in was cancelled.',
+      );
+    }
 
-    final account = await _googleSignIn.authenticate();
-    final authentication = account.authentication;
+    final authentication = await account.authentication;
     final idToken = authentication.idToken;
     if (idToken == null || idToken.isEmpty) {
       throw FirebaseAuthException(
@@ -84,19 +91,17 @@ class AuthService {
       );
     }
 
-    final credential = GoogleAuthProvider.credential(idToken: idToken);
+    final credential = GoogleAuthProvider.credential(
+      idToken: idToken,
+      accessToken: authentication.accessToken,
+    );
     return _auth.signInWithCredential(credential);
   }
 
   Future<void> signOut() async {
     if (!kIsWeb) {
-      await _initializeGoogleSignIn();
       await _googleSignIn.signOut();
     }
     await _auth.signOut();
-  }
-
-  Future<void> _initializeGoogleSignIn() {
-    return _googleSignInInitialization ??= _googleSignIn.initialize();
   }
 }
