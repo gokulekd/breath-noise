@@ -73,122 +73,110 @@ class SceneDefinition {
 }
 
 class SceneData {
+  // classic_hearth
   static List<AudioTrack> hearth() => [
         AudioTrack(
-          id: 'fire_crackle',
-          name: 'Crackling Fire',
+          id: 'fireplace1',
+          name: 'Fireplace',
           emoji: '🔥',
-          networkUrl:
-              'https://soundbible.com/grab.php?id=1543&type=mp3',
+          assetPath: 'assets/audio/fireplace1.wav',
           volume: 0.8,
         ),
         AudioTrack(
-          id: 'wind_hearth',
-          name: 'Gentle Wind',
-          emoji: '🌬️',
-          networkUrl: 'https://soundbible.com/grab.php?id=2011&type=mp3',
-          volume: 0.0,
-        ),
-        AudioTrack(
-          id: 'rain_light',
-          name: 'Light Rain',
-          emoji: '🌧️',
-          networkUrl: 'https://soundbible.com/grab.php?id=2011&type=mp3',
+          id: 'fireplace2',
+          name: 'Soft Fire',
+          emoji: '🪵',
+          assetPath: 'assets/audio/fireplace2.mp3',
           volume: 0.0,
         ),
       ];
 
+  // rain_forest / midnight forest
   static List<AudioTrack> forest() => [
         AudioTrack(
-          id: 'rain_heavy',
-          name: 'Heavy Rain',
+          id: 'rain_forest',
+          name: 'Rain Forest',
           emoji: '🌧️',
-          networkUrl: 'https://soundbible.com/grab.php?id=2011&type=mp3',
+          assetPath: 'assets/audio/rain_forest.mp3',
+          volume: 0.8,
+        ),
+        AudioTrack(
+          id: 'rain_forest2',
+          name: 'Deep Rain',
+          emoji: '🌲',
+          assetPath: 'assets/audio/rain_forest2.mp3',
+          volume: 0.0,
+        ),
+      ];
+
+  // himalayan_cabin
+  static List<AudioTrack> cabin() => [
+        AudioTrack(
+          id: 'snow',
+          name: 'Snowstorm',
+          emoji: '❄️',
+          assetPath: 'assets/audio/snow1.mp3',
           volume: 0.7,
         ),
         AudioTrack(
-          id: 'thunder_distant',
-          name: 'Thunder',
-          emoji: '⛈️',
-          networkUrl: 'https://soundbible.com/grab.php?id=2015&type=mp3',
-          volume: 0.4,
-        ),
-        AudioTrack(
-          id: 'leaves_rustle',
-          name: 'Rustling Leaves',
-          emoji: '🍃',
-          networkUrl: 'https://soundbible.com/grab.php?id=2011&type=mp3',
-          volume: 0.5,
-        ),
-        AudioTrack(
-          id: 'crickets',
-          name: 'Night Crickets',
-          emoji: '🦗',
-          networkUrl: 'https://soundbible.com/grab.php?id=1253&type=mp3',
-          volume: 0.0,
-        ),
-      ];
-
-  static List<AudioTrack> cabin() => [
-        AudioTrack(
-          id: 'blizzard',
-          name: 'Blizzard',
-          emoji: '❄️',
-          networkUrl: 'https://soundbible.com/grab.php?id=2011&type=mp3',
-          volume: 0.5,
-        ),
-        AudioTrack(
-          id: 'fire_soft',
-          name: 'Soft Fireplace',
+          id: 'cabin_fire',
+          name: 'Fireplace',
           emoji: '🔥',
-          networkUrl:
-              'https://soundbible.com/grab.php?id=1543&type=mp3',
-          volume: 0.6,
-        ),
-        AudioTrack(
-          id: 'wind_howl',
-          name: 'Howling Wind',
-          emoji: '🌪️',
-          networkUrl: 'https://soundbible.com/grab.php?id=2011&type=mp3',
-          volume: 0.3,
-        ),
-        AudioTrack(
-          id: 'clock_tick',
-          name: 'Clock Ticking',
-          emoji: '⏰',
-          networkUrl:
-              'https://soundbible.com/grab.php?id=1418&type=mp3',
-          volume: 0.0,
+          assetPath: 'assets/audio/fireplace1.wav',
+          volume: 0.5,
         ),
       ];
 
+  // river_side / coastal breeze
   static List<AudioTrack> coastal() => [
         AudioTrack(
-          id: 'waves',
-          name: 'Ocean Waves',
+          id: 'river_side',
+          name: 'River Side',
           emoji: '🌊',
-          networkUrl: 'https://soundbible.com/grab.php?id=1936&type=mp3',
+          assetPath: 'assets/audio/river_side.mp3',
           volume: 0.8,
         ),
         AudioTrack(
-          id: 'seagulls',
-          name: 'Seagulls',
+          id: 'river_birds',
+          name: 'Birds',
           emoji: '🐦',
-          networkUrl: 'https://soundbible.com/grab.php?id=1477&type=mp3',
+          assetPath: 'assets/audio/river_side_bird.mp3',
           volume: 0.3,
         ),
+      ];
+
+  // tibet_temple / zen garden
+  static List<AudioTrack> temple() => [
         AudioTrack(
-          id: 'coastal_wind',
-          name: 'Coastal Breeze',
-          emoji: '🌬️',
-          networkUrl: 'https://soundbible.com/grab.php?id=2011&type=mp3',
-          volume: 0.2,
+          id: 'temple',
+          name: 'Temple',
+          emoji: '🛕',
+          assetPath: 'assets/audio/tebet_temple.mp3',
+          volume: 0.8,
         ),
         AudioTrack(
-          id: 'rain_coastal',
-          name: 'Rain',
-          emoji: '🌧️',
-          networkUrl: 'https://soundbible.com/grab.php?id=2011&type=mp3',
+          id: 'temple2',
+          name: 'Bells',
+          emoji: '🔔',
+          assetPath: 'assets/audio/tebet_temple2.mp3',
+          volume: 0.4,
+        ),
+      ];
+
+  // hut_in_rain / rainy cafe
+  static List<AudioTrack> hutRain() => [
+        AudioTrack(
+          id: 'hut_rain',
+          name: 'Hut in Rain',
+          emoji: '🛖',
+          assetPath: 'assets/audio/hut_rain.mp3',
+          volume: 0.8,
+        ),
+        AudioTrack(
+          id: 'birds',
+          name: 'Birds',
+          emoji: '🐦',
+          assetPath: 'assets/audio/bird_sound.mp3',
           volume: 0.0,
         ),
       ];

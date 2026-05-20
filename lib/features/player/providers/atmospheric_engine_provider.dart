@@ -81,6 +81,10 @@ List<AudioTrack> _tracksForScene(
       return SceneData.cabin();
     case SceneId.coastalBreeze:
       return SceneData.coastal();
+    case SceneId.zenGarden:
+      return SceneData.temple();
+    case SceneId.rainyCafe:
+      return SceneData.hutRain();
     default:
       return [];
   }

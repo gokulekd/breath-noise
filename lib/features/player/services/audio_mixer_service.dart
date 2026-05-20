@@ -18,20 +18,27 @@ class AudioMixerService {
   /// Disposes of any previously playing tracks.
   Future<void> loadScene(List<AudioTrack> tracks,
       {double masterVolume = 1.0}) async {
-    // 1. Stop and dispose old players
     await stopAll();
 
     _masterVolume = masterVolume;
     _trackVolumes.clear();
 
-    // 2. Initialize new players
     for (final track in tracks) {
-      if (track.networkUrl == null) continue;
+      final hasSource = track.assetPath != null || track.networkUrl != null;
+      if (!hasSource) continue;
 
       try {
         final player = AudioPlayer();
-        await player.setUrl(track.networkUrl!);
-        await player.setLoopMode(LoopMode.one); // Seamless looping
+
+        if (track.assetPath != null) {
+          await player.setAudioSource(
+            AudioSource.asset(track.assetPath!),
+          );
+        } else {
+          await player.setUrl(track.networkUrl!);
+        }
+
+        await player.setLoopMode(LoopMode.one);
 
         _trackVolumes[track.id] = track.volume;
         player.setVolume(_calculateActualVolume(track.volume));
