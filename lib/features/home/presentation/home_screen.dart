@@ -320,11 +320,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   ) {
     return GestureDetector(
       onTap: () {
-        if (!engineState.isPlaying) {
-          ref
-              .read(atmosphericEngineProvider.notifier)
-              .selectScene(engineState.scene);
-        }
         Navigator.push(
           context,
           PageRouteBuilder(
@@ -454,10 +449,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
               ),
             ),
 
-            // Play button overlay
-            if (!engineState.isPlaying)
-              Center(
-                child: Container(
+            // Play / Pause button overlay
+            Center(
+              child: GestureDetector(
+                onTap: () => ref
+                    .read(atmosphericEngineProvider.notifier)
+                    .togglePlayPause(),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
                   width: 64,
                   height: 64,
                   decoration: BoxDecoration(
@@ -468,25 +467,31 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                       width: 2,
                     ),
                   ),
-                  child: const Icon(
-                    Icons.play_arrow_rounded,
-                    color: Colors.white,
-                    size: 36,
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 200),
+                    child: Icon(
+                      engineState.isPlaying
+                          ? Icons.pause_rounded
+                          : Icons.play_arrow_rounded,
+                      key: ValueKey(engineState.isPlaying),
+                      color: Colors.white,
+                      size: 36,
+                    ),
                   ),
                 ),
               ),
+            ),
 
-            // Chevron open hint
-            if (engineState.isPlaying)
-              const Positioned(
-                right: 20,
-                bottom: 20,
-                child: Icon(
-                  Icons.open_in_full_rounded,
-                  color: Colors.white54,
-                  size: 18,
-                ),
+            // Expand hint
+            const Positioned(
+              right: 20,
+              bottom: 20,
+              child: Icon(
+                Icons.open_in_full_rounded,
+                color: Colors.white54,
+                size: 18,
               ),
+            ),
           ],
         ),
       ),

@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,10 +27,9 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
     with TickerProviderStateMixin {
   late AnimationController _pulseController;
   late AnimationController _fadeController;
+  late AnimationController _waveController;
   late Animation<double> _pulseAnim;
   bool _showControls = true;
-  bool _showMixer = false;
-  bool _showFocusTimer = false;
   bool _showVolume = false;
 
   @override
@@ -47,6 +48,11 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
       value: 1.0,
     );
 
+    _waveController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1400),
+    )..repeat();
+
     _pulseAnim = Tween<double>(begin: 0.95, end: 1.05).animate(
       CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
     );
@@ -64,6 +70,7 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
   void dispose() {
     _pulseController.dispose();
     _fadeController.dispose();
+    _waveController.dispose();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     super.dispose();
   }
@@ -127,18 +134,6 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
                         ),
                       ),
 
-                      // Audio Mixer Drawer
-                      if (_showMixer)
-                        Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: _AudioMixerPanel(
-                            tracks: engineState.audioTracks,
-                            onClose: () => setState(() => _showMixer = false),
-                          ),
-                        ),
-
                       // Vertical Volume Panel
                       if (_showVolume)
                         Positioned(
@@ -156,13 +151,19 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
                 ),
               ),
 
-              if (_showFocusTimer && !_showMixer)
-                Positioned(
-                  top: MediaQuery.of(context).size.height * 0.25,
-                  left: 0,
-                  right: 0,
-                  child: const Center(child: FocusTimerWidget()),
+              // Playing waveform indicator — center of screen, always visible
+              Positioned(
+                bottom: MediaQuery.of(context).size.height * 0.28,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: _WaveformIndicator(
+                    isPlaying: engineState.isPlaying,
+                    color: widget.scene.accentColor,
+                    controller: _waveController,
+                  ),
                 ),
+              ),
 
               // Timer badge (always visible when timer running)
               if (isTimerRunning && !_showControls)
@@ -293,8 +294,8 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
           _ControlButton(
             icon: Icons.timer_outlined,
             label: 'Focus',
-            isActive: _showFocusTimer,
-            onTap: () => setState(() => _showFocusTimer = !_showFocusTimer),
+            isActive: false,
+            onTap: () => _showFocusTimerSheet(context),
           ),
           const SizedBox(width: 14),
 
@@ -352,13 +353,10 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
           _ControlButton(
             icon: Icons.equalizer_rounded,
             label: 'Mixer',
-            isActive: _showMixer,
+            isActive: false,
             isLocked: !widget.scene.isPremium,
             onTap: widget.scene.isPremium
-                ? () => setState(() {
-                      _showMixer = !_showMixer;
-                      _showVolume = false;
-                    })
+                ? () => _showMixerSheet(context)
                 : () => _showMixerProSheet(context),
           ),
 
@@ -373,10 +371,7 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
                     : Icons.volume_up_rounded,
             label: 'Volume',
             isActive: _showVolume,
-            onTap: () => setState(() {
-              _showVolume = !_showVolume;
-              _showMixer = false;
-            }),
+            onTap: () => setState(() => _showVolume = !_showVolume),
           ),
         ],
       ),
@@ -387,6 +382,25 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
     final m = d.inMinutes.remainder(60).toString().padLeft(2, '0');
     final s = d.inSeconds.remainder(60).toString().padLeft(2, '0');
     return '$m:$s';
+  }
+
+  void _showFocusTimerSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (_) => _FocusTimerSheet(),
+    );
+  }
+
+  void _showMixerSheet(BuildContext context) {
+    final tracks = ref.read(atmosphericEngineProvider).audioTracks;
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (_) => _AudioMixerSheet(tracks: tracks),
+    );
   }
 
   void _showSleepTimerSheet(BuildContext context) {
@@ -964,20 +978,71 @@ class _VerticalVolumePanel extends StatelessWidget {
   }
 }
 
-class _AudioMixerPanel extends ConsumerWidget {
-  final List<AudioTrack> tracks;
-  final VoidCallback onClose;
+class _WaveformIndicator extends StatelessWidget {
+  final bool isPlaying;
+  final Color color;
+  final AnimationController controller;
 
-  const _AudioMixerPanel({required this.tracks, required this.onClose});
+  const _WaveformIndicator({
+    required this.isPlaying,
+    required this.color,
+    required this.controller,
+  });
+
+  static const _barCount = 7;
+  static const _maxBarHeight = 28.0;
+  static const _minBarHeight = 4.0;
+  static const _barWidth = 4.0;
+  static const _barSpacing = 5.0;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (context, _) {
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: List.generate(_barCount, (i) {
+            final phase = controller.value * 2 * math.pi + i * (math.pi / (_barCount - 1));
+            final heightFraction = (math.sin(phase) + 1) / 2;
+            final barHeight = isPlaying
+                ? _minBarHeight + (_maxBarHeight - _minBarHeight) * heightFraction
+                : _minBarHeight;
+
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: _barSpacing / 2),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 80),
+                width: _barWidth,
+                height: barHeight,
+                decoration: BoxDecoration(
+                  color: isPlaying
+                      ? color.withAlpha(180)
+                      : color.withAlpha(60),
+                  borderRadius: BorderRadius.circular(_barWidth / 2),
+                ),
+              ),
+            );
+          }),
+        );
+      },
+    );
+  }
+}
+
+class _FocusTimerSheet extends StatelessWidget {
+  const _FocusTimerSheet();
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(maxHeight: 400),
+      padding: EdgeInsets.fromLTRB(
+        24, 12, 24, MediaQuery.of(context).padding.bottom + 24,
+      ),
       decoration: BoxDecoration(
-        color: AppTheme.backgroundMid.withAlpha(240),
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-        border: Border.all(color: Colors.white.withAlpha(15), width: 1),
+        color: AppTheme.backgroundMid,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withAlpha(120),
@@ -989,9 +1054,84 @@ class _AudioMixerPanel extends ConsumerWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          // Drag handle
+          Container(
+            width: 40,
+            height: 4,
+            margin: const EdgeInsets.only(bottom: 20),
+            decoration: BoxDecoration(
+              color: Colors.white.withAlpha(40),
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          Row(
+            children: [
+              const Icon(Icons.timer_outlined, color: AppTheme.amberGold, size: 20),
+              const SizedBox(width: 8),
+              const Text(
+                'Focus Timer',
+                style: TextStyle(
+                  color: AppTheme.warmCream,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const Spacer(),
+              IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(Icons.expand_more_rounded, color: AppTheme.mutedGray),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          const FocusTimerWidget(),
+          const SizedBox(height: 8),
+        ],
+      ),
+    );
+  }
+}
+
+class _AudioMixerSheet extends ConsumerWidget {
+  final List<AudioTrack> tracks;
+
+  const _AudioMixerSheet({required this.tracks});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentTracks = ref.watch(atmosphericEngineProvider).audioTracks;
+    return Container(
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.6,
+      ),
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+      decoration: BoxDecoration(
+        color: AppTheme.backgroundMid,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(120),
+            blurRadius: 30,
+            offset: const Offset(0, -4),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Drag handle
+          Container(
+            width: 40,
+            height: 4,
+            margin: const EdgeInsets.only(top: 12, bottom: 4),
+            decoration: BoxDecoration(
+              color: Colors.white.withAlpha(40),
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
           // Header
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 16, 12, 8),
+            padding: const EdgeInsets.fromLTRB(20, 8, 12, 8),
             child: Row(
               children: [
                 const Text('🎚️', style: TextStyle(fontSize: 20)),
@@ -1006,24 +1146,20 @@ class _AudioMixerPanel extends ConsumerWidget {
                 ),
                 const Spacer(),
                 IconButton(
-                  onPressed: onClose,
-                  icon: const Icon(
-                    Icons.expand_more_rounded,
-                    color: AppTheme.mutedGray,
-                  ),
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(Icons.expand_more_rounded, color: AppTheme.mutedGray),
                 ),
               ],
             ),
           ),
-
           // Track sliders
           Flexible(
             child: ListView.builder(
               shrinkWrap: true,
-              itemCount: tracks.length,
+              itemCount: currentTracks.length,
               padding: const EdgeInsets.only(bottom: 16),
               itemBuilder: (context, index) {
-                final track = tracks[index];
+                final track = currentTracks[index];
                 return AudioTrackSlider(
                   track: track,
                   onVolumeChanged: (vol) {
