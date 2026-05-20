@@ -20,7 +20,9 @@ class AppDrawer extends ConsumerWidget {
           color: isDark ? AppTheme.backgroundDark : AppTheme.warmCream,
           border: Border(
             right: BorderSide(
-              color: isDark ? Colors.white.withAlpha(20) : AppTheme.deepSlate.withAlpha(20),
+              color: isDark
+                  ? Colors.white.withAlpha(20)
+                  : AppTheme.deepSlate.withAlpha(20),
               width: 1,
             ),
           ),
@@ -48,35 +50,35 @@ class AppDrawer extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'BREATH NOISE',
+                              'Breath Noise',
                               style: TextStyle(
-                                color: isDark ? AppTheme.warmCream : AppTheme.deepSlate,
-                                fontSize: 20,
+                                color: isDark
+                                    ? AppTheme.warmCream
+                                    : AppTheme.deepSlate,
+                                fontSize: 24,
                                 fontWeight: FontWeight.w800,
-                                letterSpacing: 2.0,
+                                letterSpacing: -0.5,
                               ),
                             ),
                             Text(
-                              'HEARTH',
+                              'Version 1.0.0',
                               style: TextStyle(
                                 color: isDark
-                                    ? AppTheme.emberOrange.withAlpha(200)
-                                    : AppTheme.emberOrange,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: 2.0,
+                                    ? AppTheme.mutedGray
+                                    : AppTheme.deepSlate.withAlpha(150),
+                                fontSize: 12,
                               ),
                             ),
                           ],
                         ),
                       ],
                     ),
-
                   ],
                 ),
               ),
 
-              Divider(color: isDark ? Colors.white10 : Colors.black12, height: 32),
+              Divider(
+                  color: isDark ? Colors.white10 : Colors.black12, height: 32),
 
               // Menu Items
               Expanded(
@@ -99,9 +101,11 @@ class AppDrawer extends ConsumerWidget {
                         // Keep drawer open but show a coming soon snackbar
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
-                           SnackBar(
+                          SnackBar(
                             content: const Text("Favorites - Coming Soon!"),
-                            backgroundColor: isDark ? AppTheme.deepSlate : AppTheme.mutedGray,
+                            backgroundColor: isDark
+                                ? AppTheme.deepSlate
+                                : AppTheme.mutedGray,
                           ),
                         );
                       },
@@ -114,9 +118,11 @@ class AppDrawer extends ConsumerWidget {
                       onTap: () {
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
-                           SnackBar(
+                          SnackBar(
                             content: const Text("Sleep History - Coming Soon!"),
-                            backgroundColor: isDark ? AppTheme.deepSlate : AppTheme.mutedGray,
+                            backgroundColor: isDark
+                                ? AppTheme.deepSlate
+                                : AppTheme.mutedGray,
                           ),
                         );
                       },
@@ -128,9 +134,11 @@ class AppDrawer extends ConsumerWidget {
                       onTap: () {
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
-                           SnackBar(
+                          SnackBar(
                             content: const Text("Settings - Coming Soon!"),
-                            backgroundColor: isDark ? AppTheme.deepSlate : AppTheme.mutedGray,
+                            backgroundColor: isDark
+                                ? AppTheme.deepSlate
+                                : AppTheme.mutedGray,
                           ),
                         );
                       },
@@ -142,9 +150,11 @@ class AppDrawer extends ConsumerWidget {
                       onTap: () {
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
-                           SnackBar(
+                          SnackBar(
                             content: const Text("About"),
-                            backgroundColor: isDark ? AppTheme.deepSlate : AppTheme.mutedGray,
+                            backgroundColor: isDark
+                                ? AppTheme.deepSlate
+                                : AppTheme.mutedGray,
                           ),
                         );
                       },
@@ -156,9 +166,11 @@ class AppDrawer extends ConsumerWidget {
                       onTap: () {
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
-                           SnackBar(
+                          SnackBar(
                             content: const Text("Privacy Policy"),
-                            backgroundColor: isDark ? AppTheme.deepSlate : AppTheme.mutedGray,
+                            backgroundColor: isDark
+                                ? AppTheme.deepSlate
+                                : AppTheme.mutedGray,
                           ),
                         );
                       },
@@ -170,17 +182,13 @@ class AppDrawer extends ConsumerWidget {
                       onTap: () {
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
-                           SnackBar(
+                          SnackBar(
                             content: const Text("Terms & Conditions"),
-                            backgroundColor: isDark ? AppTheme.deepSlate : AppTheme.mutedGray,
+                            backgroundColor: isDark
+                                ? AppTheme.deepSlate
+                                : AppTheme.mutedGray,
                           ),
                         );
-                      },
-                    ),
-                    _buildThemeToggleItem(
-                      isDark: isDark,
-                      onToggle: (value) {
-                        ref.read(themeProvider.notifier).toggleTheme(value);
                       },
                     ),
                     _buildDrawerItem(
@@ -192,7 +200,9 @@ class AppDrawer extends ConsumerWidget {
                         final confirmed = await showDialog<bool>(
                           context: context,
                           builder: (ctx) => AlertDialog(
-                            backgroundColor: isDark ? AppTheme.backgroundDark : AppTheme.warmCream,
+                            backgroundColor: isDark
+                                ? AppTheme.backgroundDark
+                                : AppTheme.warmCream,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),
@@ -212,7 +222,9 @@ class AppDrawer extends ConsumerWidget {
                               'Log Out?',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: isDark ? AppTheme.warmCream : AppTheme.deepSlate,
+                                color: isDark
+                                    ? AppTheme.warmCream
+                                    : AppTheme.deepSlate,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w800,
                               ),
@@ -221,32 +233,42 @@ class AppDrawer extends ConsumerWidget {
                               'Are you sure you want to log out of Breath Noise?',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: isDark ? AppTheme.mutedGray : AppTheme.deepSlate.withAlpha(160),
+                                color: isDark
+                                    ? AppTheme.mutedGray
+                                    : AppTheme.deepSlate.withAlpha(160),
                                 fontSize: 14,
                                 height: 1.5,
                               ),
                             ),
                             actionsAlignment: MainAxisAlignment.center,
-                            actionsPadding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                            actionsPadding:
+                                const EdgeInsets.fromLTRB(20, 0, 20, 20),
                             actions: [
                               Row(
                                 children: [
                                   Expanded(
                                     child: OutlinedButton(
                                       style: OutlinedButton.styleFrom(
-                                        padding: const EdgeInsets.symmetric(vertical: 14),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 14),
                                         side: BorderSide(
-                                          color: isDark ? Colors.white24 : Colors.black12,
+                                          color: isDark
+                                              ? Colors.white24
+                                              : Colors.black12,
                                         ),
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(12),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
                                         ),
                                       ),
-                                      onPressed: () => Navigator.pop(ctx, false),
+                                      onPressed: () =>
+                                          Navigator.pop(ctx, false),
                                       child: Text(
                                         'Cancel',
                                         style: TextStyle(
-                                          color: isDark ? AppTheme.softWhite : AppTheme.deepSlate,
+                                          color: isDark
+                                              ? AppTheme.softWhite
+                                              : AppTheme.deepSlate,
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
@@ -257,9 +279,11 @@ class AppDrawer extends ConsumerWidget {
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: AppTheme.emberOrange,
-                                        padding: const EdgeInsets.symmetric(vertical: 14),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 14),
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(12),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
                                         ),
                                         elevation: 0,
                                       ),
@@ -298,49 +322,88 @@ class AppDrawer extends ConsumerWidget {
                 ),
               ),
 
-              Divider(color: isDark ? Colors.white10 : Colors.black12, height: 32),
-
               // Footer
               Padding(
-                padding: const EdgeInsets.fromLTRB(24, 0, 24, 32),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: AppTheme.amberGold.withAlpha(20),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.star_rounded,
-                            color: AppTheme.amberGold,
-                            size: 16,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            'Breath Noise Pro',
-                            style: TextStyle(
-                              color: isDark ? AppTheme.warmCream : AppTheme.deepSlate,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ],
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF1A0A00), Color(0xFF3D1A00)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
-                    const SizedBox(height: 8),
-                     Text(
-                      'Version 1.0.0',
-                      style: TextStyle(
-                        color: isDark ? AppTheme.mutedGray : AppTheme.deepSlate.withAlpha(150),
-                        fontSize: 12,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: AppTheme.amberGold.withAlpha(60),
+                      width: 1,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppTheme.amberGold.withAlpha(20),
+                        blurRadius: 16,
+                        offset: const Offset(0, 4),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [AppTheme.emberOrange, AppTheme.amberGold],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppTheme.amberGold.withAlpha(80),
+                              blurRadius: 8,
+                            ),
+                          ],
+                        ),
+                        child: const Icon(
+                          Icons.star_rounded,
+                          color: Colors.white,
+                          size: 16,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      const Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Upgrade to Pro',
+                              style: TextStyle(
+                                color: AppTheme.warmCream,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 0.2,
+                              ),
+                            ),
+                            SizedBox(height: 2),
+                            Text(
+                              'Unlock all scenes & features',
+                              style: TextStyle(
+                                color: AppTheme.amberGold,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: AppTheme.amberGold,
+                        size: 14,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -368,10 +431,18 @@ class AppDrawer extends ConsumerWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           decoration: BoxDecoration(
-            color: isActive ? (isDark ? Colors.white.withAlpha(10) : Colors.black.withAlpha(10)) : Colors.transparent,
+            color: isActive
+                ? (isDark
+                    ? Colors.white.withAlpha(10)
+                    : Colors.black.withAlpha(10))
+                : Colors.transparent,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: isActive ? (isDark ? Colors.white.withAlpha(5) : Colors.black.withAlpha(5)) : Colors.transparent,
+              color: isActive
+                  ? (isDark
+                      ? Colors.white.withAlpha(5)
+                      : Colors.black.withAlpha(5))
+                  : Colors.transparent,
             ),
           ),
           child: Row(
@@ -380,7 +451,9 @@ class AppDrawer extends ConsumerWidget {
                 icon,
                 color: isActive
                     ? AppTheme.emberOrange
-                    : (isDark ? AppTheme.softWhite.withAlpha(160) : AppTheme.deepSlate.withAlpha(160)),
+                    : (isDark
+                        ? AppTheme.softWhite.withAlpha(160)
+                        : AppTheme.deepSlate.withAlpha(160)),
                 size: 24,
               ),
               const SizedBox(width: 16),
@@ -390,7 +463,9 @@ class AppDrawer extends ConsumerWidget {
                   style: TextStyle(
                     color: isActive
                         ? (isDark ? AppTheme.warmCream : AppTheme.deepSlate)
-                        : (isDark ? AppTheme.softWhite.withAlpha(160) : AppTheme.deepSlate.withAlpha(160)),
+                        : (isDark
+                            ? AppTheme.softWhite.withAlpha(160)
+                            : AppTheme.deepSlate.withAlpha(160)),
                     fontSize: 16,
                     fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
                   ),
@@ -420,46 +495,6 @@ class AppDrawer extends ConsumerWidget {
                 ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildThemeToggleItem({
-    required bool isDark,
-    required ValueChanged<bool> onToggle,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-        child: Row(
-          children: [
-            Icon(
-              isDark ? Icons.dark_mode_rounded : Icons.light_mode_rounded,
-              color: isDark ? AppTheme.softWhite.withAlpha(160) : AppTheme.deepSlate.withAlpha(160),
-              size: 24,
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Text(
-                isDark ? 'Dark Theme' : 'Light Theme',
-                style: TextStyle(
-                  color: isDark ? AppTheme.softWhite.withAlpha(160) : AppTheme.deepSlate.withAlpha(160),
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-            Switch(
-              value: isDark,
-              onChanged: onToggle,
-              activeThumbColor: AppTheme.amberGold,
-              activeTrackColor: AppTheme.amberGold.withAlpha(50),
-              inactiveThumbColor: isDark ? AppTheme.mutedGray : AppTheme.deepSlate.withAlpha(100),
-              inactiveTrackColor: isDark ? AppTheme.deepSlate.withAlpha(50) : AppTheme.deepSlate.withAlpha(20),
-            ),
-          ],
         ),
       ),
     );

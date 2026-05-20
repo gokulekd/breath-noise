@@ -13,6 +13,7 @@ import '../../../features/player/providers/atmospheric_engine_provider.dart';
 import '../../../features/settings/presentation/light_sync_screen.dart';
 import '../../../features/timer/presentation/sleep_timer_sheet.dart';
 import '../../../features/timer/providers/sleep_timer_provider.dart';
+import '../../../core/theme/theme_provider.dart';
 import '../../../widgets/app_drawer.dart';
 import '../../../widgets/scene_card.dart';
 
@@ -108,6 +109,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
               ),
             ),
             actions: [
+              // Theme toggle
+              _ThemeToggleButton(),
+              const SizedBox(width: 8),
               // Timer status indicator
               if (timerState.status == SleepTimerState.running)
                 Center(
@@ -1083,6 +1087,96 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     final m = d.inMinutes.remainder(60).toString().padLeft(2, '0');
     final s = d.inSeconds.remainder(60).toString().padLeft(2, '0');
     return '$m:$s';
+  }
+}
+
+// ── Theme Toggle Button ───────────────────────────────────────────────────────
+
+class _ThemeToggleButton extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isDark = ref.watch(themeProvider) == ThemeMode.dark;
+
+    return Padding(
+      padding: const EdgeInsets.only(right: 4),
+      child: GestureDetector(
+        onTap: () => ref.read(themeProvider.notifier).toggleTheme(!isDark),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.easeInOut,
+          width: 64,
+          height: 32,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: isDark
+                ? AppTheme.deepSlate.withAlpha(180)
+                : AppTheme.deepSlate.withAlpha(20),
+            border: Border.all(
+              color: isDark
+                  ? Colors.white.withAlpha(20)
+                  : AppTheme.deepSlate.withAlpha(30),
+              width: 1,
+            ),
+          ),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              // Moon icon (left)
+              Positioned(
+                left: 6,
+                child: Icon(
+                  Icons.nightlight_round,
+                  size: 14,
+                  color: isDark
+                      ? AppTheme.amberGold
+                      : AppTheme.deepSlate.withAlpha(80),
+                ),
+              ),
+              // Sun icon (right)
+              Positioned(
+                right: 6,
+                child: Icon(
+                  Icons.wb_sunny_rounded,
+                  size: 14,
+                  color: isDark
+                      ? Colors.white.withAlpha(60)
+                      : AppTheme.emberOrange,
+                ),
+              ),
+              // Thumb
+              AnimatedAlign(
+                duration: const Duration(milliseconds: 250),
+                curve: Curves.easeInOut,
+                alignment: isDark ? Alignment.centerLeft : Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 3),
+                  child: Container(
+                    width: 24,
+                    height: 24,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: isDark ? AppTheme.amberGold : Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withAlpha(40),
+                          blurRadius: 4,
+                          offset: const Offset(0, 1),
+                        ),
+                      ],
+                    ),
+                    child: Icon(
+                      isDark ? Icons.nightlight_round : Icons.wb_sunny_rounded,
+                      size: 13,
+                      color: isDark ? Colors.white : AppTheme.emberOrange,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 
