@@ -12,6 +12,7 @@ import '../../../features/timer/presentation/focus_timer_widget.dart';
 import '../../../features/timer/presentation/sleep_timer_sheet.dart';
 import '../../../features/timer/providers/alarm_provider.dart';
 import '../../../features/timer/providers/sleep_timer_provider.dart';
+import '../../../features/subscription/subscription_provider.dart';
 import '../../../widgets/audio_track_slider.dart';
 
 class PlayerScreen extends ConsumerStatefulWidget {
@@ -89,6 +90,7 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
     final engineState = ref.watch(atmosphericEngineProvider);
     final timerState = ref.watch(sleepTimerProvider);
     final alarmState = ref.watch(alarmProvider);
+    final isPro = ref.watch(isProProvider).valueOrNull ?? false;
     final isTimerRunning = timerState.status == SleepTimerState.running;
     final isAlarmSet = alarmState.isSet;
 
@@ -131,6 +133,7 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
                           engineState,
                           isTimerRunning,
                           timerState,
+                          isPro,
                         ),
                       ),
 
@@ -272,6 +275,7 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
     SceneState engineState,
     bool isTimerRunning,
     SleepTimerNotifierState timerState,
+    bool isPro,
   ) {
     return Container(
       padding: EdgeInsets.only(
@@ -349,13 +353,13 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
 
           const SizedBox(width: 14),
 
-          // Mixer (Pro only)
+          // Mixer
           _ControlButton(
             icon: Icons.equalizer_rounded,
             label: 'Mixer',
             isActive: false,
-            isLocked: !widget.scene.isPremium,
-            onTap: widget.scene.isPremium
+            isLocked: !widget.scene.hasMixer && !isPro,
+            onTap: widget.scene.hasMixer || isPro
                 ? () => _showMixerSheet(context)
                 : () => _showMixerProSheet(context),
           ),

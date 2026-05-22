@@ -56,6 +56,7 @@ class SceneDefinition {
   final String? imageAsset;
   final List<AudioTrack> availableAudioTracks;
   final bool isPremium;
+  final bool hasMixer;
 
   const SceneDefinition({
     required this.id,
@@ -69,25 +70,29 @@ class SceneDefinition {
     this.imageAsset,
     required this.availableAudioTracks,
     this.isPremium = false,
+    this.hasMixer = false,
   });
 }
 
 class SceneData {
+  static const String _base =
+      'https://mowzubasnsyesttcpllf.supabase.co/storage/v1/object/public/Ambient%20sound';
+
   // classic_hearth
   static List<AudioTrack> hearth() => [
         AudioTrack(
           id: 'fireplace1',
           name: 'Fireplace',
           emoji: '🔥',
-          assetPath: 'assets/audio/fireplace1.wav',
-          volume: 0.8,
+          networkUrl: '$_base/fireplace1.wav',
+          volume: 0.3,
         ),
         AudioTrack(
           id: 'fireplace2',
           name: 'Soft Fire',
           emoji: '🪵',
-          assetPath: 'assets/audio/fireplace2.mp3',
-          volume: 0.0,
+          networkUrl: '$_base/fireplace2.mp3',
+          volume: 0.7,
         ),
       ];
 
@@ -97,14 +102,14 @@ class SceneData {
           id: 'rain_forest',
           name: 'Rain Forest',
           emoji: '🌧️',
-          assetPath: 'assets/audio/rain_forest.mp3',
+          networkUrl: '$_base/rain_forest.mp3',
           volume: 0.8,
         ),
         AudioTrack(
           id: 'rain_forest2',
           name: 'Deep Rain',
           emoji: '🌲',
-          assetPath: 'assets/audio/rain_forest2.mp3',
+          // rain_forest2.mp3 not yet uploaded to Supabase — track is silent until added
           volume: 0.0,
         ),
       ];
@@ -115,14 +120,14 @@ class SceneData {
           id: 'snow',
           name: 'Snowstorm',
           emoji: '❄️',
-          assetPath: 'assets/audio/snow1.mp3',
+          networkUrl: '$_base/snow1.mp3',
           volume: 0.7,
         ),
         AudioTrack(
           id: 'cabin_fire',
           name: 'Fireplace',
           emoji: '🔥',
-          assetPath: 'assets/audio/fireplace1.wav',
+          networkUrl: '$_base/fireplace1.wav',
           volume: 0.5,
         ),
       ];
@@ -133,14 +138,14 @@ class SceneData {
           id: 'river_side',
           name: 'River Side',
           emoji: '🌊',
-          assetPath: 'assets/audio/river_side.mp3',
+          networkUrl: '$_base/river_side.mp3',
           volume: 0.8,
         ),
         AudioTrack(
           id: 'river_birds',
           name: 'Birds',
           emoji: '🐦',
-          assetPath: 'assets/audio/river_side_bird.mp3',
+          networkUrl: '$_base/river_bird.mp3',
           volume: 0.3,
         ),
       ];
@@ -151,14 +156,14 @@ class SceneData {
           id: 'temple',
           name: 'Temple',
           emoji: '🛕',
-          assetPath: 'assets/audio/tebet_temple.mp3',
+          networkUrl: '$_base/tebet_temple.mp3',
           volume: 0.8,
         ),
         AudioTrack(
           id: 'temple2',
           name: 'Bells',
           emoji: '🔔',
-          assetPath: 'assets/audio/tebet_temple2.mp3',
+          networkUrl: '$_base/tebet_temple2.mp3',
           volume: 0.4,
         ),
       ];
@@ -169,14 +174,14 @@ class SceneData {
           id: 'hut_rain',
           name: 'Hut in Rain',
           emoji: '🛖',
-          assetPath: 'assets/audio/hut_rain.mp3',
+          networkUrl: '$_base/hut_rain.mp3',
           volume: 0.8,
         ),
         AudioTrack(
           id: 'birds',
           name: 'Birds',
           emoji: '🐦',
-          assetPath: 'assets/audio/bird_sound.mp3',
+          networkUrl: '$_base/bird_sound.mp3',
           volume: 0.0,
         ),
       ];
@@ -203,6 +208,7 @@ class SceneData {
           imageAsset: 'assets/images/fireplace.png',
           availableAudioTracks: [],
           isPremium: false,
+          hasMixer: true,
         ),
         const SceneDefinition(
           id: SceneId.midnightForest,
