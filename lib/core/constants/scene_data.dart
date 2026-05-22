@@ -96,21 +96,28 @@ class SceneData {
         ),
       ];
 
-  // rain_forest / midnight forest
+  // midnight_forest
   static List<AudioTrack> forest() => [
+        AudioTrack(
+          id: 'river_bird',
+          name: 'River Birds',
+          emoji: '🐦',
+          networkUrl: '$_base/river_bird.mp3',
+          volume: 0.25,
+        ),
+        AudioTrack(
+          id: 'thunder_rain',
+          name: 'Thunder Rain',
+          emoji: '⛈️',
+          networkUrl: '$_base/thunder_rain.wav',
+          volume: 0.45,
+        ),
         AudioTrack(
           id: 'rain_forest',
           name: 'Rain Forest',
           emoji: '🌧️',
           networkUrl: '$_base/rain_forest.mp3',
-          volume: 0.8,
-        ),
-        AudioTrack(
-          id: 'rain_forest2',
-          name: 'Deep Rain',
-          emoji: '🌲',
-          // rain_forest2.mp3 not yet uploaded to Supabase — track is silent until added
-          volume: 0.0,
+          volume: 0.30,
         ),
       ];
 
@@ -227,6 +234,7 @@ class SceneData {
           imageAsset: 'assets/images/forest1.png',
           availableAudioTracks: [],
           isPremium: true,
+          hasMixer: true,
         ),
         const SceneDefinition(
           id: SceneId.himalayanCabin,
