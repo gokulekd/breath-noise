@@ -7,6 +7,7 @@ import '../../../core/theme/app_theme.dart';
 import '../../../core/theme/theme_extension.dart';
 import '../../../features/auth/services/auth_service.dart';
 import '../../../features/home/presentation/all_scenes_screen.dart';
+import '../../../features/subscription/subscription_provider.dart';
 import '../../../features/mixer/presentation/mixer_screen.dart';
 import '../../../features/player/presentation/player_screen.dart';
 import '../../../features/player/providers/atmospheric_engine_provider.dart';
@@ -57,6 +58,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    // Warm up pro status early so it's resolved before the player screen opens
+    ref.watch(isProProvider);
     final engineState = ref.watch(atmosphericEngineProvider);
     final timerState = ref.watch(sleepTimerProvider);
     final scenes = SceneData.all.take(4).toList();
@@ -539,12 +542,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                 ],
               ),
             ),
-            Icon(
-              state.isPlaying
-                  ? Icons.pause_circle_rounded
-                  : Icons.play_circle_rounded,
-              color: state.scene.primaryColor,
-              size: 32,
+            GestureDetector(
+              onTap: () => ref
+                  .read(atmosphericEngineProvider.notifier)
+                  .togglePlayPause(),
+              child: Icon(
+                state.isPlaying
+                    ? Icons.pause_circle_rounded
+                    : Icons.play_circle_rounded,
+                color: state.scene.primaryColor,
+                size: 32,
+              ),
             ),
           ],
         ),

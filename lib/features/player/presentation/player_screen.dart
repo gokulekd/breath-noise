@@ -90,7 +90,7 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
     final engineState = ref.watch(atmosphericEngineProvider);
     final timerState = ref.watch(sleepTimerProvider);
     final alarmState = ref.watch(alarmProvider);
-    final isPro = ref.watch(isProProvider).valueOrNull ?? false;
+    final isPro = ref.watch(isProProvider);
     final isTimerRunning = timerState.status == SleepTimerState.running;
     final isAlarmSet = alarmState.isSet;
 
