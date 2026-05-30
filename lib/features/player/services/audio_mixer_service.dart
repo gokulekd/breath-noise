@@ -24,19 +24,9 @@ class AudioMixerService {
     _trackVolumes.clear();
 
     for (final track in tracks) {
-      final hasSource = track.assetPath != null || track.networkUrl != null;
-      if (!hasSource) continue;
-
       try {
         final player = AudioPlayer();
-
-        if (track.assetPath != null) {
-          await player.setAudioSource(
-            AudioSource.asset(track.assetPath!),
-          );
-        } else {
-          await player.setUrl(track.networkUrl!);
-        }
+        await player.setUrl(track.networkUrl);
 
         await player.setLoopMode(LoopMode.one);
 

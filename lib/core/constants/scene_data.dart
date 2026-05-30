@@ -19,16 +19,14 @@ class AudioTrack {
   final String id;
   final String name;
   final String emoji;
-  final String? assetPath;
-  final String? networkUrl;
+  final String networkUrl;
   double volume;
 
   AudioTrack({
     required this.id,
     required this.name,
     required this.emoji,
-    this.assetPath,
-    this.networkUrl,
+    required this.networkUrl,
     this.volume = 0.0,
   });
 
@@ -37,7 +35,6 @@ class AudioTrack {
       id: id,
       name: name,
       emoji: emoji,
-      assetPath: assetPath,
       networkUrl: networkUrl,
       volume: volume ?? this.volume,
     );
@@ -124,18 +121,25 @@ class SceneData {
   // himalayan_cabin
   static List<AudioTrack> cabin() => [
         AudioTrack(
-          id: 'snow',
-          name: 'Snowstorm',
-          emoji: '❄️',
-          networkUrl: '$_base/snow1.mp3',
-          volume: 0.7,
+          id: 'himalayan_wind',
+          name: 'Himalayan Wind',
+          emoji: '🌬️',
+          networkUrl: '$_base/himlayalan_wind.mp3',
+          volume: 0.50,
         ),
         AudioTrack(
-          id: 'cabin_fire',
-          name: 'Fireplace',
-          emoji: '🔥',
-          networkUrl: '$_base/fireplace1.wav',
-          volume: 0.5,
+          id: 'temple_bell_small',
+          name: 'Temple Bell',
+          emoji: '🔔',
+          networkUrl: '$_base/temple_bell_small.mp3',
+          volume: 0.25,
+        ),
+        AudioTrack(
+          id: 'tebet_bell',
+          name: 'Tibetan Bell',
+          emoji: '🛕',
+          networkUrl: '$_base/tebet_bell.mp3',
+          volume: 0.15,
         ),
       ];
 
@@ -253,6 +257,7 @@ class SceneData {
           imageAsset: 'assets/images/himalayan.jpeg',
           availableAudioTracks: [],
           isPremium: true,
+          hasMixer: true,
         ),
         const SceneDefinition(
           id: SceneId.coastalBreeze,
